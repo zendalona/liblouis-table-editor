@@ -440,6 +440,13 @@
             "description": "Indicates that the rule should only be applied during forward translation (text to braille) and not during back-translation (braille to text) when placed before another opcode"
         },
         {
+            "code": "nofar",
+            "fields": {
+                "opcode": "Following Opcode"
+            },
+            "description": "Indicates that the rule should not be applied in backward translation (braille to text) and should be ignored when processing characters in that direction"
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
