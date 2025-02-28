@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel, QStackedLayout
 from PyQt5.QtGui import QPalette, QColor, QPixmap
 from PyQt5.QtCore import Qt
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
@@ -20,6 +20,8 @@ class TableManager(QWidget):
         self.menubar = create_menubar(self)
         layout.setMenuBar(self.menubar)
 
+        self.stacked_layout = QStackedLayout()
+        
         self.tab_widget = QTabWidget()
         self.tab_widget.setTabsClosable(True)
         self.tab_widget.tabCloseRequested.connect(self.close_tab)
@@ -28,9 +30,11 @@ class TableManager(QWidget):
         self.background_label.setAlignment(Qt.AlignCenter)
         self.background_label.setPixmap(QPixmap('src/assets/images/background.png'))
         self.background_label.setScaledContents(True)
+        
+        self.stacked_layout.addWidget(self.background_label)
+        self.stacked_layout.addWidget(self.tab_widget)
 
-        layout.addWidget(self.tab_widget)
-        layout.addWidget(self.background_label)
+        layout.addLayout(self.stacked_layout)
 
         self.setLayout(layout)
 
@@ -66,9 +70,9 @@ class TableManager(QWidget):
 
     def update_background_visibility(self):
         if self.tab_widget.count() == 0:
-            self.background_label.show()
+            self.stacked_layout.setCurrentIndex(0)
         else:
-            self.background_label.hide()
+            self.stacked_layout.setCurrentIndex(1)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
