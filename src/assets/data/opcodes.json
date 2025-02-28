@@ -433,6 +433,13 @@
             "description": "The dot pattern which indicates that a certain mode is entered and ends after a single character. A mode is a state in which dot patterns must be interpreted a certain way."
         },
         {
+            "code": "noback",
+            "fields": {
+                "opcode": "Following Opcode"
+            },
+            "description": "Indicates that the rule should only be applied during forward translation (text to braille) and not during back-translation (braille to text) when placed before another opcode"
+        },
+        {
             "code": "space",
             "fields": {
                 "unicode": "Input Character",
