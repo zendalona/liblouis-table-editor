@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel,QDesktopWidget
 from PyQt5.QtGui import QPalette, QColor, QPixmap
 from PyQt5.QtCore import Qt
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
@@ -12,7 +12,9 @@ class TableManager(QWidget):
         super().__init__()
 
         self.setWindowTitle('Liblouis Tables Manager')
-        self.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
+        # Dynamically set the window size based on the screen resolution
+        screen_geometry=QDesktopWidget().screenGeometry()
+        self.resize(screen_geometry.width()*0.8, screen_geometry.height()*0.8)
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -29,8 +31,8 @@ class TableManager(QWidget):
         self.background_label.setPixmap(QPixmap('src/assets/images/background.png'))
         self.background_label.setScaledContents(True)
 
-        layout.addWidget(self.tab_widget)
-        layout.addWidget(self.background_label)
+        layout.addWidget(self.tab_widget,stretch=1)
+        layout.addWidget(self.background_label,stretch=0)
 
         self.setLayout(layout)
 
