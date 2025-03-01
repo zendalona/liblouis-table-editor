@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel,QDesktopWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel, QDesktopWidget
 from PyQt5.QtGui import QPalette, QColor, QPixmap
 from PyQt5.QtCore import Qt
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
@@ -7,14 +7,16 @@ from components.Menubar import create_menubar
 from components.TableEditor import TableEditor
 from utils.ApplyStyles import apply_styles
 
+
 class TableManager(QWidget):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle('Liblouis Tables Manager')
         # Dynamically set the window size based on the screen resolution
-        screen_geometry=QDesktopWidget().screenGeometry()
-        self.resize(screen_geometry.width()*0.8, screen_geometry.height()*0.8)
+        screen_geometry = QDesktopWidget().screenGeometry()
+        self.resize(int(screen_geometry.width()*0.8),
+                    int(screen_geometry.height()*0.8))
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -28,11 +30,12 @@ class TableManager(QWidget):
 
         self.background_label = QLabel(self)
         self.background_label.setAlignment(Qt.AlignCenter)
-        self.background_label.setPixmap(QPixmap('src/assets/images/background.png'))
+        self.background_label.setPixmap(
+            QPixmap('src/assets/images/background.png'))
         self.background_label.setScaledContents(True)
 
-        layout.addWidget(self.tab_widget,stretch=1)
-        layout.addWidget(self.background_label,stretch=0)
+        layout.addWidget(self.tab_widget, stretch=1)
+        layout.addWidget(self.background_label, stretch=0)
 
         self.setLayout(layout)
 
@@ -71,6 +74,7 @@ class TableManager(QWidget):
             self.background_label.show()
         else:
             self.background_label.hide()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
