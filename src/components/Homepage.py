@@ -136,10 +136,18 @@ class HomeScreen(QWidget):
             file_names = file_dialog.selectedFiles()
             if file_names:
                 file_path = file_names[0]
+                
                 try:
-                    open(file_path, 'w').close()  
-                    file_name = os.path.basename(file_path)
-                    QMessageBox.information(self, "Success", f"New table '{file_name}' created successfully.")
+                    # Create an empty file
+                    open(file_path, 'w').close()
+
+                    # Send the new file to TableManager
+                    parent_window = self.window()  
+                    if hasattr(parent_window, "add_tab"):  
+                        parent_window.add_tab(os.path.basename(file_path), "")  # Empty content
+                    else:
+                        QMessageBox.warning(self, "Error", "Failed to open new table inside the app.")
+
                 except Exception as e:
                     QMessageBox.warning(self, 'Error', f'Failed to create file: {str(e)}')
 
@@ -152,14 +160,18 @@ class HomeScreen(QWidget):
             file_names = file_dialog.selectedFiles()
             if file_names:
                 file_path = file_names[0]
+                
                 try:
-                    os.system(f'xdg-open "{file_path}"' if os.name == 'posix' else f'start "" "{file_path}"')
+                    with open(file_path, 'r', encoding='utf-8') as file:
+                        file_content = file.read()
+
+                    # Send the file data to TableManager
+                    parent_window = self.window()  # Get the parent TableManager instance
+                    if hasattr(parent_window, "add_tab"):  
+                        parent_window.add_tab(os.path.basename(file_path), file_content)
+                    else:
+                        QMessageBox.warning(self, "Error", "Failed to open table inside the app.")
+
                 except Exception as e:
                     QMessageBox.warning(self, 'Error', f'Failed to open file: {str(e)}')
 
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = HomeScreen()
-    window.show()
-    sys.exit(app.exec_())
