@@ -1,5 +1,8 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QMenu, QAction, QLineEdit
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout, QMenu,  QLineEdit
+
+
+from PyQt6.QtCore import Qt 
+from PyQt6.QtGui import QAction
 
 class EntryWidget(QWidget):
     def __init__(self, entry, table_editor, parent=None):
@@ -13,7 +16,7 @@ class EntryWidget(QWidget):
         self.label_text.setWordWrap(False)
 
         self.layout = QHBoxLayout(self)
-        self.layout.addWidget(self.label_text, alignment=Qt.AlignTop)
+        self.layout.addWidget(self.label_text, alignment=Qt.AlignmentFlag.AlignTop)
         self.layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
         self.layout.setSpacing(0)  # Remove spacing
         self.setLayout(self.layout)
@@ -47,7 +50,7 @@ class EntryWidget(QWidget):
         delete_action.triggered.connect(self.delete_entry)
         menu.addAction(delete_action)
 
-        menu.exec_(self.mapToGlobal(event.pos()))
+        menu.exec(self.mapToGlobal(event.pos()))
 
     def duplicate_entry(self):
         new_entry_widget = EntryWidget(self.entry, self.table_editor, parent=self.parentWidget())

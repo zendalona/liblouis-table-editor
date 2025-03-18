@@ -1,9 +1,9 @@
 import json
-from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox
+from PyQt6.QtWidgets import (
+    QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy, QTextEdit, QLineEdit, QComboBox
 )
-from PyQt5.QtGui import QKeyEvent
-from PyQt5.QtCore import Qt
+from PyQt6.QtGui import QKeyEvent
+from PyQt6.QtCore import Qt
 from components.AddEntry.AddEntryWidget import AddEntryWidget
 from components.AddEntry.BrailleInputWidget import BrailleInputWidget
 from components.TablePreview import TablePreview
@@ -26,11 +26,11 @@ class TableEditor(QWidget):
         top_layout.addWidget(self.table_preview)
 
         self.add_entry_widget = AddEntryWidget()
-        
         self.add_entry_widget.add_button.clicked.connect(self.add_entry)
         top_layout.addWidget(self.add_entry_widget)
 
-        self.add_entry_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # Use the new enum for size policy values
+        self.add_entry_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         main_layout.addLayout(top_layout)
 
@@ -58,7 +58,6 @@ class TableEditor(QWidget):
             self.table_preview.entries = entries
             self.table_preview.update_content()
         
-        
     def set_content(self, content):
         if content.strip():  # Check if content is not just whitespace
             self.table_preview.entries = [line for line in content.splitlines() if line.strip()]
@@ -68,17 +67,21 @@ class TableEditor(QWidget):
 
     def get_content(self):
         return self.table_preview.entries
-    
-    
     def keyPressEvent(self, event):
-        # Shortcut key to add entry - CTRL + Enter
-        if event.key() == Qt.Key_Return and event.modifiers() == Qt.ControlModifier:
+    # Ignore auto-repeat events
+        if event.isAutoRepeat():
+            return
+        if event.key() == Qt.Key.Key_Return and event.modifiers() == Qt.KeyboardModifier.ControlModifier:
             self.add_entry()
+            event.accept()
+
+
+
 
     def show_toast(self, text, icon_path, colorR, colorG, colorB):
         if self.toast:
             self.toast.close()
-        self.toast = Toast(text, icon_path, colorR, colorG, colorB,  self)
+        self.toast = Toast(text, icon_path, colorR, colorG, colorB, self)
         self.toast.move((self.width() - self.toast.width()), self.height() + 290)
         self.toast.show_toast()
 

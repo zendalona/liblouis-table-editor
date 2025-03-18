@@ -1,10 +1,10 @@
 import sys
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTreeWidget, QTreeWidgetItem,
     QGridLayout, QScrollArea, QPushButton, QSizePolicy, QLineEdit, QTextEdit, QLabel
 )
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QFont
+from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtGui import QFont
 from utils.ApplyStyles import apply_styles
 
 class UnicodeSelector(QWidget):
@@ -27,7 +27,7 @@ class UnicodeSelector(QWidget):
         self.tree.setHeaderLabel("Unicode Blocks")
         self.populate_tree()
         self.tree.itemClicked.connect(self.display_characters)
-        self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Policy.Expanding)
         search_layout.addWidget(self.tree)
 
         char_search_layout = QVBoxLayout()
@@ -474,6 +474,6 @@ class UnicodeSelector(QWidget):
         self.on_select_callback = callback
 
     def adjust_component_sizes(self):
-        self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        self.char_container.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Policy.Expanding)
+        self.char_container.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 

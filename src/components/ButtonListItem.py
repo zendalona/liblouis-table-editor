@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QListWidgetItem, QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QListWidgetItem, QPushButton, QVBoxLayout, QWidget
 
 
 class ButtonListItem(QListWidgetItem):

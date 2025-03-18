@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QScrollArea
+from PyQt6.QtCore import Qt
 from components.AddEntry.EntryWidget import EntryWidget
 from utils.ApplyStyles import apply_styles
 
@@ -23,7 +23,9 @@ class TablePreview(QWidget):
         
         self.scroll_widget = QWidget()
         self.scroll_layout = QVBoxLayout(self.scroll_widget)
-        self.scroll_layout.setAlignment(Qt.AlignTop)
+        #self.scroll_layout.setAlignment(Qt.AlignTop)
+
+        self.scroll_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.scroll_layout.setContentsMargins(0, 0, 0, 0)
         self.scroll_layout.setSpacing(0)
 

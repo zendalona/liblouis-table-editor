@@ -35,10 +35,10 @@ This project was developed during the Google Summer of Code 2024 by [Riya Jain](
 ### Prerequisites
 
 - **Python 3.x**: The editor is developed in Python, so you'll need Python installed on your system.
-- **PyQt5**: The GUI is built using PyQt5, which you can install using pip:
+- **PyQt6**: The GUI is built using PyQt6, which you can install using pip:
 
 ```bash
-pip3 install PyQt5
+pip3 install PyQt6
 ```
 
 ### Cloning the Repository
@@ -95,7 +95,7 @@ The user interface is divided into several sections:
 
 ## Implementation Details
 
-The Liblouis Table Editor is implemented primarily in Python using the PyQt5 library for the graphical interface. The application is designed to be modular, making it easy to extend and maintain.
+The Liblouis Table Editor is implemented primarily in Python using the PyQt6 library for the graphical interface. The application is designed to be modular, making it easy to extend and maintain.
 
 Key components include:
 

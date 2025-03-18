@@ -1,6 +1,6 @@
 import os
-from PyQt5.QtWidgets import QMenuBar, QAction, QFileDialog, QMessageBox
-from PyQt5.QtGui import QIcon
+from PyQt6.QtWidgets import QMenuBar, QFileDialog, QMessageBox
+from PyQt6.QtGui import QIcon, QAction
 
 def create_action(parent, title, icon_path=None, shortcut=None, status_tip=None, triggered=None):
     action = QAction(title, parent)
@@ -69,11 +69,11 @@ def create_menubar(parent):
 
 def open_new_file_dialog(parent):
     file_dialog = QFileDialog(parent)
-    file_dialog.setFileMode(QFileDialog.AnyFile)
-    file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+    file_dialog.setFileMode(QFileDialog.FileMode.AnyFile)
+    file_dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
     file_dialog.setNameFilter("Table Files (*.cti *.ctb *.utb);;All Files (*)")
 
-    if file_dialog.exec_():
+    if file_dialog.exec():
         file_names = file_dialog.selectedFiles()
         if file_names:
             file_path = file_names[0]
@@ -88,14 +88,12 @@ def open_new_file_dialog(parent):
 
     file_dialog.deleteLater()
 
-
 def open_file_dialog(parent):
     file_dialog = QFileDialog(parent)
-    file_dialog.setFileMode(QFileDialog.ExistingFile)
+    file_dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
     file_dialog.setNameFilter("Table Files (*.cti *.ctb *.utb);;All Files (*)")
 
-    
-    if file_dialog.exec_():
+    if file_dialog.exec():
         file_names = file_dialog.selectedFiles()
         if file_names:
             file_path = file_names[0]
@@ -114,11 +112,11 @@ def save_file_dialog(parent):
     table_editor = parent.get_current_table_editor()
     if table_editor:
         file_dialog = QFileDialog(parent)
-        file_dialog.setFileMode(QFileDialog.AnyFile)
-        file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+        file_dialog.setFileMode(QFileDialog.FileMode.AnyFile)
+        file_dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         file_dialog.setNameFilter("Table Files (*.cti *.ctb *.utb);;All Files (*)")
 
-        if file_dialog.exec_():
+        if file_dialog.exec():
             file_names = file_dialog.selectedFiles()
             if file_names:
                 file_path = file_names[0]
@@ -135,3 +133,4 @@ def save_file_dialog(parent):
 
 def save_as_file_dialog(parent):
     save_file_dialog(parent)
+

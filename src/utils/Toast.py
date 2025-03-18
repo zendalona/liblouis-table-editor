@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QLabel, QHBoxLayout, QFrame
-from PyQt5.QtGui import QIcon, QColor
-from PyQt5.QtCore import Qt, QTimer
+from PyQt6.QtWidgets import QLabel, QHBoxLayout, QFrame
+from PyQt6.QtGui import QIcon, QColor
+from PyQt6.QtCore import Qt, QTimer
 
 class Toast(QFrame):
     def __init__(self, text, icon_path, colorR, colorG, colorB, parent=None):
@@ -9,7 +9,11 @@ class Toast(QFrame):
 
     def initUI(self, text, icon_path, colorR, colorG, colorB):
         self.setFixedSize(350, 60)
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
+        self.setWindowFlags(
+            Qt.WindowType.FramelessWindowHint | 
+            Qt.WindowType.WindowStaysOnTopHint | 
+            Qt.WindowType.Tool
+        )
         
         def lighter_color(r, g, b, factor=0.7):
             return QColor(
@@ -42,7 +46,7 @@ class Toast(QFrame):
         layout.addWidget(text_label)
 
         layout.setContentsMargins(5, 2, 10, 5)
-        layout.setAlignment(Qt.AlignCenter)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
     def show_toast(self, duration=2000):
         self.show()
