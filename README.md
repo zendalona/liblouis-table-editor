@@ -52,9 +52,10 @@ cd liblouis-table-editor
 
 
 #### Running in Windows
-To start the application, run
+To start the application, run or click
 ```bash
-mingw32-make
+install.bat
+run.bat
 ```
 command, which is a build tool commonly used in development environments that rely on the MinGW (Minimalist GNU for Windows) toolchain
 
