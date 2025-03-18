@@ -100,7 +100,7 @@ class OpcodeForm(QWidget):
                 at_symbol.setReadOnly(True)
                 at_symbol.setFixedWidth(40)
                 at_symbol.setFixedHeight(50)
-                at_symbol.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Policy.Preferred
+                at_symbol.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred
 )
 
                 self.braille_input_widget = BrailleInputWidget()  # Reuse the BrailleInputWidget
@@ -122,7 +122,7 @@ class OpcodeForm(QWidget):
                     if i < placeholder - 1:
                         comma_label = QLineEdit(",")
                         comma_label.setReadOnly(True)
-                        comma_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Policy.Preferred
+                        comma_label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred
 )
                         comma_label.setFixedWidth(30)
                         comma_label.setFixedHeight(50)
