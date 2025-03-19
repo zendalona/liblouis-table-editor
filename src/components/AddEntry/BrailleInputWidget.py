@@ -1,6 +1,9 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QLabel
-from PyQt5.QtGui import QRegExpValidator
-from PyQt5.QtCore import QRegExp, Qt
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QLabel
+from PyQt6.QtGui import QRegularExpressionValidator
+# from PyQt6.QtGui import QRegularExpressionValidator
+from PyQt6.QtCore import QRegularExpression
+
+from PyQt6.QtCore import Qt
 from utils.ApplyStyles import apply_styles
 
 class BrailleInputWidget(QWidget):
@@ -10,13 +13,13 @@ class BrailleInputWidget(QWidget):
 
     def initUI(self):
         self.layout = QVBoxLayout(self)
-        self.layout.setAlignment(Qt.AlignLeft)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         self.braille_input = QLineEdit()
         self.braille_input.setPlaceholderText("Enter Braille Dots (e.g., 12-34-56)")
         
-        braille_regex = QRegExp("^(?:1?2?3?4?5?6?)(?:-(?:1?2?3?4?5?6?))*$")
-        validator = QRegExpValidator(braille_regex, self.braille_input)
+        braille_regex = QRegularExpression("^(?:1?2?3?4?5?6?)(?:-(?:1?2?3?4?5?6?))*$")
+        validator = QRegularExpressionValidator(braille_regex, self.braille_input)
         self.braille_input.setValidator(validator)
         
         self.braille_input.textChanged.connect(self.updateBraillePreview)
@@ -37,7 +40,7 @@ class BrailleInputWidget(QWidget):
         for sequence in braille_sequences:
             if self.is_valid_braille_sequence(sequence):
                 preview_label = QLabel(self.get_braille_representation(sequence))
-                preview_label.setAlignment(Qt.AlignCenter)
+                preview_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 self.braille_preview_container.addWidget(preview_label)
 
     def is_valid_braille_sequence(self, sequence):

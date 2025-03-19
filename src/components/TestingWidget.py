@@ -1,5 +1,5 @@
 # TestingWidget.py
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLineEdit, QPushButton
 
 class TestingWidget(QWidget):
     def __init__(self, parent=None):

@@ -1,7 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel
-from PyQt5.QtGui import QPalette, QColor, QPixmap
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel
+from PyQt6.QtGui import QPalette, QColor, QPixmap
+from PyQt6.QtCore import Qt
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
 from components.Menubar import create_menubar
 from components.TableEditor import TableEditor
@@ -25,7 +25,9 @@ class TableManager(QWidget):
         self.tab_widget.tabCloseRequested.connect(self.close_tab)
 
         self.background_label = QLabel(self)
-        self.background_label.setAlignment(Qt.AlignCenter)
+        # self.background_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.background_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         self.background_label.setPixmap(QPixmap('src/assets/images/background.png'))
         self.background_label.setScaledContents(True)
 
@@ -74,22 +76,25 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     palette = QPalette()
-    palette.setColor(QPalette.Window, QColor(240, 248, 255))
-    palette.setColor(QPalette.WindowText, Qt.black)
-    palette.setColor(QPalette.Base, QColor(255, 255, 255))
-    palette.setColor(QPalette.AlternateBase, QColor(240, 248, 255))
-    palette.setColor(QPalette.ToolTipBase, Qt.black)
-    palette.setColor(QPalette.ToolTipText, Qt.black)
-    palette.setColor(QPalette.Text, Qt.black)
-    palette.setColor(QPalette.Button, QColor(240, 248, 255))
-    palette.setColor(QPalette.ButtonText, Qt.black)
-    palette.setColor(QPalette.BrightText, Qt.red)
-    palette.setColor(QPalette.Highlight, QColor(70, 130, 180))
-    palette.setColor(QPalette.HighlightedText, Qt.white)
+    palette.setColor(QPalette.ColorRole.Window, QColor(240, 248, 255))
+    palette.setColor(QPalette.ColorRole.WindowText, Qt.GlobalColor.black)
+    palette.setColor(QPalette.ColorRole.Base, QColor(255, 255, 255))
+    palette.setColor(QPalette.ColorRole.AlternateBase, QColor(240, 248, 255))
+    palette.setColor(QPalette.ColorRole.ToolTipBase, Qt.GlobalColor.black)
+    palette.setColor(QPalette.ColorRole.ToolTipText, Qt.GlobalColor.black)
+    palette.setColor(QPalette.ColorRole.Text, Qt.GlobalColor.black)
+    palette.setColor(QPalette.ColorRole.Button, QColor(240, 248, 255))
+    palette.setColor(QPalette.ColorRole.ButtonText, Qt.GlobalColor.black)
+    palette.setColor(QPalette.ColorRole.BrightText, Qt.GlobalColor.red)
+    palette.setColor(QPalette.ColorRole.Highlight, QColor(70, 130, 180))
+    palette.setColor(QPalette.ColorRole.HighlightedText, Qt.GlobalColor.white)
+
 
     app.setPalette(palette)
 
     window = TableManager()
     window.show()
 
-    sys.exit(app.exec_())
+    # sys.exit(app.exec_())
+    sys.exit(app.exec())
+

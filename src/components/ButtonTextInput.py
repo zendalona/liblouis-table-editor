@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 
 class ButtonTextInput(QWidget):
     def __init__(self):

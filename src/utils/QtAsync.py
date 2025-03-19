@@ -2,9 +2,9 @@ import types
 import weakref
 from functools import partial
 
-from PyQt5 import QtGui 
-from PyQt5 import QtCore
-from PyQt5.QtCore import QThread, QTimer
+from PyQt6 import QtGui 
+from PyQt6 import QtCore
+from PyQt6.QtCore import QThread, QTimer
 
 ## The following code is borrowed from here: 
 # http://stackoverflow.com/questions/24689800/async-like-pattern-in-pyqt-or-cleaner-background-call-pattern

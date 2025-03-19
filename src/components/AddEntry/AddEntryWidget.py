@@ -1,10 +1,10 @@
 from collections import OrderedDict
 import json
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit,
     QLineEdit, QComboBox, QLabel, QPushButton, QSizePolicy, QLayout
 )
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 from components.AddEntry.BrailleInputWidget import BrailleInputWidget
 from components.AddEntry.UnicodeSelector import UnicodeSelector
 from utils.view import clearLayout
@@ -20,7 +20,7 @@ class OpcodeForm(QWidget):
 
     def initUI(self, fields):
         layout = QVBoxLayout(self)
-        layout.setAlignment(Qt.AlignTop)
+        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.form_layout = QVBoxLayout()
         layout.addLayout(self.form_layout)
@@ -47,8 +47,10 @@ class OpcodeForm(QWidget):
                 unicode_input.setProperty("includeInEntry", True)
                 
                 # Set size policy for full width
-                unicode_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-                unicode_display.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+                unicode_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
+)
+                unicode_display.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
+)
 
                 unicode_input.textChanged.connect(lambda text, u_display=unicode_display: self.updateDisplayCharacter(u_display, text))
                 unicode_display.textChanged.connect(lambda text, u_input=unicode_input: self.updateUnicodeInput(text, u_input))
@@ -61,7 +63,8 @@ class OpcodeForm(QWidget):
                 unicode_container.addWidget(select_button)
                 
                 # Ensure container uses full width
-                unicode_container.setSizeConstraint(QLayout.SetMinimumSize)
+                #unicode_container.setSizeConstraint(QLayout.SetMinimumSize)
+                unicode_container.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
 
                 self.form_layout.addLayout(unicode_container)
                 self.field_inputs[field] = unicode_input
@@ -70,7 +73,8 @@ class OpcodeForm(QWidget):
                 name_input = QLineEdit()
                 name_input.setPlaceholderText(placeholder)
                 # Set size policy for full width
-                name_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+                name_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
+)
                 self.form_layout.addWidget(name_input)
                 self.field_inputs[field] = name_input
 
@@ -78,7 +82,8 @@ class OpcodeForm(QWidget):
                 inp = QTextEdit()
                 inp.setPlaceholderText(placeholder)
                 # Set size policy for full width
-                inp.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+                inp.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
+)
                 self.form_layout.addWidget(inp)
                 self.field_inputs[field] = inp
 
@@ -95,7 +100,8 @@ class OpcodeForm(QWidget):
                 at_symbol.setReadOnly(True)
                 at_symbol.setFixedWidth(40)
                 at_symbol.setFixedHeight(50)
-                at_symbol.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+                at_symbol.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred
+)
 
                 self.braille_input_widget = BrailleInputWidget()  # Reuse the BrailleInputWidget
 
@@ -116,7 +122,8 @@ class OpcodeForm(QWidget):
                     if i < placeholder - 1:
                         comma_label = QLineEdit(",")
                         comma_label.setReadOnly(True)
-                        comma_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+                        comma_label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred
+)
                         comma_label.setFixedWidth(30)
                         comma_label.setFixedHeight(50)
                         groupdots_container.addWidget(comma_label)
@@ -127,7 +134,8 @@ class OpcodeForm(QWidget):
                 base_attr_dropdown = QComboBox()
                 base_attr_dropdown.addItems(["space", "digit", "letter", "lowercase", "uppercase", "punctuation", "sign", "math", "litdigit", "attribute", "before", "after"])
                 # Set size policy for full width
-                base_attr_dropdown.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+                base_attr_dropdown.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
+)
                 self.form_layout.addWidget(base_attr_dropdown)
                 self.field_inputs[field] = base_attr_dropdown
 
@@ -218,7 +226,7 @@ class AddEntryWidget(QWidget):
 
     def initUI(self):
         main_layout = QVBoxLayout(self)
-        main_layout.setAlignment(Qt.AlignTop)
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.opcode_combo_layout = QHBoxLayout()
 
@@ -226,7 +234,8 @@ class AddEntryWidget(QWidget):
         self.opcode_combo.setPlaceholderText("Select Opcode")
         self.populate_opcode_combo()
         self.opcode_combo.currentIndexChanged.connect(self.on_opcode_selected)
-        self.opcode_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.opcode_combo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
+)
 
         self.opcode_combo_layout.addWidget(self.opcode_combo)
         main_layout.addLayout(self.opcode_combo_layout)
@@ -237,11 +246,12 @@ class AddEntryWidget(QWidget):
         self.comment_input = QLineEdit()
         self.comment_input.setPlaceholderText("Add a comment (optional)")
         # Set size policy for full width
-        self.comment_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.comment_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
+)
         main_layout.addWidget(self.comment_input)
 
         self.add_button = QPushButton("Add")
-        main_layout.addWidget(self.add_button, alignment=Qt.AlignTop)
+        main_layout.addWidget(self.add_button, alignment=Qt.AlignmentFlag.AlignTop)
 
         self.setLayout(main_layout)
 

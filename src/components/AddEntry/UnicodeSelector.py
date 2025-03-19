@@ -1,10 +1,10 @@
 import sys
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTreeWidget, QTreeWidgetItem,
     QGridLayout, QScrollArea, QPushButton, QSizePolicy, QLineEdit, QTextEdit, QLabel
 )
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QFont
+from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtGui import QFont
 from utils.ApplyStyles import apply_styles
 
 class UnicodeSelector(QWidget):
@@ -27,7 +27,7 @@ class UnicodeSelector(QWidget):
         self.tree.setHeaderLabel("Unicode Blocks")
         self.populate_tree()
         self.tree.itemClicked.connect(self.display_characters)
-        self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.tree.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         search_layout.addWidget(self.tree)
 
         char_search_layout = QVBoxLayout()
@@ -40,7 +40,7 @@ class UnicodeSelector(QWidget):
         self.char_container.setStyleSheet("background: white;")
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(self.char_container)
-        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         char_search_layout.addWidget(scroll_area)
 
@@ -48,8 +48,8 @@ class UnicodeSelector(QWidget):
         self.selected_text_edit.setFont(QFont('', 28))
         self.selected_text_edit.setPlaceholderText("Selected characters will appear here. You can also type in this box.")
         self.selected_text_edit.setFixedHeight(50)
-        self.selected_text_edit.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.selected_text_edit.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.selected_text_edit.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.selected_text_edit.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         char_search_layout.addWidget(self.selected_text_edit)
 
 
@@ -77,7 +77,7 @@ class UnicodeSelector(QWidget):
         self.blocks = self.get_unicode_blocks()
         for block_name, (start, end) in self.blocks.items():
             item = QTreeWidgetItem([block_name])
-            item.setData(0, Qt.UserRole, (start, end))
+            item.setData(0, Qt.ItemDataRole.UserRole, (start, end))
             self.tree.addTopLevelItem(item)
 
     def filter_blocks(self):
@@ -405,7 +405,7 @@ class UnicodeSelector(QWidget):
             if child.widget():
                 child.widget().deleteLater()
 
-        start, end = item.data(0, Qt.UserRole)
+        start, end = item.data(0, Qt.ItemDataRole.UserRole)
         self.characters = [chr(codepoint) for codepoint in range(start, end + 1)]
 
         self.update_character_display()
@@ -434,7 +434,7 @@ class UnicodeSelector(QWidget):
 
                 char = self.characters[index]
                 char_button = QPushButton(char)
-                char_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+                char_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
                 char_button.setFixedSize(QSize(button_size, button_size))
 
                 char_button.setStyleSheet(
@@ -474,6 +474,5 @@ class UnicodeSelector(QWidget):
         self.on_select_callback = callback
 
     def adjust_component_sizes(self):
-        self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        self.char_container.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-
+        self.tree.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.char_container.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)

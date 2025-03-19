@@ -1,7 +1,7 @@
 import json
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
 from utils.ApplyStyles import apply_styles
 
 data = json.load(open('./src/assets/data/opcodes.json', 'r'))
@@ -59,8 +59,8 @@ class OpcodeSelector(QWidget):
                 self.list.addItem(item)
 
     def eventFilter(self, source, event):
-        if event.type() == QEvent.MouseMove and source == self.list:
-            item = self.list.itemAt(event.pos())
+        if event.type() == QEvent.Type.MouseMove and source == self.list:
+            item = self.list.itemAt(event.position().toPoint())
             if item:
                 self.display_description(item)
         return super().eventFilter(source, event)
