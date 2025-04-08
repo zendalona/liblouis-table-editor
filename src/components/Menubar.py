@@ -1,6 +1,7 @@
 import os
-from PyQt5.QtWidgets import QMenuBar, QAction, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QMenuBar, QAction, QFileDialog, QMessageBox, QWidget
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication
 
 def create_action(parent, title, icon_path=None, shortcut=None, status_tip=None, triggered=None):
     action = QAction(title, parent)
@@ -28,6 +29,99 @@ def create_menubar(parent):
 
     icon_base_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'icons')
 
+    def update_stylesheet(new_size):
+        try:
+            # Read the current stylesheet
+            stylesheet_path = "./src/styles.qss"
+            with open(stylesheet_path, 'r') as file:
+                stylesheet = file.read()
+            
+            # Update the font-size in the QWidget section
+            import re
+            updated_stylesheet = re.sub(
+                r'(QWidget\s*{\s*[^}]*?font-size:\s*)\d+px',
+                rf'\g<1>{new_size}px',
+                stylesheet
+            )
+            
+            # Apply the updated stylesheet
+            parent.setStyleSheet(updated_stylesheet)
+            
+            # Also update all child widgets
+            for widget in parent.findChildren(QWidget):
+                widget.setStyleSheet(updated_stylesheet)
+                
+        except Exception as e:
+            print(f"Error updating stylesheet: {e}")
+
+    def increase_font_size():
+        try:
+            # Get the current font size from QWidget in stylesheet
+            stylesheet_path = "./src/styles.qss"
+            with open(stylesheet_path, 'r') as file:
+                stylesheet = file.read()
+            
+            import re
+            match = re.search(r'QWidget\s*{\s*[^}]*?font-size:\s*(\d+)px', stylesheet)
+            if match:
+                current_size = int(match.group(1))
+                new_size = current_size + 2
+                update_stylesheet(new_size)
+                print(f"Increased font size to {new_size}px")
+            
+            # Update application font
+            app = QApplication.instance()
+            font = app.font()
+            font.setPointSize(font.pointSize() + 1)
+            app.setFont(font)
+            
+            # Force update
+            parent.updateGeometry()
+            parent.update()
+            
+        except Exception as e:
+            print(f"Error in increase_font_size: {e}")
+
+    def decrease_font_size():
+        try:
+            # Get the current font size from QWidget in stylesheet
+            stylesheet_path = "./src/styles.qss"
+            with open(stylesheet_path, 'r') as file:
+                stylesheet = file.read()
+            
+            import re
+            match = re.search(r'QWidget\s*{\s*[^}]*?font-size:\s*(\d+)px', stylesheet)
+            if match:
+                current_size = int(match.group(1))
+                new_size = max(8, current_size - 2)  # Don't go below 8px
+                update_stylesheet(new_size)
+                print(f"Decreased font size to {new_size}px")
+            
+            # Update application font
+            app = QApplication.instance()
+            font = app.font()
+            new_size = max(8, font.pointSize() - 1)  # Don't go below 8pt
+            font.setPointSize(new_size)
+            app.setFont(font)
+            
+            # Force update
+            parent.updateGeometry()
+            parent.update()
+            
+        except Exception as e:
+            print(f"Error in decrease_font_size: {e}")
+
+    # Create actions for font size controls
+    increase_font_action = QAction('Increase Font Size', parent)
+    increase_font_action.setShortcut('Ctrl+]')
+    increase_font_action.setIcon(QIcon(os.path.join(icon_base_path, 'increase_font.png')))
+    increase_font_action.triggered.connect(increase_font_size)
+
+    decrease_font_action = QAction('Decrease Font Size', parent)
+    decrease_font_action.setShortcut('Ctrl+[')
+    decrease_font_action.setIcon(QIcon(os.path.join(icon_base_path, 'decrease_font.png')))
+    decrease_font_action.triggered.connect(decrease_font_size)
+
     menu_structure = {
         'File': [
             ('New', os.path.join(icon_base_path, 'new.png'), 'Ctrl+N', None, lambda: open_new_file_dialog(parent)),
@@ -44,8 +138,8 @@ def create_menubar(parent):
             ('Find and Replace', os.path.join(icon_base_path, 'find_replace.png'), 'Ctrl+H', None, None)
         ],
         'Tools': [
-            ('Increase Font Size', os.path.join(icon_base_path, 'increase_font.png'), 'Ctrl+]', None, None),
-            ('Decrease Font Size', os.path.join(icon_base_path, 'decrease_font.png'), 'Ctrl+[', None, None)
+            increase_font_action,
+            decrease_font_action
         ],
         'Help': [
             ('About', os.path.join(icon_base_path, 'about.png'), None, None, None),
@@ -56,14 +150,16 @@ def create_menubar(parent):
 
     # Add menus and actions
     for menu_title, actions in menu_structure.items():
-        action_list = []
+        menu = menubar.addMenu(menu_title)
         for action in actions:
             if action == 'separator':
-                action_list.append('separator')
+                menu.addSeparator()
+            elif isinstance(action, QAction):
+                menu.addAction(action)
             else:
                 title, icon_path, shortcut, status_tip, triggered = action
-                action_list.append(create_action(parent, title, icon_path, shortcut, status_tip, triggered))
-        add_menu_with_actions(menubar, menu_title, action_list)
+                menu_action = create_action(parent, title, icon_path, shortcut, status_tip, triggered)
+                menu.addAction(menu_action)
 
     return menubar
 
