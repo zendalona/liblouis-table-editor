@@ -1,5 +1,7 @@
 from collections import OrderedDict
 import json
+import os
+import sys
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit,
     QLineEdit, QComboBox, QLabel, QPushButton, QSizePolicy, QLayout
@@ -9,7 +11,14 @@ from components.AddEntry.BrailleInputWidget import BrailleInputWidget
 from components.AddEntry.UnicodeSelector import UnicodeSelector
 from utils.view import clearLayout
 
-data = json.load(open('./src/assets/data/opcodes.json', 'r'), object_pairs_hook=OrderedDict)
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, "assets", "data", relative_path)
+
+data = json.load(open(resource_path('opcodes.json'), 'r'), object_pairs_hook=OrderedDict)
 opcodes = data["codes"]
 
 class OpcodeForm(QWidget):
