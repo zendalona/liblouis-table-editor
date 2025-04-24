@@ -439,6 +439,31 @@
                 "dots": "Braille for above character"
             },
             "description": "Whitespace characters such as blank and tab"
-        }
+        },
+        {
+            "code": "repeat",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace repeated occurrences of the same character sequence (such as hyphens, spaces, or periods) with a single dot, no matter where they appear in the text."
+        },
+        {
+            "code": "repword",
+            "fields": {
+              "unicode": "Character that separates repeated words",
+              "dots": "Dot Pattern"
+            },
+            "description": "Replaces repeated words connected by a specific character with a contraction symbol."
+        },
+        {
+            "code": "sufword",
+            "fields": {
+                "unicode": "Enter Prefix or Word",
+                "dots": "Enter Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they appear as a full word or at the beginning of a word."
+        }        
+          
     ]
 }

@@ -14,8 +14,8 @@ class EntryWidget(QWidget):
 
         self.layout = QHBoxLayout(self)
         self.layout.addWidget(self.label_text, alignment=Qt.AlignTop)
-        self.layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
-        self.layout.setSpacing(0)  # Remove spacing
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setSpacing(0)
         self.setLayout(self.layout)
 
         self.setStyleSheet("padding: 10px; background-color: white; margin: 0px")
@@ -50,8 +50,11 @@ class EntryWidget(QWidget):
         menu.exec_(self.mapToGlobal(event.pos()))
 
     def duplicate_entry(self):
-        new_entry_widget = EntryWidget(self.entry, self.table_editor, parent=self.parentWidget())
-        self.parentWidget().layout().insertWidget(self.parentWidget().layout().indexOf(self) + 1, new_entry_widget)
+        parent_layout = self.parentWidget().layout()
+        index = parent_layout.indexOf(self)
+        self.table_editor.table_preview.entries.insert(index + 1, self.entry)
+        self.table_editor.table_preview.update_content()
+        self.table_editor.show_toast("Entry duplicated!", "./src/assets/icons/tick.png", 75, 175, 78)
 
     def edit_entry(self):
         self.label_text.setVisible(False)
@@ -61,13 +64,26 @@ class EntryWidget(QWidget):
         self.edit_line.selectAll()
 
     def save_entry(self):
-        self.entry = self.edit_line.text()
-        self.label_text.setText(self.entry)
+        new_entry = self.edit_line.text()
+        if new_entry.strip() and self.table_editor.validate_entry(new_entry):
+            parent_layout = self.parentWidget().layout()
+            index = parent_layout.indexOf(self)
+            self.table_editor.table_preview.entries[index] = new_entry
+            self.entry = new_entry
+            self.label_text.setText(new_entry)
+            self.table_editor.table_preview.update_content()
+            self.table_editor.show_toast("Entry updated!", "./src/assets/icons/tick.png", 75, 175, 78)
+        else:
+            self.table_editor.show_toast("Invalid entry!", "./src/assets/icons/error.png", 255, 0, 0)
         self.edit_line.setVisible(False)
         self.label_text.setVisible(True)
-        self.load_into_editor()
 
     def delete_entry(self):
+        parent_layout = self.parentWidget().layout()
+        index = parent_layout.indexOf(self)
+        self.table_editor.table_preview.entries.pop(index)
+        self.table_editor.table_preview.update_content()
+        self.table_editor.show_toast("Entry deleted!", "./src/assets/icons/tick.png", 75, 175, 78)
         self.setParent(None)
         self.deleteLater()
 

@@ -95,10 +95,12 @@ class TableManager(QWidget):
         self.update_background_visibility()
 
     def get_current_table_editor(self):
-        """Returns the currently active TableEditor instance."""
         current_widget = self.tab_widget.currentWidget()
-        if current_widget and current_widget.layout().count() > 0:
-            return current_widget.layout().itemAt(0).widget()
+        if current_widget:
+            for i in range(current_widget.layout().count()):
+                widget = current_widget.layout().itemAt(i).widget()
+                if isinstance(widget, TableEditor):
+                    return widget
         return None
 
     def close_tab(self, index):    

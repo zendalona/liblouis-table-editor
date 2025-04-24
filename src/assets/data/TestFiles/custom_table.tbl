@@ -1,0 +1,1502 @@
+# Custom U.S. English Grade 1 Braille Table
+#
+# Combines unicode.dis and en-us-g1.ctb for Liblouis Table Editor
+#
+# -----------
+#-name: Custom U.S. English Grade 1 (EBAE)
+#-index-name: English, U.S., uncontracted
+#-display-name: Custom English uncontracted braille for U.S.
+#
+#+language:en
+#+region:en-US
+#+type:literary
+#+contraction:no
+#+grade:1
+#+system:ebae
+#
+# TODO: Metadata is based on en-us-g1.ctb and may need verification.
+# Reference: Official EBAE documentation recommended at
+# https://github.com/liblouis/braille-specs.
+# -----------
+#
+# Copyright (C) 2010, 2024 JJB Software, Inc. www.jjb-software.com
+# Copyright (C) 2004-2006 ViewPlus Technologies, Inc. www.viewplus.com
+# Copyright (C) 2020 Beneficent Technology, Inc. www.benetech.org
+#
+# Licensed under GNU Lesser General Public License v2.1 or later.
+# See <http://www.gnu.org/licenses/>.
+
+# Unicode Braille display mappings (from unicode.dis)
+display \x2800 0
+display \x2801 1
+display \x2802 2
+display \x2803 12
+display \x2804 3
+display \x2805 13
+display \x2806 23
+display \x2807 123
+display \x2808 4
+display \x2809 14
+display \x280A 24
+display \x280B 124
+display \x280C 34
+display \x280D 134
+display \x280E 234
+display \x280F 1234
+display \x2810 5
+display \x2811 15
+display \x2812 25
+display \x2813 125
+display \x2814 35
+display \x2815 135
+display \x2816 235
+display \x2817 1235
+display \x2818 45
+display \x2819 145
+display \x281A 245
+display \x281B 1245
+display \x281C 345
+display \x281D 1345
+display \x281E 2345
+display \x281F 12345
+display \x2820 6
+display \x2821 16
+display \x2822 26
+display \x2823 126
+display \x2824 36
+display \x2825 136
+display \x2826 236
+display \x2827 1236
+display \x2828 46
+display \x2829 146
+display \x282A 246
+display \x282B 1246
+display \x282C 346
+display \x282D 1346
+display \x282E 2346
+display \x282F 12346
+display \x2830 56
+display \x2831 156
+display \x2832 256
+display \x2833 1256
+display \x2834 356
+display \x2835 1356
+display \x2836 2356
+display \x2837 12356
+display \x2838 456
+display \x2839 1456
+display \x283A 2456
+display \x283B 12456
+display \x283C 3456
+display \x283D 13456
+display \x283E 23456
+display \x283F 123456
+display \x2840 7
+display \x2841 17
+display \x2842 27
+display \x2843 127
+display \x2844 37
+display \x2845 137
+display \x2846 237
+display \x2847 1237
+display \x2848 47
+display \x2849 147
+display \x284A 247
+display \x284B 1247
+display \x284C 347
+display \x284D 1347
+display \x284E 2347
+display \x284F 12347
+display \x2850 57
+display \x2851 157
+display \x2852 257
+display \x2853 1257
+display \x2854 357
+display \x2855 1357
+display \x2856 2357
+display \x2857 12357
+display \x2858 457
+display \x2859 1457
+display \x285A 2457
+display \x285B 12457
+display \x285C 3457
+display \x285D 13457
+display \x285E 23457
+display \x285F 123457
+display \x2860 67
+display \x2861 167
+display \x2862 267
+display \x2863 1267
+display \x2864 367
+display \x2865 1367
+display \x2866 2367
+display \x2867 12367
+display \x2868 467
+display \x2869 1467
+display \x286A 2467
+display \x286B 12467
+display \x286C 3467
+display \x286D 13467
+display \x286E 23467
+display \x286F 123467
+display \x2870 567
+display \x2871 1567
+display \x2872 2567
+display \x2873 12567
+display \x2874 3567
+display \x2875 13567
+display \x2876 23567
+display \x2877 123567
+display \x2878 4567
+display \x2879 14567
+display \x287A 24567
+display \x287B 124567
+display \x287C 34567
+display \x287D 134567
+display \x287E 234567
+display \x287F 1234567
+display \x2880 8
+display \x2881 18
+display \x2882 28
+display \x2883 128
+display \x2884 38
+display \x2885 138
+display \x2886 238
+display \x2887 1238
+display \x2888 48
+display \x2889 148
+display \x288A 248
+display \x288B 1248
+display \x288C 348
+display \x288D 1348
+display \x288E 2348
+display \x288F 12348
+display \x2890 58
+display \x2891 158
+display \x2892 258
+display \x2893 1258
+display \x2894 358
+display \x2895 1358
+display \x2896 2358
+display \x2897 12358
+display \x2898 458
+display \x2899 1458
+display \x289A 2458
+display \x289B 12458
+display \x289C 3458
+display \x289D 13458
+display \x289E 23458
+display \x289F 123458
+display \x28A0 68
+display \x28A1 168
+display \x28A2 268
+display \x28A3 1268
+display \x28A4 368
+display \x28A5 1368
+display \x28A6 2368
+display \x28A7 12368
+display \x28A8 468
+display \x28A9 1468
+display \x28AA 2468
+display \x28AB 12468
+display \x28AC 3468
+display \x28AD 13468
+display \x28AE 23468
+display \x28AF 123468
+display \x28B0 568
+display \x28B1 1568
+display \x28B2 2568
+display \x28B3 12568
+display \x28B4 3568
+display \x28B5 13568
+display \x28B6 23568
+display \x28B7 123568
+display \x28B8 4568
+display \x28B9 14568
+display \x28BA 24568
+display \x28BB 124568
+display \x28BC 34568
+display \x28BD 134568
+display \x28BE 234568
+display \x28BF 1234568
+display \x28C0 78
+display \x28C1 178
+display \x28C2 278
+display \x28C3 1278
+display \x28C4 378
+display \x28C5 1378
+display \x28C6 2378
+display \x28C7 12378
+display \x28C8 478
+display \x28C9 1478
+display \x28CA 2478
+display \x28CB 12478
+display \x28CC 3478
+display \x28CD 13478
+display \x28CE 23478
+display \x28CF 123478
+display \x28D0 578
+display \x28D1 1578
+display \x28D2 2578
+display \x28D3 12578
+display \x28D4 3578
+display \x28D5 13578
+display \x28D6 23578
+display \x28D7 123578
+display \x28D8 4578
+display \x28D9 14578
+display \x28DA 24578
+display \x28DB 124578
+display \x28DC 34578
+display \x28DD 134578
+display \x28DE 234578
+display \x28DF 1234578
+display \x28E0 678
+display \x28E1 1678
+display \x28E2 2678
+display \x28E3 12678
+display \x28E4 3678
+display \x28E5 13678
+display \x28E6 23678
+display \x28E7 123678
+display \x28E8 4678
+display \x28E9 14678
+display \x28EA 24678
+display \x28EB 124678
+display \x28EC 34678
+display \x28ED 134678
+display \x28EE 234678
+display \x28EF 1234678
+display \x28F0 5678
+display \x28F1 15678
+display \x28F2 25678
+display \x28F3 125678
+display \x28F4 35678
+display \x28F5 135678
+display \x28F6 235678
+display \x28F7 1235678
+display \x28F8 45678
+display \x28F9 145678
+display \x28FA 245678
+display \x28FB 1245678
+display \x28FC 345678
+display \x28FD 1345678
+display \x28FE 2345678
+display \x28FF 12345678
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+always a 1
+always b 12
+always c 14
+always d 145
+always e 15
+always f 124
+always g 1245
+always h 125
+always i 24
+always j 245
+always k 13
+always l 123
+always m 134
+always n 1345
+always o 135
+always p 1234
+always q 12345
+always r 1235
+always s 234
+always t 2345
+always u 136
+always v 1236
+always w 2456
+always x 1346
+always y 13456
+always z 1356
+always \s 0
+always ' 3
+always , 2
+always . 256
+always ; 23
+always : 25
+always ! 235
+always ? 236
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+# Copyright (C) 2010 by JJB Software, Inc. www.jjb-software.com
+#
+#  This file is part of liblouis.
+#
+#  liblouis is free software: you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as
+#  published by the Free Software Foundation, either version 2.1 of the
+#  License, or (at your option) any later version.
+#
+#  liblouis is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+#  Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  License along with liblouis. If not, see
+#  <http://www.gnu.org/licenses/>.
+
+# Previously, these definitions were hardcoded in the liblouis library
+# itself. Now they are migrated to an external table which can be
+# included by other tables. They are necessary for the proper operation
+# of liblouis or liblouisutdml.
+
+# This table also defines all the space characters to be empty braille
+# cells.
+
+space \s     0          SPACE
+
+sign  \x0000 0          NULL
+space \x0009 0          CHARACTER TABULATION
+space \x000a 0          LINE FEED (LF)
+space \x000b 0          LINE TABULATION
+space \x000c 0          FORM FEED (FF)
+space \x000d 0          CARRIAGE RETURN (CR)
+space \x00a0 0          NO-BREAK SPACE
+space \x2000 0          EN QUAD
+space \x2001 0          EM QUAD
+space \x2002 0          EN SPACE
+space \x2003 0          EM SPACE
+space \x2004 0          THREE-PER-EM SPACE
+space \x2005 0          FOUR-PER-EM SPACE
+space \x2006 0          SIX-PER-EM SPACE
+space \x2007 0          FIGURE SPACE
+space \x2008 0          PUNCTUATION SPACE
+space \x2009 0          THIN SPACE
+space \x200a 0          HAIR SPACE
+space \x200b 0          ZERO WIDTH SPACE
+space \x2028 0          LINE SEPARATOR
+space \x2029 0          PARAGRAPH SEPARATOR
+space \x202f 0          NARROW NO-BREAK SPACE
+space \x205f 0          MEDIUM MATHEMATICAL SPACE
+space \x2060 0          WORD JOINER
+space \x2800 0          BRAILLE PATTERN BLANK
+space \xfeff 0          ZERO WIDTH NO-BREAK SPACE (also Unicode BOM)
+
+# replace \x200b                #ZERO WIDTH SPACE
+noback correct "\x200b" ""
+
+replace \x2060          #WORD JOINER
+replace \xfeff          #ZERO WIDTH NO-BREAK SPACE (also Unicode BOM)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# liblouis: sub table for lowered digits, 6 dots
+#
+#  Copyright (C) 2012-2014 Mesar Hameed <mesar.hameed@gmail.com>
+#
+#  This file is part of liblouis.
+#
+#  liblouis is free software: you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as
+#  published by the Free Software Foundation, either version 2.1 of the
+#  License, or (at your option) any later version.
+#
+#  liblouis is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+#  Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  License along with liblouis. If not, see
+#  <http://www.gnu.org/licenses/>.
+
+digit 0 356
+digit 1 2
+digit 2 23
+digit 3 25
+digit 4 256
+digit 5 26
+digit 6 235
+digit 7 2356
+digit 8 236
+digit 9 35
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# liblouis: sub table for Latin letter definition, 6 dots.
+#
+#  Copyright (C) 2012-2014 Mesar Hameed <mesar.hameed@gmail.com>
+#
+#  This file is part of liblouis.
+#
+#  liblouis is free software: you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as
+#  published by the Free Software Foundation, either version 2.1 of the
+#  License, or (at your option) any later version.
+#
+#  liblouis is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+#  Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  License along with liblouis. If not, see
+#  <http://www.gnu.org/licenses/>.
+
+# Latin letters a-z where capitals are defined as equivalent to the lowercase.
+# This table is usually used by 6 dot tables. To distinguish between
+# capitals and lowercase, the language table should make use of the
+# capsletter and capsword opcodes.
+
+lowercase a 1
+lowercase b 12
+lowercase c 14
+lowercase d 145
+lowercase e 15
+lowercase f 124
+lowercase g 1245
+lowercase h 125
+lowercase i 24
+lowercase j 245
+lowercase k 13
+lowercase l 123
+lowercase m 134
+lowercase n 1345
+lowercase o 135
+lowercase p 1234
+lowercase q 12345
+lowercase r 1235
+lowercase s 234
+lowercase t 2345
+lowercase u 136
+lowercase v 1236
+lowercase w 2456
+lowercase x 1346
+lowercase y 13456
+lowercase z 1356
+
+base uppercase A a
+base uppercase B b
+base uppercase C c
+base uppercase D d
+base uppercase E e
+base uppercase F f
+base uppercase G g
+base uppercase H h
+base uppercase I i
+base uppercase J j
+base uppercase K k
+base uppercase L l
+base uppercase M m
+base uppercase N n
+base uppercase O o
+base uppercase P p
+base uppercase Q q
+base uppercase R r
+base uppercase S s
+base uppercase T t
+base uppercase U u
+base uppercase V v
+base uppercase W w
+base uppercase X x
+base uppercase Y y
+base uppercase Z z
+
+
+
+
+
+
+
+
+
+
+
+
+# liblouis: comp6 rules for Latin uppercase letters
+#
+#  Copyright (C) 2021 Bert Frees <bertfrees@gmail.com>
+#
+#  This file is part of liblouis.
+#
+#  liblouis is free software: you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as
+#  published by the Free Software Foundation, either version 2.1 of the
+#  License, or (at your option) any later version.
+#
+#  liblouis is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+#  Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  License along with liblouis. If not, see
+#  <http://www.gnu.org/licenses/>.
+
+# Mark Latin uppercase letters with dot 7 in computer braille
+# mode. Should be used in combination with latinLetterDef6Dots.uti.
+
+comp6 A 17
+comp6 B 127
+comp6 C 147
+comp6 D 1457
+comp6 E 157
+comp6 F 1247
+comp6 G 12457
+comp6 H 1257
+comp6 I 247
+comp6 J 2457
+comp6 K 137
+comp6 L 1237
+comp6 M 1347
+comp6 N 13457
+comp6 O 1357
+comp6 P 12347
+comp6 Q 123457
+comp6 R 12357
+comp6 S 2347
+comp6 T 23457
+comp6 U 1367
+comp6 V 12367
+comp6 W 24567
+comp6 X 13467
+comp6 Y 134567
+comp6 Z 13567
+
+# Back-translate uppercase letters in computer braille mode.
+
+nofor always A 17
+nofor always B 127
+nofor always C 147
+nofor always D 1457
+nofor always E 157
+nofor always F 1247
+nofor always G 12457
+nofor always H 1257
+nofor always I 247
+nofor always J 2457
+nofor always K 137
+nofor always L 1237
+nofor always M 1347
+nofor always N 13457
+nofor always O 1357
+nofor always P 12347
+nofor always Q 123457
+nofor always R 12357
+nofor always S 2347
+nofor always T 23457
+nofor always U 1367
+nofor always V 12367
+nofor always W 24567
+nofor always X 13467
+nofor always Y 134567
+nofor always Z 13567
+
+
+
+
+
+
+
+
+
+
+# liblouis: English, U.S. (EBAE) character definitions table
+#
+#  Based on the Linux screenreader BRLTTY, copyright (C) 1999-2006 by
+#  The BRLTTY Team
+#
+#  Copyright (C) 2004-2006 ViewPlus Technologies, Inc. www.viewplus.com
+#  Copyright (C) 2004-2006 JJB Software, Inc. www.jjb-software.com
+#
+#  This file is part of liblouis.
+#
+#  liblouis is free software: you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as
+#  published by the Free Software Foundation, either version 2.1 of the
+#  License, or (at your option) any later version.
+#
+#  liblouis is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+#  Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  License along with liblouis. If not, see
+#  <http://www.gnu.org/licenses/>.
+
+# Spaces
+space \t 9 tab
+space \x001b 1b escape character for html back-translation
+space \x00A0 a NO-BREAK SPACE <noBreak> 0020 NON-BREAKING SPACE
+
+
+punctuation ( 12356
+punctuation } 12456
+punctuation ] 124567
+punctuation ? 1456
+punctuation : 156
+punctuation ) 23456
+punctuation ! 2346
+punctuation { 246
+punctuation [ 2467
+punctuation ' 3
+punctuation - 36
+punctuation . 46
+punctuation " 5
+punctuation ; 56
+punctuation , 6
+sign & 12346
+sign $ 1246
+sign | 1256
+sign \\ 12567
+sign % 146
+sign * 16
+sign # 3456
+punctuation ` 4
+sign _ 456
+sign ^ 457
+sign @ 47
+math = 123456
+math < 126
+math / 34
+math > 345
+math + 346
+math ~ 45
+
+# Accented letters
+lowercase \x00DF 4-234 LATIN SMALL LETTER SHARP S German
+lowercase \x00E0 4-1 LATIN SMALL LETTER A WITH GRAVE 0061 0300 LATIN
+lowercase \x00E1 4-1 LATIN SMALL LETTER A WITH ACUTE 0061 0301 LATIN
+lowercase \x00E2 4-1 LATIN SMALL LETTER A WITH CIRCUMFLEX 0061 0302
+lowercase \x00E3 4-1 LATIN SMALL LETTER A WITH TILDE 0061 0303 LATIN
+lowercase \x00E4 4-1 LATIN SMALL LETTER A WITH DIAERESIS 0061 0308 LATIN
+lowercase \x00E5 4-1 LATIN SMALL LETTER A WITH RING ABOVE 0061 030A
+lowercase \x00E6 4-1 LATIN SMALL LETTER AE LATIN SMALL LETTER A E ash *
+lowercase \x00E7 4-14 LATIN SMALL LETTER C WITH CEDILLA 0063 0327 LATIN
+lowercase \x00E8 4-15 LATIN SMALL LETTER E WITH GRAVE 0065 0300 LATIN
+lowercase \x00E9 4-15 LATIN SMALL LETTER E WITH ACUTE 0065 0301 LATIN
+lowercase \x00EA 4-15 LATIN SMALL LETTER E WITH CIRCUMFLEX 0065 0302
+lowercase \x00EB 4-15 LATIN SMALL LETTER E WITH DIAERESIS 0065 0308
+lowercase \x00EC 4-24 LATIN SMALL LETTER I WITH GRAVE 0069 0300 LATIN
+lowercase \x00ED 4-24 LATIN SMALL LETTER I WITH ACUTE 0069 0301 LATIN
+lowercase \x00EE 4-24 LATIN SMALL LETTER I WITH CIRCUMFLEX 0069 0302
+lowercase \x00EF 4-24 LATIN SMALL LETTER I WITH DIAERESIS 0069 0308
+lowercase \x00F0 4-15 LATIN SMALL LETTER ETH Icelandic 00D0 00D0
+lowercase \x00F1 4-1345 LATIN SMALL LETTER N WITH TILDE 006E 0303 LATIN
+lowercase \x00F2 4-135 LATIN SMALL LETTER O WITH GRAVE 006F 0300 LATIN
+lowercase \x00F3 4-135 LATIN SMALL LETTER O WITH ACUTE 006F 0301 LATIN
+lowercase \x00F4 4-135 LATIN SMALL LETTER O WITH CIRCUMFLEX 006F 0302
+lowercase \x00F5 4-135 LATIN SMALL LETTER O WITH TILDE 006F 0303 LATIN
+lowercase \x00F6 4-135 LATIN SMALL LETTER O WITH DIAERESIS 006F 0308
+lowercase \x0151        4-135   LATIN SMALL LETTER O WITH DOUBLE ACUTE
+lowercase \x00F8 4-135 LATIN SMALL LETTER O WITH STROKE
+lowercase \x00F9 4-136 LATIN SMALL LETTER U WITH GRAVE 0075 0300 LATIN
+lowercase \x00FA 4-136 LATIN SMALL LETTER U WITH ACUTE 0075 0301 LATIN
+lowercase \x00FB 4-136 LATIN SMALL LETTER U WITH CIRCUMFLEX 0075 0302
+lowercase \x00FC 4-136 LATIN SMALL LETTER U WITH DIAERESIS 0075 0308
+lowercase \x0171 4-136  LATIN SMALL LETTER U WITH DOUBLE ACUTE
+lowercase \x00FD 4-13456 LATIN SMALL LETTER Y WITH ACUTE 0079 0301 LATIN
+lowercase \x00FE 4-2345 LATIN SMALL LETTER THORN Icelandic 00DE 00DE
+lowercase \x00FF 4-13456 LATIN SMALL LETTER Y WITH DIAERESIS 0079 0308
+uppercase \x00C0 4-1 LATIN CAPITAL LETTER A WITH GRAVE 0041 0300 LATIN
+uppercase \x00C1 4-1 LATIN CAPITAL LETTER A WITH ACUTE 0041 0301 LATIN
+uppercase \x00C2 4-1 LATIN CAPITAL LETTER A WITH CIRCUMFLEX 0041 0302
+uppercase \x00C3 4-1 LATIN CAPITAL LETTER A WITH TILDE 0041 0303 LATIN
+uppercase \x00C4 4-1 LATIN CAPITAL LETTER A WITH DIAERESIS 0041 0308
+uppercase \x00C5 4-1 LATIN CAPITAL LETTER A WITH RING ABOVE 0041 030A
+uppercase \x00C6 4-1 LATIN CAPITAL LETTER AE LATIN CAPITAL LETTER A E
+uppercase \x00C7 4-14 LATIN CAPITAL LETTER C WITH CEDILLA 0043 0327
+uppercase \x00C8 4-15 LATIN CAPITAL LETTER E WITH GRAVE 0045 0300 LATIN
+uppercase \x00C9 4-15 LATIN CAPITAL LETTER E WITH ACUTE 0045 0301 LATIN
+uppercase \x00CA 4-15 LATIN CAPITAL LETTER E WITH CIRCUMFLEX 0045 0302
+uppercase \x00CB 4-15 LATIN CAPITAL LETTER E WITH DIAERESIS 0045 0308
+uppercase \x00CC 4-24 LATIN CAPITAL LETTER I WITH GRAVE 0049 0300 LATIN
+uppercase \x00CD 4-24 LATIN CAPITAL LETTER I WITH ACUTE 0049 0301 LATIN
+uppercase \x00CE 4-24 LATIN CAPITAL LETTER I WITH CIRCUMFLEX 0049 0302
+uppercase \x00CF 4-24 LATIN CAPITAL LETTER I WITH DIAERESIS 0049 0308
+uppercase \x00D0 4-15 LATIN CAPITAL LETTER ETH Icelandic 00F0
+uppercase \x00D1 4-1345 LATIN CAPITAL LETTER N WITH TILDE 004E 0303
+uppercase \x00D2 4-135 LATIN CAPITAL LETTER O WITH GRAVE 004F 0300 LATIN
+uppercase \x00D3 4-135 LATIN CAPITAL LETTER O WITH ACUTE 004F 0301 LATIN
+uppercase \x00D4 4-135 LATIN CAPITAL LETTER O WITH CIRCUMFLEX 004F 0302
+uppercase \x00D6 4-135 LATIN CAPITAL LETTER O WITH DIAERESIS 004F 0308
+uppercase \x00D8 4-135 LATIN CAPITAL LETTER O WITH STROKE LATIN CAPITAL
+uppercase \x0150        4-135   LATIN CAPITAL LETTER O WITH DOUBLE ACUTE
+uppercase \x00D9 4-136 LATIN CAPITAL LETTER U WITH GRAVE 0055 0300 LATIN
+uppercase \x00DA 4-136 LATIN CAPITAL LETTER U WITH ACUTE 0055 0301 LATIN
+uppercase \x00DB 4-136 LATIN CAPITAL LETTER U WITH CIRCUMFLEX 0055 0302
+uppercase \x00DC 4-136 LATIN CAPITAL LETTER U WITH DIAERESIS 0055 0308
+uppercase \x0170        4-136   LATIN CAPITAL LETTER U WITH DOUBLE ACUTE
+uppercase \x00DD 4-13456 LATIN CAPITAL LETTER Y WITH ACUTE 0059 0301
+uppercase \x00DE 4-2345 LATIN CAPITAL LETTER THORN Icelandic 00FE
+
+# Miscellaneous
+math \x00B1 346-36 PLUS-MINUS SIGN PLUS-OR-MINUS SIGN
+math \x00B7 4-16 MIDDLE DOT
+math \x00BC 1456-2-34-256-3456 VULGAR FRACTION ONE QUARTER No 0031 2044
+math \x00BD 1456-2-34-23-3456 VULGAR FRACTION ONE HALF No 0031 2044 0032
+math \x00BE 1456-25-34-256-3456 VULGAR FRACTION THREE QUARTERS No 0033
+math \x00D7 16 MULTIPLICATION SIGN
+math \x00F7 4-34 DIVISION SIGN
+noback punctuation \x0092 3
+noback punctuation \x0097 36-36
+punctuation \x00A1 235 INVERTED EXCLAMATION MARK
+punctuation \x00ad 36
+punctuation \x00BF 236 INVERTED QUESTION MARK
+punctuation \x2011 36
+punctuation \x2013 36-36
+punctuation \x2014 36-36
+noback punctuation \x2018 6-236
+noback punctuation \x2019 3
+noback punctuation \x2019 356-3
+punctuation \x201c 236
+punctuation \x201d 356
+sign \x2022 456-256 Bullet
+noback punctuation \x2026 3-3-3
+sign \x2122 45-2345 trademark sign
+sign \x00A2 4-14 CENT SIGN
+sign \x00A3 3456 POUND SIGN
+sign \x00A4 1246 CURRENCY SIGN
+sign \x00A7 4-234 SECTION SIGN
+sign \x00A9 45-14 COPYRIGHT SIGN
+sign \x00AE 45-1235 REGISTERED SIGN REGISTERED TRADE MARK SIGN
+sign \x00B0 56-145-1245 DEGREE SIGN
+sign \x00B4 b4 ACUTE ACCENT 0020 0301 SPACING ACUTE
+sign \x00B5 46-134 MICRO SIGN 03BC 039C 039C
+sign \x00A5 4-13456 YEN SIGN
+sign \x20a3 4-124 franc
+sign \x20A6 4-1345 Naira
+sign \x20ac 4-15 euro
+punctuation \x00A6 456-1256 BROKEN BAR BROKEN VERTICAL BAR
+punctuation \x0093 236
+punctuation \x0094 356
+sign \x0095 456-256 Bullet
+punctuation \x0096 36
+# sign \x00A8 DIAERESIS 0020 0308 SPACING DIAERESIS
+# sign \x00AA FEMININE ORDINAL INDICATOR 0061
+# punctuation \x00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK LEFT
+# sign \x00AC NOT SIGN
+# sign \x00AF MACRON 0020 0304 SPACING MACRON
+# math \x00B2 SUPERSCRIPT TWO 0032 2 2 SUPERSCRIPT DIGIT TWO
+# math \x00B3 SUPERSCRIPT THREE 0033 3 3 SUPERSCRIPT DIGIT THREE
+# sign \x00B6 PILCROW SIGN PARAGRAPH SIGN
+# sign \x00B8 CEDILLA 0020 0327 SPACING CEDILLA
+# math \x00B9 SUPERSCRIPT ONE 0031 1 1 SUPERSCRIPT DIGIT ONE
+# sign \x00BA MASCULINE ORDINAL INDICATOR 006F
+# punctuation \x00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK Pf Y
+noback sign \x25cb 456-256 Empty bullet
+noback sign \x25CF 16 BLACK CIRCLE
+noback sign \x25d8 456-256 Reverse bullet
+noback sign \x25d9 456-256 Reverse bullet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# liblouis: Computer Braille Code comp6 character definitions for EBAE
+#
+# Computer Braille Code reference:
+# http://liblouis.io/braille-specs/english/#computer-braille-code-cbc
+#
+#  Copyright (C) 2019 Timothy Wynn <tmthywynn8@gmail.com>
+#
+#  This file is part of liblouis.
+#
+#  liblouis is free software: you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as
+#  published by the Free Software Foundation, either version 2.1 of the
+#  License, or (at your option) any later version.
+#
+#  liblouis is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+#  Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  License along with liblouis. If not, see
+#  <http://www.gnu.org/licenses/>.
+#
+# Notes:
+# * This sub-table is meant to complement the EBAE braille tables only,
+#   i.e., en-us-g1.ctb and en-us-g2.ctb. For stand-alone use, use the
+#   six-dot Computer Braille Code table (en-us-comp6.ctb).
+# * Print characters, braille dots, and meanings are defined according
+#   to the "COMPUTER BRAILLE CODE SYMBOLS: ASCII ORDER" table (pp. 53-60)
+#   of the Computer Braille Code (CBC; 2000) manual.
+
+# Letters and punctuation that differ from chardefs.cti (ASCII order):
+comp6 @ 4 at
+comp6 A 456-1 A
+comp6 B 456-12 B
+comp6 C 456-14 C
+comp6 D 456-145 D
+comp6 E 456-15 E
+comp6 F 456-124 F
+comp6 G 456-1245 G
+comp6 H 456-125 H
+comp6 I 456-24 I
+comp6 J 456-245 J
+comp6 K 456-13 K
+comp6 L 456-123 L
+comp6 M 456-134 M
+comp6 N 456-1345 N
+comp6 O 456-135 O
+comp6 P 456-1234 P
+comp6 Q 456-12345 Q
+comp6 R 456-1235 R
+comp6 S 456-234 S
+comp6 T 456-2345 T
+comp6 U 456-136 U
+comp6 V 456-1236 V
+comp6 W 456-2456 W
+comp6 X 456-1346 X
+comp6 Y 456-13456 Y
+comp6 Z 456-1356 Z
+comp6 [ 246 left bracket
+comp6 \\ 1256 backslash
+comp6 ] 12456 right bracket
+comp6 ^ 45 up arrow/caret
+comp6 _ 456-456 underscore
+comp6 ` 456-4 grave accent
+comp6 { 456-246 left brace
+comp6 | 456-1256 vertical bar
+comp6 } 456-12456 right brace
+comp6 ~ 456-45 tilde
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# liblouis: sub table for literary digits, 6 dots
+#
+#  Copyright (C) 2013-2014 Mesar Hameed <mesar.hameed@gmail.com>
+#
+#  This file is part of liblouis.
+#
+#  liblouis is free software: you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as
+#  published by the Free Software Foundation, either version 2.1 of the
+#  License, or (at your option) any later version.
+#
+#  liblouis is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+#  Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  License along with liblouis. If not, see
+#  <http://www.gnu.org/licenses/>.
+
+litdigit 0 245
+litdigit 1 1
+litdigit 2 12
+litdigit 3 14
+litdigit 4 145
+litdigit 5 15
+litdigit 6 124
+litdigit 7 1245
+litdigit 8 125
+litdigit 9 24
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+#  Copyright (C) 2010, 2011 DocArch <http://www.docarch.be>.
+#
+#  This file is part of liblouis.
+#
+#  liblouis is free software: you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as
+#  published by the Free Software Foundation, either version 2.1 of the
+#  License, or (at your option) any later version.
+#
+#  liblouis is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+#  Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  License along with liblouis. If not, see
+#  <http://www.gnu.org/licenses/>.
+#
+# ----------------------------------------------------------------------------------------------
+#  odt2braille - Braille authoring in OpenOffice.org.
+# ----------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------
+# Unicode 2800..28FF  Braille Patterns
+# ----------------------------------------------------------------------------------------------
+
+noback sign        \x2800  0                    # ⠀                   BRAILLE PATTERN DOTS-0
+noback sign        \x2801  1                    # ⠁                   BRAILLE PATTERN DOTS-1
+noback sign        \x2802  2                    # ⠂                   BRAILLE PATTERN DOTS-2
+noback sign        \x2803  12                   # ⠃                   BRAILLE PATTERN DOTS-12
+noback sign        \x2804  3                    # ⠄                   BRAILLE PATTERN DOTS-3
+noback sign        \x2805  13                   # ⠅                   BRAILLE PATTERN DOTS-13
+noback sign        \x2806  23                   # ⠆                   BRAILLE PATTERN DOTS-23
+noback sign        \x2807  123                  # ⠇                   BRAILLE PATTERN DOTS-123
+noback sign        \x2808  4                    # ⠈                   BRAILLE PATTERN DOTS-4
+noback sign        \x2809  14                   # ⠉                   BRAILLE PATTERN DOTS-14
+noback sign        \x280A  24                   # ⠊                   BRAILLE PATTERN DOTS-24
+noback sign        \x280B  124                  # ⠋                   BRAILLE PATTERN DOTS-124
+noback sign        \x280C  34                   # ⠌                   BRAILLE PATTERN DOTS-34
+noback sign        \x280D  134                  # ⠍                   BRAILLE PATTERN DOTS-134
+noback sign        \x280E  234                  # ⠎                   BRAILLE PATTERN DOTS-234
+noback sign        \x280F  1234                 # ⠏                   BRAILLE PATTERN DOTS-1234
+noback sign        \x2810  5                    # ⠐                   BRAILLE PATTERN DOTS-5
+noback sign        \x2811  15                   # ⠑                   BRAILLE PATTERN DOTS-15
+noback sign        \x2812  25                   # ⠒                   BRAILLE PATTERN DOTS-25
+noback sign        \x2813  125                  # ⠓                   BRAILLE PATTERN DOTS-125
+noback sign        \x2814  35                   # ⠔                   BRAILLE PATTERN DOTS-35
+noback sign        \x2815  135                  # ⠕                   BRAILLE PATTERN DOTS-135
+noback sign        \x2816  235                  # ⠖                   BRAILLE PATTERN DOTS-235
+noback sign        \x2817  1235                 # ⠗                   BRAILLE PATTERN DOTS-1235
+noback sign        \x2818  45                   # ⠘                   BRAILLE PATTERN DOTS-45
+noback sign        \x2819  145                  # ⠙                   BRAILLE PATTERN DOTS-145
+noback sign        \x281A  245                  # ⠚                   BRAILLE PATTERN DOTS-245
+noback sign        \x281B  1245                 # ⠛                   BRAILLE PATTERN DOTS-1245
+noback sign        \x281C  345                  # ⠜                   BRAILLE PATTERN DOTS-345
+noback sign        \x281D  1345                 # ⠝                   BRAILLE PATTERN DOTS-1345
+noback sign        \x281E  2345                 # ⠞                   BRAILLE PATTERN DOTS-2345
+noback sign        \x281F  12345                # ⠟                   BRAILLE PATTERN DOTS-12345
+noback sign        \x2820  6                    # ⠠                   BRAILLE PATTERN DOTS-6
+noback sign        \x2821  16                   # ⠡                   BRAILLE PATTERN DOTS-16
+noback sign        \x2822  26                   # ⠢                   BRAILLE PATTERN DOTS-26
+noback sign        \x2823  126                  # ⠣                   BRAILLE PATTERN DOTS-126
+noback sign        \x2824  36                   # ⠤                   BRAILLE PATTERN DOTS-36
+noback sign        \x2825  136                  # ⠥                   BRAILLE PATTERN DOTS-136
+noback sign        \x2826  236                  # ⠦                   BRAILLE PATTERN DOTS-236
+noback sign        \x2827  1236                 # ⠧                   BRAILLE PATTERN DOTS-1236
+noback sign        \x2828  46                   # ⠨                   BRAILLE PATTERN DOTS-46
+noback sign        \x2829  146                  # ⠩                   BRAILLE PATTERN DOTS-146
+noback sign        \x282A  246                  # ⠪                   BRAILLE PATTERN DOTS-246
+noback sign        \x282B  1246                 # ⠫                   BRAILLE PATTERN DOTS-1246
+noback sign        \x282C  346                  # ⠬                   BRAILLE PATTERN DOTS-346
+noback sign        \x282D  1346                 # ⠭                   BRAILLE PATTERN DOTS-1346
+noback sign        \x282E  2346                 # ⠮                   BRAILLE PATTERN DOTS-2346
+noback sign        \x282F  12346                # ⠯                   BRAILLE PATTERN DOTS-12346
+noback sign        \x2830  56                   # ⠰                   BRAILLE PATTERN DOTS-56
+noback sign        \x2831  156                  # ⠱                   BRAILLE PATTERN DOTS-156
+noback sign        \x2832  256                  # ⠲                   BRAILLE PATTERN DOTS-256
+noback sign        \x2833  1256                 # ⠳                   BRAILLE PATTERN DOTS-1256
+noback sign        \x2834  356                  # ⠴                   BRAILLE PATTERN DOTS-356
+noback sign        \x2835  1356                 # ⠵                   BRAILLE PATTERN DOTS-1356
+noback sign        \x2836  2356                 # ⠶                   BRAILLE PATTERN DOTS-2356
+noback sign        \x2837  12356                # ⠷                   BRAILLE PATTERN DOTS-12356
+noback sign        \x2838  456                  # ⠸                   BRAILLE PATTERN DOTS-456
+noback sign        \x2839  1456                 # ⠹                   BRAILLE PATTERN DOTS-1456
+noback sign        \x283A  2456                 # ⠺                   BRAILLE PATTERN DOTS-2456
+noback sign        \x283B  12456                # ⠻                   BRAILLE PATTERN DOTS-12456
+noback sign        \x283C  3456                 # ⠼                   BRAILLE PATTERN DOTS-3456
+noback sign        \x283D  13456                # ⠽                   BRAILLE PATTERN DOTS-13456
+noback sign        \x283E  23456                # ⠾                   BRAILLE PATTERN DOTS-23456
+noback sign        \x283F  123456               # ⠿                   BRAILLE PATTERN DOTS-123456
+noback sign        \x2840  7                    # ⡀                   BRAILLE PATTERN DOTS-7
+noback sign        \x2841  17                   # ⡁                   BRAILLE PATTERN DOTS-17
+noback sign        \x2842  27                   # ⡂                   BRAILLE PATTERN DOTS-27
+noback sign        \x2843  127                  # ⡃                   BRAILLE PATTERN DOTS-127
+noback sign        \x2844  37                   # ⡄                   BRAILLE PATTERN DOTS-37
+noback sign        \x2845  137                  # ⡅                   BRAILLE PATTERN DOTS-137
+noback sign        \x2846  237                  # ⡆                   BRAILLE PATTERN DOTS-237
+noback sign        \x2847  1237                 # ⡇                   BRAILLE PATTERN DOTS-1237
+noback sign        \x2848  47                   # ⡈                   BRAILLE PATTERN DOTS-47
+noback sign        \x2849  147                  # ⡉                   BRAILLE PATTERN DOTS-147
+noback sign        \x284A  247                  # ⡊                   BRAILLE PATTERN DOTS-247
+noback sign        \x284B  1247                 # ⡋                   BRAILLE PATTERN DOTS-1247
+noback sign        \x284C  347                  # ⡌                   BRAILLE PATTERN DOTS-347
+noback sign        \x284D  1347                 # ⡍                   BRAILLE PATTERN DOTS-1347
+noback sign        \x284E  2347                 # ⡎                   BRAILLE PATTERN DOTS-2347
+noback sign        \x284F  12347                # ⡏                   BRAILLE PATTERN DOTS-12347
+noback sign        \x2850  57                   # ⡐                   BRAILLE PATTERN DOTS-57
+noback sign        \x2851  157                  # ⡑                   BRAILLE PATTERN DOTS-157
+noback sign        \x2852  257                  # ⡒                   BRAILLE PATTERN DOTS-257
+noback sign        \x2853  1257                 # ⡓                   BRAILLE PATTERN DOTS-1257
+noback sign        \x2854  357                  # ⡔                   BRAILLE PATTERN DOTS-357
+noback sign        \x2855  1357                 # ⡕                   BRAILLE PATTERN DOTS-1357
+noback sign        \x2856  2357                 # ⡖                   BRAILLE PATTERN DOTS-2357
+noback sign        \x2857  12357                # ⡗                   BRAILLE PATTERN DOTS-12357
+noback sign        \x2858  457                  # ⡘                   BRAILLE PATTERN DOTS-457
+noback sign        \x2859  1457                 # ⡙                   BRAILLE PATTERN DOTS-1457
+noback sign        \x285A  2457                 # ⡚                   BRAILLE PATTERN DOTS-2457
+noback sign        \x285B  12457                # ⡛                   BRAILLE PATTERN DOTS-12457
+noback sign        \x285C  3457                 # ⡜                   BRAILLE PATTERN DOTS-3457
+noback sign        \x285D  13457                # ⡝                   BRAILLE PATTERN DOTS-13457
+noback sign        \x285E  23457                # ⡞                   BRAILLE PATTERN DOTS-23457
+noback sign        \x285F  123457               # ⡟                   BRAILLE PATTERN DOTS-123457
+noback sign        \x2860  67                   # ⡠                   BRAILLE PATTERN DOTS-67
+noback sign        \x2861  167                  # ⡡                   BRAILLE PATTERN DOTS-167
+noback sign        \x2862  267                  # ⡢                   BRAILLE PATTERN DOTS-267
+noback sign        \x2863  1267                 # ⡣                   BRAILLE PATTERN DOTS-1267
+noback sign        \x2864  367                  # ⡤                   BRAILLE PATTERN DOTS-367
+noback sign        \x2865  1367                 # ⡥                   BRAILLE PATTERN DOTS-1367
+noback sign        \x2866  2367                 # ⡦                   BRAILLE PATTERN DOTS-2367
+noback sign        \x2867  12367                # ⡧                   BRAILLE PATTERN DOTS-12367
+noback sign        \x2868  467                  # ⡨                   BRAILLE PATTERN DOTS-467
+noback sign        \x2869  1467                 # ⡩                   BRAILLE PATTERN DOTS-1467
+noback sign        \x286A  2467                 # ⡪                   BRAILLE PATTERN DOTS-2467
+noback sign        \x286B  12467                # ⡫                   BRAILLE PATTERN DOTS-12467
+noback sign        \x286C  3467                 # ⡬                   BRAILLE PATTERN DOTS-3467
+noback sign        \x286D  13467                # ⡭                   BRAILLE PATTERN DOTS-13467
+noback sign        \x286E  23467                # ⡮                   BRAILLE PATTERN DOTS-23467
+noback sign        \x286F  123467               # ⡯                   BRAILLE PATTERN DOTS-123467
+noback sign        \x2870  567                  # ⡰                   BRAILLE PATTERN DOTS-567
+noback sign        \x2871  1567                 # ⡱                   BRAILLE PATTERN DOTS-1567
+noback sign        \x2872  2567                 # ⡲                   BRAILLE PATTERN DOTS-2567
+noback sign        \x2873  12567                # ⡳                   BRAILLE PATTERN DOTS-12567
+noback sign        \x2874  3567                 # ⡴                   BRAILLE PATTERN DOTS-3567
+noback sign        \x2875  13567                # ⡵                   BRAILLE PATTERN DOTS-13567
+noback sign        \x2876  23567                # ⡶                   BRAILLE PATTERN DOTS-23567
+noback sign        \x2877  123567               # ⡷                   BRAILLE PATTERN DOTS-123567
+noback sign        \x2878  4567                 # ⡸                   BRAILLE PATTERN DOTS-4567
+noback sign        \x2879  14567                # ⡹                   BRAILLE PATTERN DOTS-14567
+noback sign        \x287A  24567                # ⡺                   BRAILLE PATTERN DOTS-24567
+noback sign        \x287B  124567               # ⡻                   BRAILLE PATTERN DOTS-124567
+noback sign        \x287C  34567                # ⡼                   BRAILLE PATTERN DOTS-34567
+noback sign        \x287D  134567               # ⡽                   BRAILLE PATTERN DOTS-134567
+noback sign        \x287E  234567               # ⡾                   BRAILLE PATTERN DOTS-234567
+noback sign        \x287F  1234567              # ⡿                   BRAILLE PATTERN DOTS-1234567
+noback sign        \x2880  8                    # ⢀                   BRAILLE PATTERN DOTS-8
+noback sign        \x2881  18                   # ⢁                   BRAILLE PATTERN DOTS-18
+noback sign        \x2882  28                   # ⢂                   BRAILLE PATTERN DOTS-28
+noback sign        \x2883  128                  # ⢃                   BRAILLE PATTERN DOTS-128
+noback sign        \x2884  38                   # ⢄                   BRAILLE PATTERN DOTS-38
+noback sign        \x2885  138                  # ⢅                   BRAILLE PATTERN DOTS-138
+noback sign        \x2886  238                  # ⢆                   BRAILLE PATTERN DOTS-238
+noback sign        \x2887  1238                 # ⢇                   BRAILLE PATTERN DOTS-1238
+noback sign        \x2888  48                   # ⢈                   BRAILLE PATTERN DOTS-48
+noback sign        \x2889  148                  # ⢉                   BRAILLE PATTERN DOTS-148
+noback sign        \x288A  248                  # ⢊                   BRAILLE PATTERN DOTS-248
+noback sign        \x288B  1248                 # ⢋                   BRAILLE PATTERN DOTS-1248
+noback sign        \x288C  348                  # ⢌                   BRAILLE PATTERN DOTS-348
+noback sign        \x288D  1348                 # ⢍                   BRAILLE PATTERN DOTS-1348
+noback sign        \x288E  2348                 # ⢎                   BRAILLE PATTERN DOTS-2348
+noback sign        \x288F  12348                # ⢏                   BRAILLE PATTERN DOTS-12348
+noback sign        \x2890  58                   # ⢐                   BRAILLE PATTERN DOTS-58
+noback sign        \x2891  158                  # ⢑                   BRAILLE PATTERN DOTS-158
+noback sign        \x2892  258                  # ⢒                   BRAILLE PATTERN DOTS-258
+noback sign        \x2893  1258                 # ⢓                   BRAILLE PATTERN DOTS-1258
+noback sign        \x2894  358                  # ⢔                   BRAILLE PATTERN DOTS-358
+noback sign        \x2895  1358                 # ⢕                   BRAILLE PATTERN DOTS-1358
+noback sign        \x2896  2358                 # ⢖                   BRAILLE PATTERN DOTS-2358
+noback sign        \x2897  12358                # ⢗                   BRAILLE PATTERN DOTS-12358
+noback sign        \x2898  458                  # ⢘                   BRAILLE PATTERN DOTS-458
+noback sign        \x2899  1458                 # ��                   BRAILLE PATTERN DOTS-1458
+noback sign        \x289A  2458                 # ⢚                   BRAILLE PATTERN DOTS-2458
+noback sign        \x289B  12458                # ⢛                   BRAILLE PATTERN DOTS-12458
+noback sign        \x289C  3458                 # ⢜                   BRAILLE PATTERN DOTS-3458
+noback sign        \x289D  13458                # ⢝                   BRAILLE PATTERN DOTS-13458
+noback sign        \x289E  23458                # ⢞                   BRAILLE PATTERN DOTS-23458
+noback sign        \x289F  123458               # ⢟                   BRAILLE PATTERN DOTS-123458
+noback sign        \x28A0  68                   # ⢠                   BRAILLE PATTERN DOTS-68
+noback sign        \x28A1  168                  # ⢡                   BRAILLE PATTERN DOTS-168
+noback sign        \x28A2  268                  # ⢢                   BRAILLE PATTERN DOTS-268
+noback sign        \x28A3  1268                 # ⢣                   BRAILLE PATTERN DOTS-1268
+noback sign        \x28A4  368                  # ⢤                   BRAILLE PATTERN DOTS-368
+noback sign        \x28A5  1368                 # ⢥                   BRAILLE PATTERN DOTS-1368
+noback sign        \x28A6  2368                 # ⢦                   BRAILLE PATTERN DOTS-2368
+noback sign        \x28A7  12368                # ⢧                   BRAILLE PATTERN DOTS-12368
+noback sign        \x28A8  468                  # ⢨                   BRAILLE PATTERN DOTS-468
+noback sign        \x28A9  1468                 # ⢩                   BRAILLE PATTERN DOTS-1468
+noback sign        \x28AA  2468                 # ⢪                   BRAILLE PATTERN DOTS-2468
+noback sign        \x28AB  12468                # ⢫                   BRAILLE PATTERN DOTS-12468
+noback sign        \x28AC  3468                 # ⢬                   BRAILLE PATTERN DOTS-3468
+noback sign        \x28AD  13468                # ⢭                   BRAILLE PATTERN DOTS-13468
+noback sign        \x28AE  23468                # ⢮                   BRAILLE PATTERN DOTS-23468
+noback sign        \x28AF  123468               # ⢯                   BRAILLE PATTERN DOTS-123468
+noback sign        \x28B0  568                  # ⢰                   BRAILLE PATTERN DOTS-568
+noback sign        \x28B1  1568                 # ⢱                   BRAILLE PATTERN DOTS-1568
+noback sign        \x28B2  2568                 # ⢲                   BRAILLE PATTERN DOTS-2568
+noback sign        \x28B3  12568                # ⢳                   BRAILLE PATTERN DOTS-12568
+noback sign        \x28B4  3568                 # ⢴                   BRAILLE PATTERN DOTS-3568
+noback sign        \x28B5  13568                # ⢵                   BRAILLE PATTERN DOTS-13568
+noback sign        \x28B6  23568                # ⢶                   BRAILLE PATTERN DOTS-23568
+noback sign        \x28B7  123568               # ⢷                   BRAILLE PATTERN DOTS-123568
+noback sign        \x28B8  4568                 # ⢸                   BRAILLE PATTERN DOTS-4568
+noback sign        \x28B9  14568                # ⢹                   BRAILLE PATTERN DOTS-14568
+noback sign        \x28BA  24568                # ⢺                   BRAILLE PATTERN DOTS-24568
+noback sign        \x28BB  124568               # ⢻                   BRAILLE PATTERN DOTS-124568
+noback sign        \x28BC  34568                # ⢼                   BRAILLE PATTERN DOTS-34568
+noback sign        \x28BD  134568               # ⢽                   BRAILLE PATTERN DOTS-134568
+noback sign        \x28BE  234568               # ⢾                   BRAILLE PATTERN DOTS-234568
+noback sign        \x28BF  1234568              # ⢿                   BRAILLE PATTERN DOTS-1234568
+noback sign        \x28C0  78                   # ⣀                   BRAILLE PATTERN DOTS-78
+noback sign        \x28C1  178                  # ⣁                   BRAILLE PATTERN DOTS-178
+noback sign        \x28C2  278                  # ⣂                   BRAILLE PATTERN DOTS-278
+noback sign        \x28C3  1278                 # ⣃                   BRAILLE PATTERN DOTS-1278
+noback sign        \x28C4  378                  # ⣄                   BRAILLE PATTERN DOTS-378
+noback sign        \x28C5  1378                 # ⣅                   BRAILLE PATTERN DOTS-1378
+noback sign        \x28C6  2378                 # ⣆                   BRAILLE PATTERN DOTS-2378
+noback sign        \x28C7  12378                # ⣇                   BRAILLE PATTERN DOTS-12378
+noback sign        \x28C8  478                  # ⣈                   BRAILLE PATTERN DOTS-478
+noback sign        \x28C9  1478                 # ⣉                   BRAILLE PATTERN DOTS-1478
+noback sign        \x28CA  2478                 # ⣊                   BRAILLE PATTERN DOTS-2478
+noback sign        \x28CB  12478                # ⣋                   BRAILLE PATTERN DOTS-12478
+noback sign        \x28CC  3478                 # ⣌                   BRAILLE PATTERN DOTS-3478
+noback sign        \x28CD  13478                # ⣍                   BRAILLE PATTERN DOTS-13478
+noback sign        \x28CE  23478                # ⣎                   BRAILLE PATTERN DOTS-23478
+noback sign        \x28CF  123478               # ⣏                   BRAILLE PATTERN DOTS-123478
+noback sign        \x28D0  578                  # ⣐                   BRAILLE PATTERN DOTS-578
+noback sign        \x28D1  1578                 # ⣑                   BRAILLE PATTERN DOTS-1578
+noback sign        \x28D2  2578                 # ⣒                   BRAILLE PATTERN DOTS-2578
+noback sign        \x28D3  12578                # ⣓                   BRAILLE PATTERN DOTS-12578
+noback sign        \x28D4  3578                 # ⣔                   BRAILLE PATTERN DOTS-3578
+noback sign        \x28D5  13578                # ⣕                   BRAILLE PATTERN DOTS-13578
+noback sign        \x28D6  23578                # ⣖                   BRAILLE PATTERN DOTS-23578
+noback sign        \x28D7  123578               # ⣗                   BRAILLE PATTERN DOTS-123578
+noback sign        \x28D8  4578                 # ⣘                   BRAILLE PATTERN DOTS-4578
+noback sign        \x28D9  14578                # ⣙                   BRAILLE PATTERN DOTS-14578
+noback sign        \x28DA  24578                # ⣚                   BRAILLE PATTERN DOTS-24578
+noback sign        \x28DB  124578               # ⣛                   BRAILLE PATTERN DOTS-124578
+noback sign        \x28DC  34578                # ⣜                   BRAILLE PATTERN DOTS-34578
+noback sign        \x28DD  134578               # ⣝                   BRAILLE PATTERN DOTS-134578
+noback sign        \x28DE  234578               # ⣞                   BRAILLE PATTERN DOTS-234578
+noback sign        \x28DF  1234578              # ⣟                   BRAILLE PATTERN DOTS-1234578
+noback sign        \x28E0  678                  # ⣠                   BRAILLE PATTERN DOTS-678
+noback sign        \x28E1  1678                 # ⣡                   BRAILLE PATTERN DOTS-1678
+noback sign        \x28E2  2678                 # ⣢                   BRAILLE PATTERN DOTS-2678
+noback sign        \x28E3  12678                # ⣣                   BRAILLE PATTERN DOTS-12678
+noback sign        \x28E4  3678                 # ⣤                   BRAILLE PATTERN DOTS-3678
+noback sign        \x28E5  13678                # ⣥                   BRAILLE PATTERN DOTS-13678
+noback sign        \x28E6  23678                # ⣦                   BRAILLE PATTERN DOTS-23678
+noback sign        \x28E7  123678               # ⣧                   BRAILLE PATTERN DOTS-123678
+noback sign        \x28E8  4678                 # ⣨                   BRAILLE PATTERN DOTS-4678
+noback sign        \x28E9  14678                # ⣩                   BRAILLE PATTERN DOTS-14678
+noback sign        \x28EA  24678                # ⣪                   BRAILLE PATTERN DOTS-24678
+noback sign        \x28EB  124678               # ⣫                   BRAILLE PATTERN DOTS-124678
+noback sign        \x28EC  34678                # ⣬                   BRAILLE PATTERN DOTS-34678
+noback sign        \x28ED  134678               # ⣭                   BRAILLE PATTERN DOTS-134678
+noback sign        \x28EE  234678               # ⣮                   BRAILLE PATTERN DOTS-234678
+noback sign        \x28EF  1234678              # ⣯                   BRAILLE PATTERN DOTS-1234678
+noback sign        \x28F0  5678                 # ⣰                   BRAILLE PATTERN DOTS-5678
+noback sign        \x28F1  15678                # ⣱                   BRAILLE PATTERN DOTS-15678
+noback sign        \x28F2  25678                # ⣲                   BRAILLE PATTERN DOTS-25678
+noback sign        \x28F3  125678               # ⣳                   BRAILLE PATTERN DOTS-125678
+noback sign        \x28F4  35678                # ⣴                   BRAILLE PATTERN DOTS-35678
+noback sign        \x28F5  135678               # ⣵                   BRAILLE PATTERN DOTS-135678
+noback sign        \x28F6  235678               # ⣶                   BRAILLE PATTERN DOTS-235678
+noback sign        \x28F7  1235678              # ⣷                   BRAILLE PATTERN DOTS-1235678
+noback sign        \x28F8  45678                # ⣸                   BRAILLE PATTERN DOTS-45678
+noback sign        \x28F9  145678               # ⣹                   BRAILLE PATTERN DOTS-145678
+noback sign        \x28FA  245678               # ⣺                   BRAILLE PATTERN DOTS-245678
+noback sign        \x28FB  1245678              # ⣻                   BRAILLE PATTERN DOTS-1245678
+noback sign        \x28FC  345678               # ⣼                   BRAILLE PATTERN DOTS-345678
+noback sign        \x28FD  1345678              # ⣽                   BRAILLE PATTERN DOTS-1345678
+noback sign        \x28FE  2345678              # ⣾                   BRAILLE PATTERN DOTS-2345678
+noback sign        \x28FF  12345678             # ⣿                   BRAILLE PATTERN DOTS-12345678
+
+
+# ----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+# Braille indicators
+numsign 3456
+letsign 56
+noletsignafter .
+noletsignafter '
+capsletter 6
+begcapsword 6-6
+endcapsword 6-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#  liblouis: English, U.S. (EBAE) emphasis definitions
+#
+#  Based on the Linux screenreader BRLTTY, copyright (C) 1999-2006 by
+#  The BRLTTY Team
+#
+#  Emphasis definitions based on guidelines from
+#  http://www.brailleauthority.org/formats/2011manual-web/formats05.html
+#
+#  Copyright (C) 2020 Beneficent Technology, Inc. www.benetech.org
+#
+#  This file is part of liblouis.
+#
+#  liblouis is free software: you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as
+#  published by the Free Software Foundation, either version 2.1 of the
+#  License, or (at your option) any later version.
+#
+#  liblouis is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+#  Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  License along with liblouis. If not, see
+#  <http://www.gnu.org/licenses/>.
+
+emphclass italic
+emphclass underline
+emphclass bold
+
+begemphphrase italic 46-46
+endemphphrase italic before 46
+lenemphphrase italic 4
+begemphword italic 46
+endemphword italic 6-3
+
+begemphphrase bold 456-46-46
+endemphphrase bold before 456-46
+lenemphphrase bold 4
+begemphword bold 456-46
+endemphword bold 6-3
+
+begemphphrase underline 0-456-36-0
+endemphphrase underline after 0-6-3-0
+lenemphphrase underline 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+emphclass transnote
+begemph transnote 6-3
+endemph transnote 6-3
+
+begcomp 456-346
+endcomp 456-156
+
+# Punctuation
+prepunc ( 2356
+word ( 4-2356
+noback always ( 2356
+postpunc ) 2356
+word ) 4-2356
+noback always ) 2356
+prepunc " 236
+postpunc " 356
+word " 4-236
+prepunc ` 6-236
+prepunc ' 6-236
+postpunc ' 356-3
+word ' 4-3
+word 'em =
+word 'tis =
+word 'twas =
+begnum # 456-1456
+midnum , 2
+postpunc , 2
+word , 4-2
+decpoint . 46
+midnum - 36
+hyphen - 36
+always \s--\s 36-36
+always \s-\s 36-36
+midnum \x00ad 36
+postpunc . 256
+word . 4-256
+postpunc ; 23
+word ; 4-23
+midnum : 25
+postpunc : 25
+always : 4-25
+postpunc ! 235
+always ! 4-235
+midnum / 34
+always / 456-34
+always < 5-13
+always = 46-13
+always > 46-2
+always + 4-346
+postpunc ? 236
+endword s' 234-3
+word ? 4-236
+endnum st 34
+endnum nd 1345-145
+endnum rd 1235-145
+noback endnum 's 3-234
+endnum th 1456
+endnum 's 3-234
+always % 4-25-1234
+midnum ^ 45
+always ^ 456-126
+always ~ 4-156
+always & 4-12346
+midnum * 4-16
+always * 35-35
+prepunc [ 6-2356
+word [ 4-6-2356
+always [ 6-2356
+postpunc ] 2356-3
+word ] 4-2356-3
+always ] 2356-3
+prepunc { 56-2356
+word { 4-56-2356
+always { 56-2356
+postpunc } 2356-23
+word } 4-2356-23
+always } 2356-23
+always @ 4-1
+always \\ 4-1256
+always | 456-1256
+always \s-\s 36-36
+always ..." 3-3-3-356
+always ... 3-3-3
+always ...' 3-3-3-356-3
+repeated .... 0
+repeated ____ 456
+repeated ---- 36
+always .\s.\s." 3-3-3-356
+always .\s.\s. 3-3-3
+begnum $ 256
+nofor begnum $ 256-3456
+always $ 4-256
+
+# Special character sequences
+compbrl :// URLs
+compbrl ()
+compbrl www.
+compbrl ::
+compbrl .com
+compbrl .edu
+compbrl .gov
+compbrl .ini
+compbrl .mil
+compbrl .net
+compbrl .org
+compbrl .doc
+compbrl .xml
+compbrl .xsl
+compbrl .htm
+compbrl .html
+compbrl .tex
+compbrl .txt
+compbrl .gif
+compbrl .jpg
+compbrl .png
+compbrl .wav
+compbrl .tar
+compbrl .zip
+
+noback context "\e"$a *
+noback always |_ 56
+noback pass2 @56-56 @56
+noback pass2 @3-56 @3
+
+# Handle newlines to prevent 'no mapping' errors
+always \n 0
