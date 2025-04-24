@@ -1,10 +1,12 @@
 /* styles.qss */
 
+/* General Widget Styling */
 QWidget {
   font-family: Verdana, sans-serif;
   font-size: 16px; /* Larger font size */
 }
 
+/* Tabs */
 QTabWidget::pane {
   background: #f0f8ff;
 }
@@ -21,9 +23,10 @@ QTabBar::tab:selected {
 }
 
 QTabBar::tab:hover {
-  background: #d4e9f7; /* Light shade of blue */
+  background: #d4e9f7;
 }
 
+/* Menu Bar */
 QMenuBar {
   background: #f0f8ff;
 }
@@ -31,27 +34,29 @@ QMenuBar {
 QMenuBar::item {
   background: transparent;
   padding: 5px 15px;
-  color: #1a1a1a; /* Text color */
+  color: #1a1a1a;
 }
 
 QMenuBar::item:selected {
-  background: #d4e9f7; /* Light shade of blue */
-  color: #1a1a1a; /* Ensure text color remains black */
+  background: #d4e9f7;
+  color: #1a1a1a;
 }
 
+/* Menus */
 QMenu {
   background: #f0f8ff;
 }
 
 QMenu::item {
-  color: #1a1a1a; /* Ensure text color remains black */
+  color: #1a1a1a;
 }
 
 QMenu::item:selected {
-  background: #d4e9f7; /* Light shade of blue */
-  color: #1a1a1a; /* Ensure text color remains black */
+  background: #d4e9f7;
+  color: #1a1a1a;
 }
 
+/* Text Inputs */
 QTextEdit,
 QLineEdit,
 QLabel {
@@ -61,19 +66,19 @@ QLabel {
 }
 
 QLineEdit {
-  border: 1px solid #b0c6cf; /* Lighter border color */
+  border: 1px solid #b0c6cf;
   border-radius: 5px;
   margin-bottom: 10px;
-  margin-left: 0px;
 }
 
 QLabel {
-  margin-bottom: 5px; /* Add margin below label */
+  margin-bottom: 5px;
 }
 
+/* Lists */
 QListWidget {
   background: #ffffff;
-  border: 1px solid #b0c6cf; /* Lighter border color */
+  border: 1px solid #b0c6cf;
   border-radius: 5px;
   padding: 5px;
   color: #1a1a1a;
@@ -82,7 +87,6 @@ QListWidget {
 QListWidget::item {
   padding: 5px;
 }
-
 QListView::item {
   padding: 5px;
 }
@@ -96,32 +100,35 @@ QListWidget::item:selected {
   color: white;
 }
 
+/* ComboBox */
 QComboBox {
   background: #ffffff;
   padding: 10px;
-  border: 1px solid #b0c6cf; /* Lighter border color */
+  border: 1px solid #b0c6cf;
   border-radius: 5px;
   color: #1a1a1a;
 }
 
 QComboBox::drop-down {
-  width: 30px; /* Adjust the width of the drop-down arrow area */
+  border: none;
+  background: transparent;
+  width: 30px;
 }
 
 QComboBox::down-arrow {
-  image: url(./src/assets/icons/down-arrow.png);
-  height: 50px;
-  width: 100px;
+  image: url(./src/assets/icons/down-arrow.png); /* Ensure the path is correct */
 }
 
+/* Fix dropdown menu spacing */
 QComboBox QAbstractItemView::item {
-  padding: 10px; /* Padding for the list items */
+  padding: 10px;
   margin: 2px 0;
 }
 
+/* Buttons */
 QPushButton {
   background-color: #f0f8ff;
-  border: 1px solid #b0c6cf; /* Lighter border color */
+  border: 1px solid #b0c6cf;
   border-radius: 5px;
   padding: 10px;
   color: #1a1a1a;
@@ -131,10 +138,11 @@ QPushButton:hover {
   background-color: #d4e9f7;
 }
 
+/* Special Character Button */
 .char-button {
-  font-size: 32px; /* Font size for specific buttons */
+  font-size: 32px;
   background-color: #f0f8ff;
-  border: 1px solid #b0c6cf; /* Lighter border color */
+  border: 1px solid #b0c6cf;
   border-radius: 5px;
   padding: 10px;
   color: #1a1a1a;

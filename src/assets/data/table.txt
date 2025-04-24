@@ -1,8 +1,0 @@
-punctuation \x002C 12
-punctuation \x002D 15
-punctuation \x0021 2346
-sign \x0023 3456
-sign \x0025 146
-sign \x0026 12346
-punctuation \x0027 3
-punctuation \x2019 3
