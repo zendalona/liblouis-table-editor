@@ -13,8 +13,8 @@ pip3 install PyQt5
 ### Cloning the Repository
 Clone the repository from GitHub: 
 ```bash
-git clone https://github.com/zendalona/liblouis-table-editor.git
-cd liblouis-table-editor
+git clone https://github.com/SahilRakhaiya05/Liblouis_Table_Editor.git
+cd Liblouis_Table_Editor
 ```
 
 ### Running the Application
