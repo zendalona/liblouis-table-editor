@@ -1,0 +1,16 @@
+# Project
+liblouis-master
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*$py.class
+.Python
+dist/
+pip-log.txt
+pip-delete-this-directory.txt
+__pypackages__/
+.env
+.venv
+venv

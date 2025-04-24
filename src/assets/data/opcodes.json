@@ -1,0 +1,444 @@
+{
+    "codes": [
+        {
+            "code": "after",
+            "fields": {
+                "name": "Class Name",
+                "opcode": "Opcode"
+            },
+            "description": "The specified opcode is further constrained in that the matched character sequence must be immediately preceded by a character belonging to the specified class. If this opcode is used more than once on the same line then the union of the characters in all the classes is used."
+        },
+        {
+            "code": "always",
+            "fields": {
+                "unicode": "Input Character",
+                "dots": "Braille for above character"
+            },
+            "description": "Replace the characters with the dot pattern no matter where they appear. Do NOT use an entry such as always a 1. Use the character definition opcodes instead."
+        },
+        {
+            "code": "attribute",
+            "fields": {
+                "name": "attribute name",
+                "unicode": "Enter Character"
+            },
+            "description": "Add characters to a character class. The class may be one of the predefined classes listed above, a user-defined class previously created with this opcode, or a new one. The name operand must contain only letters (a-z and A-Z, case matters). For historical reasons and to support the match opcode (see match) it can also be a number between 0 and 7. The characters operand must be specified as a string. Each character in the string, as well as its dot counterpart if it occupies a single cell, is added to the character class."
+        },
+        {
+            "code": "base",
+            "fields": {
+                "base_attribute": "attribute name",
+                "unicode_1": "Base Character",
+                "unicode_2": "Derived Character"
+            },
+            "description": "This opcode is different in that it does not associate a character with a dot pattern, but it associates a character with another already defined character. The derived character inherits the dot pattern of the base character, and braille indicators (see Braille Indicator Opcodes) are used to distinguish them. The attribute operand refers to the character class (see Character-Class Opcodes) to which the character should be added. By defining braille indicator rules associated with this character class, you can determine the braille indicators to be inserted. "
+        },
+        {
+            "code": "before",
+            "fields": {
+                "name": "Class Name",
+                "opcode": "Select Opcode"
+            },
+            "description": "The specified opcode is further constrained in that the matched character sequence must be immediately followed by a character belonging to the specified class. If this opcode is used more than once on the same line then the union of the characters in all the classes is used."
+        },
+        {
+            "code": "begcaps",
+            "fields": {
+                "dots": "Braille"
+            },
+            "description": "The dot pattern which indicates that a mode is entered until it is terminated by a endmode indicator. It is used in some Braille codes to mark a whole sentence or several words as capital letters. The block can contain capital letters as well as non-alphabetic characters, punctuation, numbers etc. This is the most general opening mark, i.e. it can be used for opening at any position."
+        },
+        {
+            "code": "begcapsword",
+            "fields": {
+                "dots": "Braille"
+            },
+            "description": "The dot pattern which indicates that a certain mode is entered for the following word or remainder of the current word. The mode is automatically terminated by the first character that is not a letter. For uppercase mode, you can define a list of characters that can appear within a word in capitals without terminating the block. Do this by using the capsmodechars opcode"
+        },
+        {
+            "code": "begcomp",
+            "fields": {
+                "dots": "Braille"
+            },
+            "description": "This braille indicator is placed before a sequence of characters translated in computer braille, whether this sequence is indicated in the typeform parameter (see typeform parameter) or inferred because it contains a subsequence specified by the compbrl opcode"
+        },
+        {
+            "code": "begemph",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Braille dot pattern to indicate the beginning of emphasis. A begemph rule must always be combined with a endemph rule."
+        },
+        {
+            "code": "begemphphrase",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Braille dot pattern to indicate the beginning of a phrase. A begemphphrase rule must always be combined with a endemphphrase rule."
+        },
+        {
+            "code": "begemphword",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Braille dot pattern to indicate the beginning of an emphasized word or the beginning of emphasized characters within a word."
+        },
+        {
+            "code": "begmidword",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are either at the beginning or in the middle of a word."
+        },
+        {
+            "code": "begmode",
+            "fields": {
+                "unicode": "Attribute name",
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which indicates that a mode is entered until it is terminated by a endmode indicator. It is used in some Braille codes to mark a whole sentence or several words as capital letters. The block can contain capital letters as well as non-alphabetic characters, punctuation, numbers etc. This is the most general opening mark, i.e. it can be used for opening at any position.."
+        },
+        {
+            "code": "begmodeword",
+            "fields": {
+                "name": "Attribute name",
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which indicates that a certain mode is entered for the following word or remainder of the current word. The mode is automatically terminated by the first character that is not a letter. For uppercase mode, you can define a list of characters that can appear within a word in capitals without terminating the block. Do this by using the capsmodechars opcode"
+        },
+        {
+            "code": "begnum",
+            "fields": {
+                "unicode": "Enter number Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are at the beginning of a number, that is, before all its digits. For example, in en-us-g1.ctb we have begnum # 4."
+        },
+        {
+            "code": "begword",
+            "fields": {
+                "unicode": "Enter word Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are at the beginning of a word."
+        },
+        {
+            "code": "capsletter",
+            "fields": {
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which indicates that a certain mode is entered and ends after a single character. A mode is a state in which dot patterns must be interpreted a certain way. For example, in uppercase mode dots 1 is to be interpreted as a capital A and not a small a. In numeric mode dots 1 is to be interpreted as a 1. The attribute operand identifies the mode and corresponds with the name of the character class that determines when the mode must be entered and exited. capsletter is an alias for modeletter uppercase"
+        },
+        {
+            "code": "capsmodechars",
+            "fields": {
+                "unicode": "Enter Character"
+            },
+            "description": "Normally, any character other than a letter will automatically cancel the begcapsword indicator. However, by using the capsmodechars opcode, you can specify a list of characters that are legal within a capitalized word. In some Braille codes, this might be the case for the hyphen character"
+        },
+        {
+            "code": "capsnocont",
+            "fields": {},
+            "description": "This opcode has no operands. If it is specified, words or parts of words in all caps are not contracted. This is needed for languages such as Norwegian."
+        },
+        {
+            "code": "comp6",
+            "fields": {
+                "unicode": "Enter word Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "This opcode specifies the translation of characters in 6-dot computer braille. The first operand must be a single character. The second operand may specify as many cells as necessary. The opcode is somewhat of a misnomer, since any dots, not just dots 1 through 6, can be specified. This even includes virtual dots "
+        },
+        {
+            "code": "compbrl",
+            "fields": {
+                "unicode": "Enter Character"
+            },
+            "description": "If the characters are found within a block of text surrounded by whitespace the entire block is translated according to the default braille representations defined by the Character-Definition Opcodes, if 8-dot computer braille is enabled or according to the dot patterns given in the comp6 opcode"
+        },
+        {
+            "code": "contraction",
+            "fields": {
+                "unicode": "Enter Characters"
+            },
+            "description": "If you look at en-us-g2.ctb you will see that some words are actually contracted into some of their own letters. A famous example among braille transcribers is also, which is contracted as al. But this is also the name of a person. To take another example, altogether is contracted as alt, but this is the abbreviation for the alternate key on a computer keyboard. Similarly could is contracted into cd, but this is the abbreviation for compact disk. To prevent confusion in such cases, the letter sign (see letsign opcode (see letsign)) is placed before such letter combinations when they actually are abbreviations, not contractions. The contraction opcode tells the translator to do this."
+        },
+        {
+            "code": "decpoint",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Braille for above character"
+            },
+            "description": "This opcode defines the decimal point. It is useful if your Braille code requires the decimal separator to show as a dot pattern different from the normal representation of this character, i.e. period or comma. In addition, it allows the notation .001 to be translated correctly. This notation is common in some languages instead of 0.001 (no leading 0). When you use the decpoint opcode, the decimal point will be taken to be part of the number and correctly preceded by number sign."
+        },
+        {
+            "code": "digit",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Braille for above character"
+            },
+            "description": "Associates a digit with a dot pattern and defines the character as a digit"
+        },
+        {
+            "code": "display",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Braille for above character"
+            },
+            "description": "Associates dot patterns with the characters which will be sent to a braille embosser, display or screen font. The character must be in the range 0-255 and the dots must specify a single cell."
+        },
+        {
+            "code": "emphclass",
+            "fields": {
+                "name": "Emphasis class"
+            },
+            "description": "Define an emphasis class to be used later in other emphasis related opcodes in the table."
+        },
+        {
+            "code": "emphletter",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Braille dot pattern to indicate that the next character is emphasized."
+        },
+        {
+            "code": "emphmodechars",
+            "fields": {
+                "name": "Emphasis class",
+                "unicode": "Characters"
+            },
+            "description": "Normally, only spaces and unemphasizable characters (see space and noemphchars) will cancel the begemphword indicator (see begemphword). However this can be overruled with the emphmodechars opcode. If emphmodechars is specified, any character that is not in the specified list and is not a letter (see uppercase, lowercase or letter) will cancel the begemphword indicator. Conversely, letters and characters that are in the list will not cancel the word indicator."
+        },
+        {
+            "code": "endcaps",
+            "fields": {
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which terminates a mode."
+        },
+        {
+            "code": "endcapsword",
+            "fields": {
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which terminates a mode within a word. It is used in cases where the block is not terminated automatically by a word boundary, a number or punctuation. A common case is when an uppercase block is followed directly by a lowercase letter."
+        },
+        {
+            "code": "endcomp",
+            "fields": {
+                "dots": "Dot Pattern"
+            },
+            "description": "This braille indicator is placed after a sequence of characters translated in computer braille, whether this sequence is indicated in the typeform parameter (see typeform parameter) or inferred because it contains a subsequence specified by the compbrl opcode (see compbrl)."
+        },
+        {
+            "code": "endemph",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Braille dot pattern to indicate the end of emphasis."
+        },
+        {
+            "code": "endemphword",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Word emphasis ends implicitly when the word ends. When an indication is required to close word emphasis, i.e. when emphasis ends in the middle of a word, then this opcode defines the braille dot pattern that is used."
+        },
+        {
+            "code": "endmode",
+            "fields": {
+                "name": "Attribute name",
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which terminates a mode."
+        },
+        {
+            "code": "endmodeword",
+            "fields": {
+                "name": "Attribute name",
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which terminates a mode within a word. It is used in cases where the block is not terminated automatically by a word boundary, a number or punctuation. A common case is when an uppercase block is followed directly by a lowercase letter. endemphword (see endemphword) is the counterpart of endmodeword for indication of emphasis."
+        },
+        {
+            "code": "endnum",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are at the end of a number. For example en-us-g1.ctb has endnum th 1456. This handles things like 4th. A letter sign is NOT inserted.."
+        },
+        {
+            "code": "endword",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are at the end of a word."
+        },
+        {
+            "code": "exactdots",
+            "fields": {
+                "exactdots": "Dot Pattern"
+            },
+            "description": "Note that the operand must begin with an at sign (@). The dot pattern following it is evaluated for validity. If it is valid, whenever an at sign followed by this dot pattern appears in the source document it is replaced by the characters corresponding to the dot pattern in the output. This opcode is intended for use in liblouisutdml semantic-action files to specify exact dot patterns, as in mathematical codes."
+        },
+        {
+            "code": "grouping",
+            "fields": {
+                "name": "Group Name",
+                "unicode": "Characters",
+                "groupDots": 2
+            },
+            "description": "Note that the operand must begin with an at sign (@). The dot pattern following it is evaluated for validity. If it is valid, whenever an at sign followed by this dot pattern appears in the source document it is replaced by the characters corresponding to the dot pattern in the output. This opcode is intended for use in liblouisutdml semantic-action files to specify exact dot patterns, as in mathematical codes."
+        },
+        {
+            "code": "hyphen",
+            "fields": {
+                "unicode": "Characters",
+                "dots": "Enter Braille Translation"
+            },
+            "description": "This opcode defines the hyphen, that is, the character used in compound words such as have-nots. The back-translator uses it to determine the end of individual words."
+        },
+        {
+            "code": "include",
+            "fields": {
+                "name": "File Name"
+            },
+            "description": "Read the file indicated by filename and incorporate or include its entries into the table. Included files can include other files, which can include other files, etc."
+        },
+        {
+            "code": "joinnum",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern. In addition, if whitespace and a number follows omit the whitespace. This opcode can be used to join currency symbols to numbers."
+        },
+        {
+            "code": "joinword",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are a word which is followed by whitespace and a letter. In addition remove the whitespace. For example, en-us-g2.ctb has joinword to 235. This means that if the word to is followed by another word the contraction is to be used and the space is to be omitted. If these conditions are not met, the word is translated according to any other opcodes that may apply to it."
+        },
+        {
+            "code": "largesign",
+            "fields": {
+                "unicode": "Enter Characters",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern no matter where they appear. In addition, if two words defined as large signs follow each other, remove the space between them."
+        },
+        {
+            "code": "lenemphphrase",
+            "fields": {
+                "name": "Emphasis class",
+                "dots": "Dot Pattern"
+            },
+            "description": "Define how many words are required before a sequence of words is considered a phrase."
+        },
+        {
+            "code": "letsign",
+            "fields": {
+                "dots": "Dot Pattern"
+            },
+            "description": "This indicator is needed in Grade 2 to show that a single letter is not a contraction. It is also used when an abbreviation happens to be a sequence of letters that is the same as a contraction."
+        },
+        {
+            "code": "letter",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Associates a letter in the language with a braille representation and defines the character as a letter. This is intended for letters which are neither uppercase nor lowercase."
+        },
+        {
+            "code": "litdigit",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Associates a digit with the dot pattern which should be used to represent it in literary texts."
+        },
+        {
+            "code": "lowercase",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Associates a character with a dot pattern and defines the character as a lowercase letter. Both the character and the dot pattern have the attributes lowercase and letter."
+        },
+        {
+            "code": "lowword",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are a word preceded and followed by whitespace. No punctuation either before or after the word is allowed. "
+        },
+        {
+            "code": "math",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Associates a character and a dot pattern and defines them as a mathematical symbol. It should be used for less than (<), greater than(>), equals(=), plus(+), etc."
+        },
+        {
+            "code": "midendnumericmodechars",
+            "fields": {
+                "unicode": "Enter Character"
+            },
+            "description": "Any of these characters can appear within a number without terminating the effect of the number sign (see numsign). In other words, they dont cancel numeric mode."
+        },
+        {
+            "code": "midendword",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are either in the middle or at the end of a word."
+        },
+        {
+            "code": "midnum",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are in the middle of a number. For example, en-us-g1.ctb has midnum . 46. This is because the decimal point has a different dot pattern than the period."
+        },
+        {
+            "code": "midword",
+            "fields": {
+                "unicode": "Enter Character",
+                "dots": "Dot Pattern"
+            },
+            "description": "Replace the characters with the dot pattern if they are in the middle of a word."
+        },
+        {
+            "code": "modeletter",
+            "fields": {
+                "name": "Enter Attribute",
+                "dots": "Dot Pattern"
+            },
+            "description": "The dot pattern which indicates that a certain mode is entered and ends after a single character. A mode is a state in which dot patterns must be interpreted a certain way."
+        },
+        {
+            "code": "space",
+            "fields": {
+                "unicode": "Input Character",
+                "dots": "Braille for above character"
+            },
+            "description": "Whitespace characters such as blank and tab"
+        }
+    ]
+}

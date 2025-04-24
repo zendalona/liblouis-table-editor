@@ -1,0 +1,74 @@
+[
+    {
+        "opcode": "prepunc",
+        "unicode": "`",
+        "braille": "6-236",
+        "comment": ""
+    },
+    {
+        "opcode": "word",
+        "unicode": "(",
+        "braille": "4-2356",
+        "comment": ""
+    },
+    {
+        "opcode": "noback always",
+        "unicode": "(",
+        "braille": "2356",
+        "comment": ""
+    },
+    {
+        "opcode": "another",
+        "unicode": "(",
+        "braille": "4-2356",
+        "comment": "comment ( another comment )"
+    },
+    {
+        "opcode": "postpunc",
+        "unicode": ")",
+        "braille": "2356",
+        "comment": ""
+    },
+    {
+        "opcode": "word",
+        "unicode": ")",
+        "braille": "4-2356",
+        "comment": ""
+    },
+    {
+        "opcode": "noback always",
+        "unicode": ")",
+        "braille": "2356",
+        "comment": ""
+    },
+    {
+        "opcode": "prepunc",
+        "unicode": "\"",
+        "braille": "236",
+        "comment": ""
+    },
+    {
+        "opcode": "word",
+        "unicode": "(",
+        "braille": "4-236",
+        "comment": ""
+    },
+    {
+        "opcode": "noback always",
+        "unicode": "(",
+        "braille": "236",
+        "comment": ""
+    },
+    {
+        "opcode": "g",
+        "unicode": "(",
+        "braille": "4-236",
+        "comment": ""
+    },
+    {
+        "opcode": "postpunc",
+        "unicode": "\"",
+        "braille": "356",
+        "comment": ""
+    }
+]
