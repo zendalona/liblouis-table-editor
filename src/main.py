@@ -14,11 +14,16 @@ class TableManager(QWidget):
         super().__init__()
 
         self.setWindowTitle('Liblouis Tables Manager')
-        self.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
         
         screen = QApplication.primaryScreen().geometry()
-        x = (screen.width() - WINDOW_WIDTH) // 2
-        y = (screen.height() - WINDOW_HEIGHT) // 2
+        
+        width = min(WINDOW_WIDTH, screen.width() - 100)  
+        height = min(WINDOW_HEIGHT, screen.height() - 100)
+        
+        self.resize(width, height)
+        
+        x = (screen.width() - width) // 2
+        y = (screen.height() - height) // 2
         self.move(x, y)
 
         layout = QVBoxLayout()
