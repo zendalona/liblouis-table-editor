@@ -17,8 +17,11 @@ class TableManager(QWidget):
         
         screen = QApplication.primaryScreen().geometry()
         
-        width = min(WINDOW_WIDTH, screen.width() - 100)  
-        height = min(WINDOW_HEIGHT, screen.height() - 100)
+        available_height = screen.height() - 100  
+        available_width = screen.width() - 100
+        
+        width = min(WINDOW_WIDTH, available_width)
+        height = min(WINDOW_HEIGHT, available_height)
         
         self.resize(width, height)
         

@@ -20,9 +20,9 @@ class TestingWidget(QWidget):
         project_root = os.path.dirname(os.path.dirname(current_dir))
         
         possible_paths = [
-            os.path.join(project_root, "liblouis"),
+            os.path.join(project_root, "liblouis-win"),  
+            os.path.join(project_root, "liblouis-linux"),  
         ]
-        
         
         for base_path in possible_paths:
             if os.path.exists(base_path):
@@ -36,7 +36,7 @@ class TestingWidget(QWidget):
                     self.tables_dir = os.path.join(base_path, "share", "liblouis", "tables")
                     self.translator_exe = translator
                     return
-        
+
         self.liblouis_base = None
         self.tables_dir = None
         self.translator_exe = None
@@ -117,7 +117,7 @@ class TestingWidget(QWidget):
         backward_input_group.setContentsMargins(0, 0, 0, 0)
         backward_input_label = QLabel("Input Braille:")
         self.backward_input = QTextEdit(self)
-        self.backward_input.setPlaceholderText("Enter Braille using numpad 1-6 to add dots, space for next cell, double space for word space")
+        self.backward_input.setPlaceholderText("Enter Braille using F, D, S, J, K, L keys for dots 1-6, space for next cell, double space for word space")
         self.backward_input.setMaximumHeight(100)
         self.backward_input.keyPressEvent = self.handle_braille_input
         self.current_braille_cell = [False] * 6 
@@ -253,8 +253,17 @@ class TestingWidget(QWidget):
             QTextEdit.keyPressEvent(self.forward_input, event)
     
     def handle_braille_input(self, event):
-        if event.key() in [Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6]:
-            dot_pos = event.key() - Qt.Key_1
+        key_to_dot = {
+            Qt.Key_F: 0,  # Dot 1
+            Qt.Key_D: 1,  # Dot 2
+            Qt.Key_S: 2,  # Dot 3
+            Qt.Key_J: 3,  # Dot 4
+            Qt.Key_K: 4,  # Dot 5
+            Qt.Key_L: 5,  # Dot 6
+        }
+        
+        if event.key() in key_to_dot:
+            dot_pos = key_to_dot[event.key()]
             self.current_braille_cell[dot_pos] = True
             self.update_braille_cell()
         elif event.key() == Qt.Key_Space:

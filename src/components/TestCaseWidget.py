@@ -31,7 +31,7 @@ class TestCaseWidget(QWidget):
         output_group = QVBoxLayout()
         output_label = QLabel("Expected Braille:")
         self.expected_output = QTextEdit()
-        self.expected_output.setPlaceholderText("Enter expected Braille output or use numpad 1-6 and space for Braille dots")
+        self.expected_output.setPlaceholderText("Enter expected Braille output using F, D, S, J, K, L keys for dots 1-6, space for next cell, double space for word space")
         self.expected_output.setMaximumHeight(100)
         self.expected_output.keyPressEvent = self.handle_expected_braille_input
         self.current_expected_braille_cell = [False] * 6  
@@ -149,8 +149,17 @@ class TestCaseWidget(QWidget):
             f"Tests completed: {total}\nPassed: {passes}\nFailed: {total - passes}")
 
     def handle_expected_braille_input(self, event):
-        if event.key() in [Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6]:
-            dot_pos = event.key() - Qt.Key_1
+        key_to_dot = {
+            Qt.Key_F: 0,  # Dot 1
+            Qt.Key_D: 1,  # Dot 2
+            Qt.Key_S: 2,  # Dot 3
+            Qt.Key_J: 3,  # Dot 4
+            Qt.Key_K: 4,  # Dot 5
+            Qt.Key_L: 5,  # Dot 6
+        }
+        
+        if event.key() in key_to_dot:
+            dot_pos = key_to_dot[event.key()]
             self.current_expected_braille_cell[dot_pos] = True
             self.update_expected_braille_cell()
         elif event.key() == Qt.Key_Space:

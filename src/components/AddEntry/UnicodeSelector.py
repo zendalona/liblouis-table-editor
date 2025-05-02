@@ -16,8 +16,15 @@ class UnicodeSelector(QWidget):
 
     def initUI(self):
         main_layout = QHBoxLayout(self)
+        main_layout.setContentsMargins(10, 10, 10, 10)
+        main_layout.setSpacing(10)
 
-        search_layout = QVBoxLayout()
+        left_widget = QWidget()
+        left_widget.setFixedWidth(250)
+        search_layout = QVBoxLayout(left_widget)
+        search_layout.setContentsMargins(0, 0, 0, 0)
+        search_layout.setSpacing(8)
+
         self.search_bar = QLineEdit()
         self.search_bar.setPlaceholderText("Search Unicode Blocks...")
         self.search_bar.textChanged.connect(self.filter_blocks)
@@ -27,43 +34,81 @@ class UnicodeSelector(QWidget):
         self.tree.setHeaderLabel("Unicode Blocks")
         self.populate_tree()
         self.tree.itemClicked.connect(self.display_characters)
-        self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.tree.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         search_layout.addWidget(self.tree)
 
-        char_search_layout = QVBoxLayout()
+        right_widget = QWidget()
+        char_search_layout = QVBoxLayout(right_widget)
+        char_search_layout.setContentsMargins(0, 0, 0, 0)
+        char_search_layout.setSpacing(8)
 
         scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        scroll_area.setStyleSheet("""
+            QScrollArea {
+                border: 1px solid #ddd;
+                background: white;
+                border-radius: 4px;
+            }
+        """)
+        
         self.char_container = QWidget()
         self.char_layout = QGridLayout(self.char_container)
-        self.char_layout.setContentsMargins(0, 0, 0, 0)
-        self.char_layout.setSpacing(0)
+        self.char_layout.setContentsMargins(4, 4, 4, 4)
+        self.char_layout.setSpacing(1)
         self.char_container.setStyleSheet("background: white;")
-        scroll_area.setWidgetResizable(True)
+        
         scroll_area.setWidget(self.char_container)
-        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-
         char_search_layout.addWidget(scroll_area)
 
-        self.selected_text_edit = QTextEdit()
-        self.selected_text_edit.setFont(QFont('', 28))
-        self.selected_text_edit.setPlaceholderText("Selected characters will appear here. You can also type in this box.")
-        self.selected_text_edit.setFixedHeight(50)
-        self.selected_text_edit.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.selected_text_edit.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        char_search_layout.addWidget(self.selected_text_edit)
+        selection_widget = QWidget()
+        selection_layout = QHBoxLayout(selection_widget)
+        selection_layout.setContentsMargins(0, 0, 0, 0)
+        selection_layout.setSpacing(8)
 
+        self.selected_text_edit = QTextEdit()
+        self.selected_text_edit.setFont(QFont('', 16))
+        self.selected_text_edit.setPlaceholderText("Selected characters")
+        self.selected_text_edit.setFixedHeight(40)
+        self.selected_text_edit.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.selected_text_edit.setStyleSheet("""
+            QTextEdit {
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 4px;
+            }
+        """)
+        selection_layout.addWidget(self.selected_text_edit)
 
         self.done_button = QPushButton("Done")
         self.done_button.clicked.connect(self.confirm_selection)
-        char_search_layout.addWidget(self.done_button)
+        self.done_button.setStyleSheet("""
+            QPushButton {
+                background: #1890ff;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                min-width: 80px;
+            }
+            QPushButton:hover {
+                background: #40a9ff;
+            }
+            QPushButton:pressed {
+                background: #096dd9;
+            }
+        """)
+        selection_layout.addWidget(self.done_button)
+        char_search_layout.addWidget(selection_widget)
 
-        main_layout.addLayout(search_layout)
-        main_layout.addLayout(char_search_layout)
+        main_layout.addWidget(left_widget)
+        main_layout.addWidget(right_widget, 1)
 
         self.setLayout(main_layout)
-        self.setFixedSize(960, 600)
-
-        self.adjust_component_sizes()
+        self.setFixedSize(900, 600)
+        self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
 
         if self.tree.topLevelItemCount() > 0:
             first_item = self.tree.topLevelItem(0)
@@ -71,7 +116,6 @@ class UnicodeSelector(QWidget):
             self.display_characters(first_item, 0)
             
         apply_styles(self)
-
 
     def populate_tree(self):
         self.blocks = self.get_unicode_blocks()
@@ -411,10 +455,10 @@ class UnicodeSelector(QWidget):
         self.update_character_display()
 
     def update_character_display(self):
-        button_size = 80
-        padding = 2
-        available_width = self.width() - self.tree.sizeHint().width() - padding * 2
-        num_columns = available_width // button_size
+        button_size = 40
+        padding = 1
+        available_width = 600 
+        num_columns = available_width // (button_size + padding)
 
         if num_columns < 1:
             num_columns = 1
@@ -437,17 +481,24 @@ class UnicodeSelector(QWidget):
                 char_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
                 char_button.setFixedSize(QSize(button_size, button_size))
 
-                char_button.setStyleSheet(
-                    "QPushButton {"
-                    "    font-size: 32px;"
-                    "    font-weight: lighter;"
-                    "    background: white;"
-                    
-                    "}"
-                    "QPushButton:hover {"
-                    "    background: #d4e9f7;"
-                    "}"
-                )
+                char_button.setStyleSheet("""
+                    QPushButton {
+                        font-size: 16px;
+                        font-weight: normal;
+                        background: white;
+                        border: 1px solid #ddd;
+                        border-radius: 2px;
+                        margin: 0px;
+                        padding: 0px;
+                    }
+                    QPushButton:hover {
+                        background: #e6f7ff;
+                        border: 1px solid #1890ff;
+                    }
+                    QPushButton:pressed {
+                        background: #bae7ff;
+                    }
+                """)
                 char_button.clicked.connect(self.character_selected)
                 self.char_layout.addWidget(char_button, row, col)
 
@@ -474,6 +525,6 @@ class UnicodeSelector(QWidget):
         self.on_select_callback = callback
 
     def adjust_component_sizes(self):
-        self.tree.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.tree.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
         self.char_container.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
