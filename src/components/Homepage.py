@@ -64,12 +64,7 @@ class HomeScreen(QWidget):
         button_layout.addStretch()
 
         recent_label = QLabel("Recent Files")
-        recent_label.setStyleSheet("""
-            font-size: 14px;
-            font-weight: bold;
-            color: #333333;
-            margin-top: 15px;
-        """)
+        recent_label.setObjectName("recent_label")
         
         self.recent_files_list = QListWidget()
         self.recent_files_list.setObjectName("recentFiles")

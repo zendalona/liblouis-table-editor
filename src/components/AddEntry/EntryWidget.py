@@ -1,14 +1,19 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QMenu, QAction, QLineEdit
+from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QMenu, QAction, QLineEdit, QFrame, QVBoxLayout
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QFontDatabase
 
-class EntryWidget(QWidget):
+class EntryWidget(QFrame):
     def __init__(self, entry, table_editor, parent=None):
         super().__init__(parent)
         self.entry = entry
         self.table_editor = table_editor
+        self.current_font_size = 12 
+        self.setObjectName("entry_frame")
+        self.layout = QHBoxLayout(self)
+        self.layout.setContentsMargins(2, 2, 2, 2)
+        self.layout.setSpacing(2)
         self.initUI()
-        self.setFocusPolicy(Qt.StrongFocus) 
+        self.setFocusPolicy(Qt.StrongFocus)
 
     def convert_unicode(self, hex_str):
         try:
@@ -26,8 +31,6 @@ class EntryWidget(QWidget):
             return ''
 
     def initUI(self):
-        self.layout = QHBoxLayout(self)
-        
         display_text = self.entry
         parts = self.entry.split()
         if len(parts) >= 2:  
@@ -63,10 +66,11 @@ class EntryWidget(QWidget):
         self.label_text.setWordWrap(False)
         
         font = QFont()
-        font.setPointSize(9)
+        font.setPointSize(self.current_font_size)
         font_families = ["Arial Unicode MS", "Nirmala UI", "Mangal", "Arial", "Segoe UI"]
+        db = QFontDatabase()
         for family in font_families:
-            if family in QFont().families():
+            if family in db.families():
                 font.setFamily(family)
                 break
         
@@ -76,10 +80,6 @@ class EntryWidget(QWidget):
         self.label_text.setTextFormat(Qt.PlainText)
         
         self.layout.addWidget(self.label_text, alignment=Qt.AlignVCenter)
-        self.layout.setContentsMargins(0, 0, 0, 0)  
-        self.layout.setSpacing(0)  
-        self.setLayout(self.layout)
-        self.setStyleSheet("padding: 10px; background-color: white; margin: 0px")
         self.setMouseTracking(True)
         self.enterEvent = self.onHoverEnter
         self.leaveEvent = self.onHoverLeave
@@ -116,8 +116,25 @@ class EntryWidget(QWidget):
         menu.exec_(self.mapToGlobal(event.pos()))
 
     def duplicate_entry(self):
-        new_entry_widget = EntryWidget(self.entry, self.table_editor, parent=self.parentWidget())
-        self.parentWidget().layout().insertWidget(self.parentWidget().layout().indexOf(self) + 1, new_entry_widget)
+        
+        parent = self.parentWidget()
+        if parent:
+           
+            new_entry_widget = EntryWidget(self.entry, self.table_editor, parent=parent)
+            new_entry_widget.update_font_size(self.current_font_size)
+            
+           
+            table_preview = parent
+            while table_preview and not hasattr(table_preview, 'entries'):
+                table_preview = table_preview.parentWidget()
+            
+            if table_preview and hasattr(table_preview, 'entries'):
+               
+                table_preview.entries.append(self.entry)
+                table_preview.update_content()
+                
+                new_index = len(table_preview.entries) - 1
+                table_preview.select_entry(new_index)
 
     def edit_entry(self):
         self.label_text.setVisible(False)
@@ -139,52 +156,52 @@ class EntryWidget(QWidget):
 
     def onHoverEnter(self, event):
         if not self.property("selected"):
-            self.setStyleSheet("padding: 10px; background-color: #f0f8ff; margin: 0px")
+            pass
 
     def onHoverLeave(self, event):
         if not self.property("selected"):
-            self.setStyleSheet("padding: 10px; background-color: white; margin: 0px")
+            pass
 
     def load_into_editor(self, event=None):
         self.table_editor.load_entry_into_editor(self.entry)
 
     def update_font_size(self, size):
-        font = QFont()
-        font.setPointSize(size)
-        self.label_text.setFont(font)
-        self.edit_line.setFont(font)
+        self.current_font_size = size
+        label_font = self.label_text.font()
+        edit_font = self.edit_line.font()
+        label_font.setPointSize(size)
+        edit_font.setPointSize(size)
+        self.label_text.setFont(label_font)
+        self.edit_line.setFont(edit_font)
         
-        selected = self.property("selected")
-        base_style = """
-            QWidget {
-                padding: 8px;
-                margin: 0px;
-                background-color: %s;
-                border: %s;
-                font-size: %spt;
-            }
-        """ % (
-            "#e6f7ff" if selected else "white",
-            "1px solid #1890ff" if selected else "none",
-            size
-        )
-        self.setStyleSheet(base_style)
+        self.set_entry_frame_style(self.property("selected"))
         
-        self.adjustSize()
-        self.updateGeometry()
+        self.label_text.update()
+        self.edit_line.update()
         self.update()
+        self.repaint()
 
     def setSelected(self, selected):
         self.setProperty("selected", selected)
-        base_style = """
-            QWidget {
-                padding: 8px;
-                margin: 0px;
-                background-color: %s;
-                border: %s;
-            }
-        """ % (
-            "#e6f7ff" if selected else "white",
-            "1px solid #1890ff" if selected else "none"
-        )
-        self.setStyleSheet(base_style)
+        self.set_entry_frame_style(selected)
+
+    def set_entry_frame_style(self, selected):
+        self.setProperty("selected", selected)
+        self.setStyleSheet(f"""
+            QFrame#entry_frame {{
+                background-color: {'#eaf4fb' if selected else 'white'};
+                border: {'2px solid #339af0' if selected else 'none'};
+                border-radius: 6px;
+            }}
+            QFrame#entry_frame QLabel {{
+                background-color: transparent;
+                font-size: {self.current_font_size}pt;
+            }}
+            QFrame#entry_frame QLineEdit {{
+                background-color: transparent;
+                font-size: {self.current_font_size}pt;
+            }}
+        """)
+        self.style().unpolish(self)
+        self.style().polish(self)
+        self.update()

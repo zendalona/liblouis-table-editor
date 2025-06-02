@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QFrame
 from PyQt5.QtCore import Qt, QRect
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QFontDatabase
 from components.AddEntry.EntryWidget import EntryWidget
 from utils.ApplyStyles import apply_styles
 
@@ -10,17 +10,19 @@ class TablePreview(QWidget):
         self.table_editor = table_editor
         self.entries = []
         self.entry_widgets = []  
-        self.current_index = -1 
+        self.current_index = -1
+        self.entry_font_size = 12 
+        self.min_font_size = 8
+        self.max_font_size = 24
         apply_styles(self)
         self.initUI()
         self.setFocusPolicy(Qt.StrongFocus)
 
     def initUI(self):
-        self.setStyleSheet("background-color: white; border-bottom: 1px solid #b0c6cf;")
-        
+        self.setObjectName("table_preview")
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
-        self.layout.setSpacing(0)
+        self.layout.setSpacing(2)
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
@@ -32,11 +34,15 @@ class TablePreview(QWidget):
         self.scroll_layout = QVBoxLayout(self.scroll_widget)
         self.scroll_layout.setAlignment(Qt.AlignTop)
         self.scroll_layout.setContentsMargins(0, 0, 0, 0)
-        self.scroll_layout.setSpacing(0)
+        self.scroll_layout.setSpacing(2)
 
         self.scroll_area.setWidget(self.scroll_widget)
         self.layout.addWidget(self.scroll_area)
         self.setLayout(self.layout)
+
+        initial_font = QFont()
+        initial_font.setPointSize(self.entry_font_size)
+        self.scroll_area.setFont(initial_font)
         
         self.scroll_area.viewport().installEventFilter(self)
         
@@ -49,12 +55,19 @@ class TablePreview(QWidget):
     def update_content(self):
         self.clear_layout()
         self.entry_widgets = []  
-        for entry in self.entries:
+        for i, entry in enumerate(self.entries):
             entry_widget = EntryWidget(entry, self.table_editor)
+            entry_widget.update_font_size(self.entry_font_size) 
             entry_widget.mousePressEvent = lambda e, w=entry_widget: self.handle_entry_click(w, e)
             entry_widget.setFocusPolicy(Qt.NoFocus) 
             self.entry_widgets.append(entry_widget)  
             self.scroll_layout.addWidget(entry_widget)
+            if i < len(self.entries) - 1:
+                line = QFrame()
+                line.setFrameShape(QFrame.HLine)
+                line.setFrameShadow(QFrame.Plain)
+                line.setObjectName("entry_line")
+                self.scroll_layout.addWidget(line)
         
         if self.current_index >= 0 and self.current_index < len(self.entry_widgets):
             self.select_entry(self.current_index)
@@ -117,24 +130,62 @@ class TablePreview(QWidget):
                 widget.setParent(None)
                 
     def update_font_size(self, size):
-        font = QFont()
-        font.setPointSize(size)
+       
+        scroll_font = QFont()
+        scroll_font.setPointSize(size)
+        font_families = ["Arial Unicode MS", "Nirmala UI", "Mangal", "Arial", "Segoe UI"]
+        db = QFontDatabase()
+        for family in font_families:
+            if family in db.families():
+                scroll_font.setFamily(family)
+                break
+        scroll_font.setStyleStrategy(QFont.PreferAntialias | QFont.PreferDefault)
         
-        self.scroll_area.setFont(font)
+        self.scroll_area.setFont(scroll_font)
         
         for widget in self.entry_widgets:
             widget.update_font_size(size)
             
         self.scroll_widget.adjustSize()
         self.scroll_area.updateGeometry()
+        
+        self.scroll_area.update()
+        self.scroll_widget.update()
         self.update()
+        self.repaint()
+        
+        for widget in self.entry_widgets:
+            widget.update()
+            widget.repaint()
 
     def keyPressEvent(self, event):
+        key = event.key()
+        modifiers = event.modifiers()
+
+        if modifiers == Qt.ControlModifier:
+            if key == Qt.Key_BracketRight or key == Qt.Key_Equal: 
+                new_size = min(self.max_font_size, self.entry_font_size + 2)
+                if new_size != self.entry_font_size:
+                    self.entry_font_size = new_size
+                    self.update_font_size(self.entry_font_size)
+                event.accept()
+                return
+            elif key == Qt.Key_BracketLeft or key == Qt.Key_Minus:  
+                new_size = max(self.min_font_size, self.entry_font_size - 2)
+                if new_size != self.entry_font_size:
+                    self.entry_font_size = new_size
+                    self.update_font_size(self.entry_font_size)
+                event.accept()
+                return
+            elif key == Qt.Key_0:  
+                self.entry_font_size = 12 
+                self.update_font_size(self.entry_font_size)
+                event.accept()
+                return
+
         if not self.entry_widgets:
             event.ignore()
             return
-
-        key = event.key()
         
         if key == Qt.Key_Up:
             if self.current_index > 0:
@@ -188,3 +239,4 @@ class TablePreview(QWidget):
         super().focusInEvent(event)
         if self.current_index == -1 and self.entry_widgets:
             self.select_entry(0)
+            

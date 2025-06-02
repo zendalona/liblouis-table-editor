@@ -43,22 +43,15 @@ class UnicodeSelector(QWidget):
         char_search_layout.setSpacing(8)
 
         scroll_area = QScrollArea()
+        scroll_area.setObjectName("unicode_selector")
         scroll_area.setWidgetResizable(True)
         scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        scroll_area.setStyleSheet("""
-            QScrollArea {
-                border: 1px solid #ddd;
-                background: white;
-                border-radius: 4px;
-            }
-        """)
         
         self.char_container = QWidget()
         self.char_layout = QGridLayout(self.char_container)
         self.char_layout.setContentsMargins(4, 4, 4, 4)
         self.char_layout.setSpacing(1)
-        self.char_container.setStyleSheet("background: white;")
         
         scroll_area.setWidget(self.char_container)
         char_search_layout.addWidget(scroll_area)
@@ -69,37 +62,16 @@ class UnicodeSelector(QWidget):
         selection_layout.setSpacing(8)
 
         self.selected_text_edit = QTextEdit()
+        self.selected_text_edit.setObjectName("selected_text_edit")
         self.selected_text_edit.setFont(QFont('', 16))
         self.selected_text_edit.setPlaceholderText("Selected characters")
         self.selected_text_edit.setFixedHeight(40)
         self.selected_text_edit.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.selected_text_edit.setStyleSheet("""
-            QTextEdit {
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                padding: 4px;
-            }
-        """)
         selection_layout.addWidget(self.selected_text_edit)
 
         self.done_button = QPushButton("Done")
+        self.done_button.setObjectName("done_button")
         self.done_button.clicked.connect(self.confirm_selection)
-        self.done_button.setStyleSheet("""
-            QPushButton {
-                background: #1890ff;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 4px;
-                min-width: 80px;
-            }
-            QPushButton:hover {
-                background: #40a9ff;
-            }
-            QPushButton:pressed {
-                background: #096dd9;
-            }
-        """)
         selection_layout.addWidget(self.done_button)
         char_search_layout.addWidget(selection_widget)
 

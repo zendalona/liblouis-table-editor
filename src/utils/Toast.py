@@ -26,14 +26,6 @@ class Toast(QFrame):
                 border: 2px solid rgb({colorR}, {colorG}, {colorB});
                 border-radius: 10px;
             }}
-            QLabel {{
-                background-color: transparent;
-                color: #222222;
-                font-family: 'Segoe UI', Arial, sans-serif;
-                font-size: 14px;
-                padding: 0px;
-                margin: 0px;
-            }}
         """)
         
         layout = QHBoxLayout()

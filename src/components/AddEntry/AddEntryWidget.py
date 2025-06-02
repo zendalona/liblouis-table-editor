@@ -134,15 +134,14 @@ class OpcodeForm(QWidget):
 
             elif field == "base_attribute":
                 base_attr_dropdown = QComboBox()
-                base_attr_dropdown.addItems(["space", "digit", "letter", "lowercase", "uppercase", "punctuation", "sign", "math", "litdigit", "attribute", "before", "after"])
-                # Set size policy for full width
+                base_attr_dropdown.addItems(["space", "digit", "letter", "lowercase", "uppercase", "punctuation", "sign", "math", "litdigit", "attribute", "before", "after"])         
                 base_attr_dropdown.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
                 self.form_layout.addWidget(base_attr_dropdown)
                 self.field_inputs[field] = base_attr_dropdown
 
     def populate_opcode_combo(self, combo, placeholder=None):
         combo.clear()
-        combo.addItem("Select Opcode", None)  # Default placeholder item
+        combo.addItem("Select Opcode", None)  
         for opcode in opcodes:
             combo.addItem(opcode["code"], opcode)
         
@@ -194,13 +193,19 @@ class OpcodeForm(QWidget):
             print(f"Error converting Unicode: {e}")
 
     def showUnicodePopup(self, unicode_display, unicode_input):
-        self.unicode_popup = UnicodeSelector()
-        self.unicode_popup.on_select(lambda char, code: self.setUnicode(unicode_display, unicode_input, char, code))
+        if not hasattr(self, 'unicode_popup') or self.unicode_popup is None or not self.unicode_popup.isVisible():
+            self.unicode_popup = UnicodeSelector()
+            self.unicode_popup.on_select(lambda char, code: self.setUnicode(unicode_display, unicode_input, char, code))
         self.unicode_popup.show()
+        self.unicode_popup.raise_()
+        self.unicode_popup.activateWindow()
         
     def setUnicode(self, unicode_display, unicode_input, char, code):
         unicode_display.setText(char)
         unicode_input.setText(code)
+        if hasattr(self, 'unicode_popup'):
+            self.unicode_popup.close()
+            self.unicode_popup = None
 
 
 class AddEntryWidget(QWidget):

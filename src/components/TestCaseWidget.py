@@ -56,19 +56,7 @@ class TestCaseWidget(QWidget):
         header.setSectionResizeMode(1, QHeaderView.Stretch)
         header.setSectionResizeMode(2, QHeaderView.Stretch)
         header.setSectionResizeMode(3, QHeaderView.ResizeToContents)
-        self.test_table.setStyleSheet('''
-            QTableWidget, QTableView {
-                font-size: 14px;
-                background: #ffffff;
-                selection-background-color: #e0e0e0;
-            }
-            QTableWidget QLineEdit, QTableWidget QTextEdit, QTableView QLineEdit, QTableView QTextEdit {
-                font-size: 14px;
-                background: #ffffff;
-                border: 1px solid #4682b4;
-                padding: 2px;
-            }
-        ''')
+        self.test_table.setObjectName("test_table")
         self.test_table.setEditTriggers(QTableWidget.NoEditTriggers)
         
         layout.addLayout(input_section)
