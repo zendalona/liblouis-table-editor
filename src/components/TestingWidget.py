@@ -16,30 +16,19 @@ class TestingWidget(QWidget):
         self.initUI()
 
     def find_liblouis(self):
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        project_root = os.path.dirname(os.path.dirname(current_dir))
-        
-        possible_paths = [
-            os.path.join(project_root, "liblouis-win"),  
-            os.path.join(project_root, "liblouis-linux"),  
-        ]
-        
-        for base_path in possible_paths:
-            if os.path.exists(base_path):
-                if sys.platform == 'win32':
-                    translator = os.path.join(base_path, "bin", "lou_translate.exe")
-                else:
-                    translator = os.path.join(base_path, "bin", "lou_translate")
-                
-                if os.path.exists(translator):
-                    self.liblouis_base = base_path
-                    self.tables_dir = os.path.join(base_path, "share", "liblouis", "tables")
-                    self.translator_exe = translator
-                    return
 
-        self.liblouis_base = None
-        self.tables_dir = None
-        self.translator_exe = None
+        self.liblouis_base = "C:\\Program Files\\liblouis"
+        self.tables_dir = os.path.join(self.liblouis_base, "share", "liblouis", "tables")
+        
+        if sys.platform == 'win32':
+            self.translator_exe = os.path.join(self.liblouis_base, "bin", "lou_translate.exe")
+        else:
+            self.translator_exe = os.path.join(self.liblouis_base, "bin", "lou_translate")
+            
+        if not os.path.exists(self.translator_exe):
+            self.liblouis_base = None
+            self.tables_dir = None
+            self.translator_exe = None
 
     def initUI(self):
         main_layout = QVBoxLayout()
@@ -212,6 +201,13 @@ class TestingWidget(QWidget):
             return ""
             
         try:
+            # Use CREATE_NO_WINDOW flag to prevent command prompt from appearing
+            startupinfo = None
+            if sys.platform == 'win32':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+
             process = subprocess.Popen(
                 [
                     self.translator_exe,
@@ -222,7 +218,9 @@ class TestingWidget(QWidget):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
-                encoding='utf-8'
+                encoding='utf-8',
+                startupinfo=startupinfo,
+                creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0
             )
             
             stdout, stderr = process.communicate(input=text)

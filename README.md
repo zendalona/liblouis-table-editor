@@ -1,39 +1,45 @@
+# Liblouis Table Editor
+
+A graphical editor for Liblouis translation tables.
+
+## Prerequisites
+
+Before installing the Liblouis Table Editor, you must have Liblouis installed on your system:
+
+1. Download and install Liblouis from the official website
+2. Install it to the default location: `C:\Program Files\liblouis`
+3. Make sure the installation includes:
+   - `bin/lou_translate.exe`
+   - `share/liblouis/tables` directory
 
 ## Installation
 
-### Prerequisites
+1. Download the latest release of Liblouis Table Editor
+2. Extract the ZIP file to your desired location
+3. Run `LiblouisTableEditor.exe` from the extracted folder
 
-- **Python 3.x**: The editor is developed in Python, so you'll need Python installed on your system.
-- **PyQt5**: The GUI is built using PyQt5, which you can install using pip:
+## Building from Source
 
-```bash
-pip3 install PyQt5
-```
+If you want to build the application from source:
 
-### Cloning the Repository
-Clone the repository from GitHub: 
-```bash
-git clone https://github.com/SahilRakhaiya05/Liblouis_Table_Editor.git
-cd Liblouis_Table_Editor
-```
+1. Install Python 3.8 or later
+2. Install the required dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+3. Run the build script:
+   ```
+   python build.py
+   ```
+4. The built application will be in the `dist/LiblouisTableEditor` directory
 
-### Running the Application
+## Troubleshooting
 
+If you encounter any issues:
 
-#### Running in Windows
-To start the application, run
-```bash
-mingw32-make
-```
-command, which is a build tool commonly used in development environments that rely on the MinGW (Minimalist GNU for Windows) toolchain
-
-
-#### For running it in Linux/WSL
-
-1. To start the application run
-```bash
-make run
-```
+1. Make sure Liblouis is properly installed in `C:\Program Files\liblouis`
+2. Verify that the Liblouis installation includes all required files
+3. Check that you have the correct version of Python installed
 
 ## Usage
 

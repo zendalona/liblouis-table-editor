@@ -1,7 +1,7 @@
 import sys
 import os
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel, QStackedLayout, QMessageBox, QFileDialog
-from PyQt5.QtGui import QPalette, QColor, QPixmap
+from PyQt5.QtGui import QPalette, QColor, QPixmap, QIcon
 from PyQt5.QtCore import Qt
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
 from components.Menubar import create_menubar
@@ -13,7 +13,14 @@ class TableManager(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle('Liblouis Tables Manager')
+        self.setWindowTitle('Liblouis-Tables-Editor')
+        
+        # Set application icon
+        icon_path = os.path.join(os.path.dirname(__file__), 'assets', 'icons', 'icon.ico')
+        if os.path.exists(icon_path):
+            app_icon = QIcon(icon_path)
+            self.setWindowIcon(app_icon)
+            QApplication.setWindowIcon(app_icon)  # Set it globally
         
         screen = QApplication.primaryScreen().geometry()
         
@@ -213,7 +220,20 @@ class TableManager(QWidget):
         event.accept()
 
 if __name__ == '__main__':
+    # Set application icon path before creating QApplication
+    icon_path = os.path.join(os.path.dirname(__file__), 'assets', 'icons', 'icon.ico')
+    
     app = QApplication(sys.argv)
+    
+    # Set application icon
+    if os.path.exists(icon_path):
+        app_icon = QIcon(icon_path)
+        app.setWindowIcon(app_icon)
+        QApplication.setWindowIcon(app_icon)  # Set it globally
+        # Force Windows to use our icon
+        import ctypes
+        myappid = 'liblouis.table.editor.1.0'  # arbitrary string
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(240, 248, 255))
