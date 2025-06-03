@@ -2,12 +2,20 @@
 
 ### For Linux (Ubuntu/Debian/Kali):
 1. Install liblouis and its dependencies:
-   sudo apt-get update
-   sudo apt-get install liblouis-bin liblouis-data python3-louis
+
+````bash
+sudo apt-get update
+````
+````bash 
+sudo apt-get install liblouis-bin liblouis-data python3-louis
+````
 
 2. Verify installation:
-   which lou_translate
-   ls /usr/share/liblouis/tables
+````bash 
+which lou_translate
+ls /usr/share/liblouis/tables
+````
+ 
 
 ### For Windows:
 1. Download the latest liblouis release from: https://github.com/liblouis/liblouis/releases
@@ -18,7 +26,7 @@
    - C:\Program Files\liblouis\share\liblouis	ables
 
 5. Add liblouis to Windows PATH:
-   a. Press Windows + R, type 'sysdm.cpl' and press Enter
+   a. Press Windows + R, type 'sysdm.cpl' and press Enter \n
    b. Go to 'Advanced' tab
    c. Click 'Environment Variables'
    d. Under 'User variables', find and select 'Path'
@@ -35,5 +43,5 @@
   - Windows: C:\Program Files\liblouis\share\liblouis	ables
 
 - If lou_translate is not found:
-  - Linux: Run 'sudo apt-get install liblouis-bin'
+  - Linux: Run ```sudo apt-get install liblouis-bin```
   - Windows: Make sure the bin directory is in your system PATH
