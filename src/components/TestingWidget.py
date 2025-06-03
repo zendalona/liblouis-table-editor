@@ -16,19 +16,45 @@ class TestingWidget(QWidget):
         self.initUI()
 
     def find_liblouis(self):
-
-        self.liblouis_base = "C:\\Program Files\\liblouis"
-        self.tables_dir = os.path.join(self.liblouis_base, "share", "liblouis", "tables")
-        
         if sys.platform == 'win32':
+            self.liblouis_base = "C:\\Program Files\\liblouis"
+            self.tables_dir = os.path.join(self.liblouis_base, "share", "liblouis", "tables")
             self.translator_exe = os.path.join(self.liblouis_base, "bin", "lou_translate.exe")
         else:
-            self.translator_exe = os.path.join(self.liblouis_base, "bin", "lou_translate")
+            
+            self.liblouis_base = "/usr"
+            self.tables_dir = "/usr/share/liblouis/tables"
+            self.translator_exe = "/usr/bin/lou_translate"
+            
+            if not os.path.exists(self.translator_exe):
+                
+                try:
+                    import shutil
+                    lou_translate_path = shutil.which('lou_translate')
+                    if lou_translate_path:
+                        self.translator_exe = lou_translate_path
+                except:
+                    pass
+            
+            if not os.path.exists(self.tables_dir):
+                
+                alt_tables_dirs = [
+                    "/usr/local/share/liblouis/tables",
+                    "/usr/share/liblouis/tables",
+                    os.path.expanduser("~/.local/share/liblouis/tables")
+                ]
+                for dir_path in alt_tables_dirs:
+                    if os.path.exists(dir_path):
+                        self.tables_dir = dir_path
+                        break
             
         if not os.path.exists(self.translator_exe):
             self.liblouis_base = None
             self.tables_dir = None
             self.translator_exe = None
+            print("Warning: Could not find lou_translate executable")
+        elif not os.path.exists(self.tables_dir):
+            print(f"Warning: Could not find liblouis tables directory at {self.tables_dir}")
 
     def initUI(self):
         main_layout = QVBoxLayout()

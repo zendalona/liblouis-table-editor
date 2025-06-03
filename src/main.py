@@ -229,11 +229,31 @@ if __name__ == '__main__':
     if os.path.exists(icon_path):
         app_icon = QIcon(icon_path)
         app.setWindowIcon(app_icon)
-        QApplication.setWindowIcon(app_icon)  # Set it globally
-        # Force Windows to use our icon
-        import ctypes
-        myappid = 'liblouis.table.editor.1.0'  # arbitrary string
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+        QApplication.setWindowIcon(app_icon)  
+        
+        if sys.platform == 'win32':
+            try:
+                import ctypes
+                myappid = 'liblouis.table.editor.1.0'  
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+            except Exception as e:
+                print(f"Warning: Could not set Windows app ID: {e}")
+        
+        elif sys.platform.startswith('linux'):
+            try:
+                from PyQt5.QtDBus import QDBusConnection, QDBusMessage
+                bus = QDBusConnection.sessionBus()
+                if bus.isConnected():
+                    message = QDBusMessage.createMethodCall(
+                        "org.freedesktop.portal.Desktop",
+                        "/org/freedesktop/portal/desktop",
+                        "org.freedesktop.portal.Settings",
+                        "Read"
+                    )
+                    message.setArguments(["org.freedesktop.appearance", "color-scheme"])
+                    bus.call(message)
+            except Exception as e:
+                print(f"Warning: Could not set Linux theme integration: {e}")
 
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(240, 248, 255))
