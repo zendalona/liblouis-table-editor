@@ -1,6 +1,6 @@
-Liblouis Installation Steps
+## Liblouis Installation Steps:
 
-For Linux (Ubuntu/Debian/Kali):
+### For Linux (Ubuntu/Debian/Kali):
 1. Install liblouis and its dependencies:
    sudo apt-get update
    sudo apt-get install liblouis-bin liblouis-data python3-louis
@@ -9,10 +9,10 @@ For Linux (Ubuntu/Debian/Kali):
    which lou_translate
    ls /usr/share/liblouis/tables
 
-For Windows:
+### For Windows:
 1. Download the latest liblouis release from: https://github.com/liblouis/liblouis/releases
 2. Extract the downloaded zip file
-3. Copy the extracted folder to "C:\Program Files\liblouis" (Remove     extra word from name only extracted as 'liblouis')
+3. Copy the extracted folder to "C:\Program Files\liblouis" (remove extra word from name only extracted as 'liblouis')
 4. Make sure the following structure exists:
    - C:\Program Files\liblouis\bin\lou_translate.exe
    - C:\Program Files\liblouis\share\liblouis	ables
@@ -28,7 +28,7 @@ For Windows:
    h. Click 'OK' on all windows
    i. Restart your terminal/command prompt
 
-Troubleshooting:
+### Troubleshooting:
 - If tables directory is not found, check these locations:
   - Linux: /usr/share/liblouis/tables
   - Linux: /usr/local/share/liblouis/tables
