@@ -1,8 +1,16 @@
 import json
+<<<<<<< HEAD
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox
 )
 from PyQt5.QtGui import QKeyEvent
+=======
+import os
+from PyQt5.QtWidgets import (
+    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox, QShortcut
+)
+from PyQt5.QtGui import QKeyEvent, QFont, QKeySequence
+>>>>>>> liblouis/main
 from PyQt5.QtCore import Qt
 from components.AddEntry.AddEntryWidget import AddEntryWidget
 from components.AddEntry.BrailleInputWidget import BrailleInputWidget
@@ -15,6 +23,14 @@ from utils.Toast import Toast
 class TableEditor(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+<<<<<<< HEAD
+=======
+        self._unsaved_changes = False
+        self._original_content = None
+        self._current_font_size = 10  
+        self._undo_stack = []
+        self._redo_stack = []
+>>>>>>> liblouis/main
         self.initUI()
 
     def initUI(self):
@@ -43,6 +59,7 @@ class TableEditor(QWidget):
 
         self.toast = None
 
+<<<<<<< HEAD
     def add_entry(self):
         entry_data = self.add_entry_widget.collect_entry_data()
         self.table_preview.add_entry(entry_data)
@@ -81,6 +98,125 @@ class TableEditor(QWidget):
         self.toast = Toast(text, icon_path, colorR, colorG, colorB,  self)
         self.toast.move((self.width() - self.toast.width()), self.height() + 290)
         self.toast.show_toast()
+=======
+    def validate_entry_data(self, entry_data):
+        if not entry_data:
+            return False
+        
+    
+        if isinstance(entry_data, dict):
+            if 'opcode' not in entry_data:
+                return False
+            
+            return True
+        elif isinstance(entry_data, str):
+            return bool(entry_data.strip())
+        return False
+
+    def add_entry(self):
+        entry_data = self.add_entry_widget.collect_entry_data()
+        if not self.validate_entry_data(entry_data):
+            self.show_toast("Invalid entry data!", "./src/assets/icons/error.png", 255, 0, 0)
+            return
+        
+        self._save_state_for_undo()
+        
+        self.table_preview.add_entry(entry_data)
+        self.mark_as_unsaved()
+        self.show_toast("Entry added successfully!", "./src/assets/icons/tick.png", 75, 175, 78)
+
+    def _save_state_for_undo(self):
+        current_content = self.get_content().copy() if isinstance(self.get_content(), list) else self.get_content()
+        self._undo_stack.append(current_content)
+        self._redo_stack = []
+
+    def save_entries(self, file_path):
+        try:
+            with open(file_path, 'w', encoding='utf-8') as file:
+                if isinstance(self.table_preview.entries, list):
+                    content = '\n'.join(self.table_preview.entries)
+                    file.write(content)
+                else:
+                    json.dump(self.table_preview.entries, file, ensure_ascii=False, indent=2)
+            
+            self.mark_as_saved()
+            
+            self.testing_widget.set_current_table(file_path)
+            
+            self.show_toast("File saved successfully!", "./src/assets/icons/tick.png", 75, 175, 78)
+            
+            return True
+        except Exception as e:
+            self.show_toast(f"Error saving file: {str(e)}", "./src/assets/icons/error.png", 255, 0, 0)
+            print(f"Error saving file: {str(e)}")
+            return False
+
+    def load_entries(self, file_path):
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                content = file.read()
+                if not content.strip():
+                    self.table_preview.entries = []
+                else:
+                    try:
+                        self.table_preview.entries = json.loads(content)
+                    except json.JSONDecodeError:
+                        self.table_preview.entries = [line for line in content.splitlines() if line.strip()]
+                self.table_preview.update_content()
+                
+            self.testing_widget.set_current_table(file_path)
+            self.show_toast("File loaded successfully!", "./src/assets/icons/tick.png", 75, 175, 78)
+            
+            self.mark_as_saved()
+        except FileNotFoundError:
+            self.show_toast("Error: File not found", "./src/assets/icons/error.png", 255, 0, 0)
+        except Exception as e:
+            self.show_toast(f"Error loading file: {str(e)}", "./src/assets/icons/error.png", 255, 0, 0)
+
+    def set_content(self, content):
+        try:
+            if not content or not content.strip():
+                self.table_preview.entries = []
+            else:
+                try:
+                    self.table_preview.entries = json.loads(content)
+                except json.JSONDecodeError:
+                    self.table_preview.entries = [line for line in content.splitlines() if line.strip()]
+            self.table_preview.update_content()
+            self._original_content = self.get_content()
+            self._unsaved_changes = False
+        except Exception as e:
+            self.show_toast(f"Error setting content: {str(e)}", "./src/assets/icons/error.png", 255, 0, 0)
+
+    def get_content(self):
+        try:
+            return self.table_preview.entries
+        except Exception:
+            return []
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Return and event.modifiers() == Qt.ControlModifier:
+            self.add_entry()
+        super().keyPressEvent(event)  
+
+    def show_toast(self, text, icon_path, colorR, colorG, colorB):
+        try:
+            if self.toast:
+                self.toast.close()
+                self.toast.deleteLater()  
+            icon_path = os.path.normpath(icon_path)  
+            self.toast = Toast(text, icon_path, colorR, colorG, colorB, self)
+            
+            main_window = self.window()
+            if main_window:
+                toast_x = main_window.x() + (main_window.width() - self.toast.width()) // 2
+                toast_y = main_window.y() + (main_window.height() - self.toast.height()) // 2
+                self.toast.move(toast_x, toast_y)
+            
+            self.toast.show_toast()
+        except Exception as e:
+            print(f"Error showing toast: {str(e)}") 
+>>>>>>> liblouis/main
 
     def load_entry_into_editor(self, entry):
         self.add_entry_widget.clear_form()
@@ -127,3 +263,103 @@ class TableEditor(QWidget):
                 elif isinstance(widget, BrailleInputWidget):
                     widget.braille_input.setText(data[field_index])
                 field_index += 1
+<<<<<<< HEAD
+=======
+
+    def has_unsaved_changes(self):
+        if self._unsaved_changes:
+            return True
+        current_content = self.get_content()
+        return current_content != self._original_content
+        
+    def mark_as_saved(self):
+        self._original_content = self.get_content()
+        self._unsaved_changes = False
+        
+    def mark_as_unsaved(self):
+        self._unsaved_changes = True
+        
+    def undo(self):
+        if self._undo_stack:
+            current_content = self.get_content().copy() if isinstance(self.get_content(), list) else self.get_content()
+            self._redo_stack.append(current_content)
+            
+            previous_state = self._undo_stack.pop()
+            self.table_preview.entries = previous_state
+            self.table_preview.update_content()
+            self.mark_as_unsaved()
+            self.show_toast("Action undone", "./src/assets/icons/tick.png", 75, 175, 78)
+        else:
+            self.show_toast("Nothing to undo", "./src/assets/icons/info.png", 0, 0, 255)
+            
+    def redo(self):
+        if self._redo_stack:
+            current_content = self.get_content().copy() if isinstance(self.get_content(), list) else self.get_content()
+            self._undo_stack.append(current_content)
+            
+            next_state = self._redo_stack.pop()
+            self.table_preview.entries = next_state
+            self.table_preview.update_content()
+            self.mark_as_unsaved()
+            self.show_toast("Action redone", "./src/assets/icons/tick.png", 75, 175, 78)
+        else:
+            self.show_toast("Nothing to redo", "./src/assets/icons/info.png", 0, 0, 255)
+            
+    def go_to_entry(self, entry_text):
+        if not entry_text:
+            return
+            
+        for i, entry in enumerate(self.table_preview.entries):
+            if entry_text in str(entry):
+                self.table_preview.select_entry(i)
+                self.show_toast(f"Found entry: {entry_text}", "./src/assets/icons/tick.png", 75, 175, 78)
+                return
+                
+        self.show_toast(f"Entry not found: {entry_text}", "./src/assets/icons/error.png", 255, 0, 0)
+        
+    def find_text(self, search_text):
+        if not search_text:
+            return
+            
+        for i, entry in enumerate(self.table_preview.entries):
+            if search_text in str(entry):
+                self.table_preview.select_entry(i)
+                self.show_toast(f"Found text: {search_text}", "./src/assets/icons/tick.png", 75, 175, 78)
+                return
+                
+        self.show_toast(f"Text not found: {search_text}", "./src/assets/icons/error.png", 255, 0, 0)
+        
+    def find_replace(self, find_text, replace_text):
+        if not find_text:
+            return
+            
+        replaced_count = 0
+        for i, entry in enumerate(self.table_preview.entries):
+            if find_text in str(entry):
+                # Replace the text
+                if isinstance(entry, str):
+                    new_entry = entry.replace(find_text, replace_text)
+                    self.table_preview.entries[i] = new_entry
+                    replaced_count += 1
+                    
+        if replaced_count > 0:
+            self.table_preview.update_content()
+            self.mark_as_unsaved()
+            self.show_toast(f"Replaced {replaced_count} occurrences", "./src/assets/icons/tick.png", 75, 175, 78)
+        else:
+            self.show_toast(f"Text not found: {find_text}", "./src/assets/icons/error.png", 255, 0, 0)
+            
+    def change_font_size(self, increase=True):
+        if increase:
+            self._current_font_size += 1
+        else:
+            self._current_font_size = max(8, self._current_font_size - 1)  # Don't go below 8pt
+            
+        self.table_preview.update_font_size(self._current_font_size)
+        
+        self.table_preview.scroll_area.updateGeometry()
+        self.table_preview.scroll_widget.adjustSize()
+        self.table_preview.update()
+            
+        self.show_toast(f"Font size: {self._current_font_size}pt", "./src/assets/icons/tick.png", 75, 175, 78)
+>>>>>>> liblouis/main
