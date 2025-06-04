@@ -1,15 +1,4 @@
 import os
-<<<<<<< HEAD
-from PyQt5.QtWidgets import QMenuBar, QAction, QFileDialog, QMessageBox
-from PyQt5.QtGui import QIcon
-
-def create_action(parent, title, icon_path=None, shortcut=None, status_tip=None, triggered=None):
-    action = QAction(title, parent)
-    if icon_path:
-        action.setIcon(QIcon(icon_path))
-    if shortcut:
-        action.setShortcut(shortcut)
-=======
 from PyQt5.QtWidgets import QMenuBar, QAction, QFileDialog, QMessageBox, QWidget, QInputDialog, QLineEdit
 from PyQt5.QtGui import QIcon, QFont, QKeySequence
 from PyQt5.QtWidgets import QApplication
@@ -22,7 +11,6 @@ def create_action(parent, title, icon_path=None, shortcut=None, status_tip=None,
         action.setIcon(QIcon(icon_path))
     if shortcut:
         action.setShortcut(QKeySequence(shortcut))
->>>>>>> liblouis/main
     if status_tip:
         action.setStatusTip(status_tip)
     if triggered:
@@ -45,42 +33,6 @@ def create_menubar(parent):
 
     menu_structure = {
         'File': [
-<<<<<<< HEAD
-            ('New', os.path.join(icon_base_path, 'new.png'), 'Ctrl+N', None, lambda: open_new_file_dialog(parent)),
-            ('Open', os.path.join(icon_base_path, 'open.png'), 'Ctrl+O', None, lambda: open_file_dialog(parent)),
-            ('Save', os.path.join(icon_base_path, 'save.png'), 'Ctrl+S', None, lambda: save_file_dialog(parent)),
-            ('Save As', os.path.join(icon_base_path, 'save_as.png'), 'Ctrl+Shift+S', None, lambda: save_as_file_dialog(parent))
-        ],
-        'Edit': [
-            ('Undo', os.path.join(icon_base_path, 'undo.png'), 'Ctrl+Z', None, None),
-            ('Redo', os.path.join(icon_base_path, 'redo.png'), 'Ctrl+Y', None, None),
-            'separator',
-            ('Go to Entry', os.path.join(icon_base_path, 'go_to_entry.png'), 'Ctrl+I', None, None),
-            ('Find', os.path.join(icon_base_path, 'find.png'), 'Ctrl+F', None, None),
-            ('Find and Replace', os.path.join(icon_base_path, 'find_replace.png'), 'Ctrl+H', None, None)
-        ],
-        'Tools': [
-            ('Increase Font Size', os.path.join(icon_base_path, 'increase_font.png'), 'Ctrl+]', None, None),
-            ('Decrease Font Size', os.path.join(icon_base_path, 'decrease_font.png'), 'Ctrl+[', None, None)
-        ],
-        'Help': [
-            ('About', os.path.join(icon_base_path, 'about.png'), None, None, None),
-            ('Report a bug', os.path.join(icon_base_path, 'report_bug.png'), None, None, None),
-            ('User Guide', os.path.join(icon_base_path, 'user_guide.png'), None, None, None)
-        ]
-    }
-
-    # Add menus and actions
-    for menu_title, actions in menu_structure.items():
-        action_list = []
-        for action in actions:
-            if action == 'separator':
-                action_list.append('separator')
-            else:
-                title, icon_path, shortcut, status_tip, triggered = action
-                action_list.append(create_action(parent, title, icon_path, shortcut, status_tip, triggered))
-        add_menu_with_actions(menubar, menu_title, action_list)
-=======
             ('New', os.path.join(icon_base_path, 'new.png'), 'Ctrl+N', 'Create a new table file', lambda: open_new_file_dialog(parent)),
             ('Open', os.path.join(icon_base_path, 'open.png'), 'Ctrl+O', 'Open an existing table file', lambda: open_file_dialog(parent)),
             ('Save', os.path.join(icon_base_path, 'save.png'), 'Ctrl+S', 'Save the current table', lambda: save_file_dialog(parent)),
@@ -121,33 +73,10 @@ def create_menubar(parent):
                 menu_action.setToolTip(f"{menu_title} - {title}")
                 menu_action.setStatusTip(status_tip or f"{menu_title} - {title}")
                 menu.addAction(menu_action)
->>>>>>> liblouis/main
 
     return menubar
 
 def open_new_file_dialog(parent):
-<<<<<<< HEAD
-    file_dialog = QFileDialog(parent)
-    file_dialog.setFileMode(QFileDialog.AnyFile)
-    file_dialog.setAcceptMode(QFileDialog.AcceptSave)
-    file_dialog.setNameFilter("Table Files (*.cti *.ctb *.utb);;All Files (*)")
-
-    if file_dialog.exec_():
-        file_names = file_dialog.selectedFiles()
-        if file_names:
-            file_path = file_names[0]
-            try:
-                open(file_path, 'w').close()  
-                file_name = os.path.basename(file_path)
-                parent.add_tab(file_name, "") 
-            except Exception as e:
-                QMessageBox.warning(parent, 'Error', f'Failed to create file: {str(e)}')
-        else:
-            QMessageBox.warning(parent, 'Error', 'No file selected.')
-
-    file_dialog.deleteLater()
-
-=======
     tab_count = parent.tab_widget.count()
     file_name = f"Untitled-{tab_count + 1}"
     
@@ -156,27 +85,17 @@ def open_new_file_dialog(parent):
     table_editor = parent.get_current_table_editor()
     if table_editor and hasattr(table_editor, 'mark_as_unsaved'):
         table_editor.mark_as_unsaved()
->>>>>>> liblouis/main
 
 def open_file_dialog(parent):
     file_dialog = QFileDialog(parent)
     file_dialog.setFileMode(QFileDialog.ExistingFile)
     file_dialog.setNameFilter("Table Files (*.cti *.ctb *.utb);;All Files (*)")
 
-<<<<<<< HEAD
-    
-=======
->>>>>>> liblouis/main
     if file_dialog.exec_():
         file_names = file_dialog.selectedFiles()
         if file_names:
             file_path = file_names[0]
             try:
-<<<<<<< HEAD
-                with open(file_path, 'r') as file:
-                    content = file.read()
-                parent.add_tab(os.path.basename(file_path), content)
-=======
                 with open(file_path, 'r', encoding='utf-8') as file:
                     content = file.read()
                 parent.add_tab(os.path.basename(file_path), content, file_path)
@@ -185,7 +104,6 @@ def open_file_dialog(parent):
                 if table_editor and hasattr(table_editor, 'mark_as_saved'):
                     table_editor.mark_as_saved()
                 
->>>>>>> liblouis/main
             except Exception as e:
                 QMessageBox.warning(parent, 'Error', f'Failed to open file: {str(e)}')
         else:
@@ -196,8 +114,6 @@ def open_file_dialog(parent):
 def save_file_dialog(parent):
     table_editor = parent.get_current_table_editor()
     if table_editor:
-<<<<<<< HEAD
-=======
         if hasattr(table_editor, 'testing_widget') and hasattr(table_editor.testing_widget, 'current_table_path'):
             current_path = table_editor.testing_widget.current_table_path
             if current_path:
@@ -236,7 +152,6 @@ def save_file_dialog(parent):
 def save_as_file_dialog(parent):
     table_editor = parent.get_current_table_editor()
     if table_editor:
->>>>>>> liblouis/main
         file_dialog = QFileDialog(parent)
         file_dialog.setFileMode(QFileDialog.AnyFile)
         file_dialog.setAcceptMode(QFileDialog.AcceptSave)
@@ -248,8 +163,6 @@ def save_as_file_dialog(parent):
                 file_path = file_names[0]
                 try:
                     table_editor.save_entries(file_path)
-<<<<<<< HEAD
-=======
                     if hasattr(table_editor, 'mark_as_saved'):
                         table_editor.mark_as_saved()
                     if hasattr(table_editor, 'testing_widget'):
@@ -257,7 +170,6 @@ def save_as_file_dialog(parent):
                     current_index = parent.tab_widget.currentIndex()
                     if current_index >= 0:
                         parent.tab_widget.setTabText(current_index, os.path.basename(file_path))
->>>>>>> liblouis/main
                 except Exception as e:
                     QMessageBox.warning(parent, 'Error', f'Failed to save file: {str(e)}')
             else:
@@ -267,10 +179,6 @@ def save_as_file_dialog(parent):
     else:
         QMessageBox.warning(parent, 'Error', 'No tab is currently open.')
 
-<<<<<<< HEAD
-def save_as_file_dialog(parent):
-    save_file_dialog(parent)
-=======
 def undo_action(parent):
     table_editor = parent.get_current_table_editor()
     if table_editor:
@@ -371,4 +279,3 @@ def change_font_size(parent, increase=True):
             QMessageBox.information(parent, 'Information', 'Font size change is not available in this context.')
     else:
         QMessageBox.warning(parent, 'Error', 'No tab is currently open.')
->>>>>>> liblouis/main

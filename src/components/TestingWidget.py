@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# TestingWidget.py
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLineEdit, QPushButton
-=======
 from PyQt5.QtWidgets import (
     QWidget, QHBoxLayout, QVBoxLayout, QLineEdit, 
     QPushButton, QLabel, QMessageBox, QTextEdit, QTabWidget
@@ -11,30 +7,10 @@ import os
 import subprocess
 import sys
 from .TestCaseWidget import TestCaseWidget
->>>>>>> liblouis/main
 
 class TestingWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-<<<<<<< HEAD
-        self.initUI()
-
-    def initUI(self):
-        layout = QHBoxLayout()
-
-        self.forward_translation_input = QLineEdit(self)
-        self.forward_translation_input.setPlaceholderText("Forward Translation")
-        layout.addWidget(self.forward_translation_input)
-
-        self.backward_translation_input = QLineEdit(self)
-        self.backward_translation_input.setPlaceholderText("Backward Translation")
-        layout.addWidget(self.backward_translation_input)
-
-        self.translate_button = QPushButton("Translate", self)
-        layout.addWidget(self.translate_button)
-
-        self.setLayout(layout)
-=======
         self.current_table = None
         self.find_liblouis()
         self.initUI()
@@ -394,4 +370,3 @@ class TestingWidget(QWidget):
                 self.backward_output.setText(result)
         else:
             QMessageBox.warning(self, "Error", "Please enter Braille to translate")
->>>>>>> liblouis/main

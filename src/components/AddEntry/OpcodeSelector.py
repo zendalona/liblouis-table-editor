@@ -74,4 +74,3 @@ class OpcodeSelector(QWidget):
             cb(code)
             self.hide()
         self.list.itemDoubleClicked.connect(lambda x: callback(opcodes[int(x.text().split('.')[0])]))
-

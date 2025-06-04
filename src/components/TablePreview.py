@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea
-from PyQt5.QtCore import Qt
-=======
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QFrame
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QFont, QFontDatabase
->>>>>>> liblouis/main
 from components.AddEntry.EntryWidget import EntryWidget
 from utils.ApplyStyles import apply_styles
 
@@ -14,20 +9,6 @@ class TablePreview(QWidget):
         super().__init__(parent)
         self.table_editor = table_editor
         self.entries = []
-<<<<<<< HEAD
-        apply_styles(self)
-        self.initUI()
-
-    def initUI(self):
-        self.setStyleSheet("background-color: white; border-bottom: 1px solid #b0c6cf;")
-        
-        self.layout = QVBoxLayout(self)
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.layout.setSpacing(0)
-
-        self.scroll_area = QScrollArea(self)
-        self.scroll_area.setWidgetResizable(True)
-=======
         self.entry_widgets = []  
         self.current_index = -1
         self.entry_font_size = 12 
@@ -48,26 +29,11 @@ class TablePreview(QWidget):
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll_area.setFocusPolicy(Qt.NoFocus) 
->>>>>>> liblouis/main
         
         self.scroll_widget = QWidget()
         self.scroll_layout = QVBoxLayout(self.scroll_widget)
         self.scroll_layout.setAlignment(Qt.AlignTop)
         self.scroll_layout.setContentsMargins(0, 0, 0, 0)
-<<<<<<< HEAD
-        self.scroll_layout.setSpacing(0)
-
-        self.scroll_area.setWidget(self.scroll_widget)
-        
-        self.layout.addWidget(self.scroll_area)
-        self.setLayout(self.layout)
-        
-    def update_content(self):
-        self.clear_layout()
-        for entry in self.entries:
-            entry_widget = EntryWidget(entry, self.table_editor)
-            self.scroll_layout.addWidget(entry_widget)
-=======
         self.scroll_layout.setSpacing(2)
 
         self.scroll_area.setWidget(self.scroll_widget)
@@ -105,14 +71,10 @@ class TablePreview(QWidget):
         
         if self.current_index >= 0 and self.current_index < len(self.entry_widgets):
             self.select_entry(self.current_index)
->>>>>>> liblouis/main
             
     def add_entry(self, entry):
         self.entries.append(entry)
         self.update_content()
-<<<<<<< HEAD
-
-=======
         self.select_entry(len(self.entries) - 1)
 
     def handle_entry_click(self, widget, event):
@@ -160,15 +122,12 @@ class TablePreview(QWidget):
             
             if hasattr(self.table_editor, 'load_entry_into_editor'):
                 self.table_editor.load_entry_into_editor(self.entries[index])
->>>>>>> liblouis/main
 
     def clear_layout(self):
         for i in reversed(range(self.scroll_layout.count())):
             widget = self.scroll_layout.itemAt(i).widget()
             if widget:
                 widget.setParent(None)
-<<<<<<< HEAD
-=======
                 
     def update_font_size(self, size):
        
@@ -281,4 +240,3 @@ class TablePreview(QWidget):
         if self.current_index == -1 and self.entry_widgets:
             self.select_entry(0)
             
->>>>>>> liblouis/main

@@ -1,16 +1,9 @@
 import json
-<<<<<<< HEAD
-from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox
-)
-from PyQt5.QtGui import QKeyEvent
-=======
 import os
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox, QShortcut
 )
 from PyQt5.QtGui import QKeyEvent, QFont, QKeySequence
->>>>>>> liblouis/main
 from PyQt5.QtCore import Qt
 from components.AddEntry.AddEntryWidget import AddEntryWidget
 from components.AddEntry.BrailleInputWidget import BrailleInputWidget
@@ -23,14 +16,11 @@ from utils.Toast import Toast
 class TableEditor(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-<<<<<<< HEAD
-=======
         self._unsaved_changes = False
         self._original_content = None
         self._current_font_size = 10  
         self._undo_stack = []
         self._redo_stack = []
->>>>>>> liblouis/main
         self.initUI()
 
     def initUI(self):
@@ -59,46 +49,6 @@ class TableEditor(QWidget):
 
         self.toast = None
 
-<<<<<<< HEAD
-    def add_entry(self):
-        entry_data = self.add_entry_widget.collect_entry_data()
-        self.table_preview.add_entry(entry_data)
-        self.show_toast("Entry added successfully!", "./src/assets/icons/tick.png", 75, 175, 78)
-
-    def save_entries(self, file_path):
-        with open(file_path, 'w') as file:
-            json.dump(self.table_preview.entries, file)
-
-    def load_entries(self, file_path):
-        with open(file_path, 'r') as file:
-            entries = file.read()
-            self.table_preview.entries = entries
-            self.table_preview.update_content()
-        
-        
-    def set_content(self, content):
-        if content.strip():  # Check if content is not just whitespace
-            self.table_preview.entries = [line for line in content.splitlines() if line.strip()]
-        else:
-            self.table_preview.entries = []
-        self.table_preview.update_content()
-
-    def get_content(self):
-        return self.table_preview.entries
-    
-    
-    def keyPressEvent(self, event):
-        # Shortcut key to add entry - CTRL + Enter
-        if event.key() == Qt.Key_Return and event.modifiers() == Qt.ControlModifier:
-            self.add_entry()
-
-    def show_toast(self, text, icon_path, colorR, colorG, colorB):
-        if self.toast:
-            self.toast.close()
-        self.toast = Toast(text, icon_path, colorR, colorG, colorB,  self)
-        self.toast.move((self.width() - self.toast.width()), self.height() + 290)
-        self.toast.show_toast()
-=======
     def validate_entry_data(self, entry_data):
         if not entry_data:
             return False
@@ -216,7 +166,6 @@ class TableEditor(QWidget):
             self.toast.show_toast()
         except Exception as e:
             print(f"Error showing toast: {str(e)}") 
->>>>>>> liblouis/main
 
     def load_entry_into_editor(self, entry):
         self.add_entry_widget.clear_form()
@@ -263,8 +212,6 @@ class TableEditor(QWidget):
                 elif isinstance(widget, BrailleInputWidget):
                     widget.braille_input.setText(data[field_index])
                 field_index += 1
-<<<<<<< HEAD
-=======
 
     def has_unsaved_changes(self):
         if self._unsaved_changes:
@@ -362,4 +309,3 @@ class TableEditor(QWidget):
         self.table_preview.update()
             
         self.show_toast(f"Font size: {self._current_font_size}pt", "./src/assets/icons/tick.png", 75, 175, 78)
->>>>>>> liblouis/main

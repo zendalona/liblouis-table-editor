@@ -313,12 +313,7 @@ block_names =  {
 
 
 sorted_block_names = dict(sorted(block_names.items(), key=lambda item: item[0]))
-<<<<<<< HEAD
-for k in sorted_block_names:
-    print(k[0], ":", f"[{k[1][0]}, {k[1][1]}")
-=======
 for key, value in sorted_block_names.items():
     print(f"{key}: [{hex(value[0])}, {hex(value[1])}]")
->>>>>>> liblouis/main
 
 print(sorted_block_names)

@@ -1,50 +1,12 @@
-<<<<<<< HEAD
-from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QMenu, QAction, QLineEdit
-from PyQt5.QtCore import Qt
-
-class EntryWidget(QWidget):
-=======
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QMenu, QAction, QLineEdit, QFrame, QVBoxLayout
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QFontDatabase
 
 class EntryWidget(QFrame):
->>>>>>> liblouis/main
     def __init__(self, entry, table_editor, parent=None):
         super().__init__(parent)
         self.entry = entry
         self.table_editor = table_editor
-<<<<<<< HEAD
-        self.initUI()
-
-    def initUI(self):
-        self.label_text = QLabel(self.entry)
-        self.label_text.setWordWrap(False)
-
-        self.layout = QHBoxLayout(self)
-        self.layout.addWidget(self.label_text, alignment=Qt.AlignTop)
-        self.layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
-        self.layout.setSpacing(0)  # Remove spacing
-        self.setLayout(self.layout)
-
-        self.setStyleSheet("padding: 10px; background-color: white; margin: 0px")
-
-        self.setMouseTracking(True)
-        self.enterEvent = self.onHoverEnter
-        self.leaveEvent = self.onHoverLeave
-
-        self.edit_line = QLineEdit(self.entry)
-        self.edit_line.setVisible(False)
-        self.edit_line.setStyleSheet("background-color: #e0f7fa;")
-        self.layout.addWidget(self.edit_line)
-        self.edit_line.editingFinished.connect(self.save_entry)
-
-        self.label_text.mousePressEvent = self.load_into_editor
-
-    def contextMenuEvent(self, event):
-        menu = QMenu(self)
-
-=======
         self.current_font_size = 12 
         self.setObjectName("entry_frame")
         self.layout = QHBoxLayout(self)
@@ -139,7 +101,6 @@ class EntryWidget(QFrame):
 
     def contextMenuEvent(self, event):
         menu = QMenu(self)
->>>>>>> liblouis/main
         duplicate_action = QAction('Duplicate', self)
         duplicate_action.triggered.connect(self.duplicate_entry)
         menu.addAction(duplicate_action)
@@ -155,10 +116,6 @@ class EntryWidget(QFrame):
         menu.exec_(self.mapToGlobal(event.pos()))
 
     def duplicate_entry(self):
-<<<<<<< HEAD
-        new_entry_widget = EntryWidget(self.entry, self.table_editor, parent=self.parentWidget())
-        self.parentWidget().layout().insertWidget(self.parentWidget().layout().indexOf(self) + 1, new_entry_widget)
-=======
         
         parent = self.parentWidget()
         if parent:
@@ -178,7 +135,6 @@ class EntryWidget(QFrame):
                 
                 new_index = len(table_preview.entries) - 1
                 table_preview.select_entry(new_index)
->>>>>>> liblouis/main
 
     def edit_entry(self):
         self.label_text.setVisible(False)
@@ -199,15 +155,6 @@ class EntryWidget(QFrame):
         self.deleteLater()
 
     def onHoverEnter(self, event):
-<<<<<<< HEAD
-        self.setStyleSheet("padding: 10px; background-color: #f0f8ff; margin: 0px")
-
-    def onHoverLeave(self, event):
-        self.setStyleSheet("padding: 10px; background-color: white; margin: 0px")
-
-    def load_into_editor(self, event=None):
-        self.table_editor.load_entry_into_editor(self.entry)
-=======
         if not self.property("selected"):
             pass
 
@@ -258,4 +205,3 @@ class EntryWidget(QFrame):
         self.style().unpolish(self)
         self.style().polish(self)
         self.update()
->>>>>>> liblouis/main

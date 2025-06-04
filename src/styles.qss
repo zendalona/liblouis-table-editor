@@ -2,9 +2,6 @@
 
 QWidget {
   font-family: Verdana, sans-serif;
-<<<<<<< HEAD
-  font-size: 16px; /* Larger font size */
-=======
   font-size: 16px;
   background-color: #ffffff;
   color: #333; 
@@ -63,28 +60,10 @@ QFrame#panel {
 
 QFrame#panel:hover {
   border-color: #007bff;
->>>>>>> liblouis/main
 }
 
 QTabWidget::pane {
   background: #f0f8ff;
-<<<<<<< HEAD
-}
-
-QTabBar::tab {
-  padding: 8px 10px; /* Reduced vertical padding */
-  min-width: 100px;
-  color: #1a1a1a; /* Text color */
-}
-
-QTabBar::tab:selected {
-  background: #d4e9f7; /* Light shade of blue */
-  border-bottom-color: #d4e9f7;
-}
-
-QTabBar::tab:hover {
-  background: #d4e9f7; /* Light shade of blue */
-=======
   border: 1px solid #b0c6cf;
   border-radius: 4px;
 }
@@ -105,42 +84,16 @@ QTabBar::tab:selected {
 
 QTabBar::tab:hover {
   background: #d4e9f7;
->>>>>>> liblouis/main
 }
 
 QMenuBar {
   background: #f0f8ff;
-<<<<<<< HEAD
-=======
   padding: 4px;
   border-bottom: 1px solid #b0c6cf;
->>>>>>> liblouis/main
 }
 
 QMenuBar::item {
   background: transparent;
-<<<<<<< HEAD
-  padding: 5px 15px;
-  color: #1a1a1a; /* Text color */
-}
-
-QMenuBar::item:selected {
-  background: #d4e9f7; /* Light shade of blue */
-  color: #1a1a1a; /* Ensure text color remains black */
-}
-
-QMenu {
-  background: #f0f8ff;
-}
-
-QMenu::item {
-  color: #1a1a1a; /* Ensure text color remains black */
-}
-
-QMenu::item:selected {
-  background: #d4e9f7; /* Light shade of blue */
-  color: #1a1a1a; /* Ensure text color remains black */
-=======
   padding: 8px 15px;
   color: #333;
   font-weight: 500;
@@ -178,42 +131,10 @@ QMenu::separator {
   height: 1px;
   background: #b0c6cf;
   margin: 5px 0px;
->>>>>>> liblouis/main
 }
 
 QTextEdit,
 QLineEdit,
-<<<<<<< HEAD
-QLabel {
-  background: #ffffff;
-  padding: 10px;
-  color: #1a1a1a;
-}
-
-QLineEdit {
-  border: 1px solid #b0c6cf; /* Lighter border color */
-  border-radius: 5px;
-  margin-bottom: 10px;
-  margin-left: 0px;
-}
-
-QLabel {
-  margin-bottom: 5px; /* Add margin below label */
-}
-
-QListWidget {
-  background: #ffffff;
-  border: 1px solid #b0c6cf; /* Lighter border color */
-  border-radius: 5px;
-  padding: 5px;
-  color: #1a1a1a;
-}
-
-QListWidget::item {
-  padding: 5px;
-}
-
-=======
 QLabel,
 QPlainTextEdit {
   background: #ffffff;
@@ -244,17 +165,13 @@ QTableView {
 }
 
 QListWidget::item,
->>>>>>> liblouis/main
 QListView::item {
   padding: 5px;
 }
 
 QListWidget::item:hover {
   background: #d4e9f7;
-<<<<<<< HEAD
-=======
   border-radius: 4px;
->>>>>>> liblouis/main
 }
 
 QListWidget::item:selected {
@@ -265,43 +182,16 @@ QListWidget::item:selected {
 QComboBox {
   background: #ffffff;
   padding: 10px;
-<<<<<<< HEAD
-  border: 1px solid #b0c6cf; /* Lighter border color */
-  border-radius: 5px;
-  color: #1a1a1a;
-}
-
-QComboBox::drop-down {
-  width: 30px; /* Adjust the width of the drop-down arrow area */
-=======
   border: 1px solid #b0c6cf;
   border-radius: 5px;
 }
 
 QComboBox::drop-down {
   width: 30px;
->>>>>>> liblouis/main
 }
 
 QComboBox::down-arrow {
   image: url(./src/assets/icons/down-arrow.png);
-<<<<<<< HEAD
-  height: 50px;
-  width: 100px;
-}
-
-QComboBox QAbstractItemView::item {
-  padding: 10px; /* Padding for the list items */
-  margin: 2px 0;
-}
-
-QPushButton {
-  background-color: #f0f8ff;
-  border: 1px solid #b0c6cf; /* Lighter border color */
-  border-radius: 5px;
-  padding: 10px;
-  color: #1a1a1a;
-=======
   height: 16px;
   width: 16px;
 }
@@ -320,22 +210,10 @@ QPushButton {
   border: 1px solid #b0c6cf;
   border-radius: 5px;
   padding: 10px;
->>>>>>> liblouis/main
 }
 
 QPushButton:hover {
   background-color: #d4e9f7;
-<<<<<<< HEAD
-}
-
-.char-button {
-  font-size: 32px; /* Font size for specific buttons */
-  background-color: #f0f8ff;
-  border: 1px solid #b0c6cf; /* Lighter border color */
-  border-radius: 5px;
-  padding: 10px;
-  color: #1a1a1a;
-=======
   border: 1px solid #a5c7e7;
 }
 
@@ -367,14 +245,10 @@ QPushButton#translate_button:pressed {
   border: 1px solid #b0c6cf;
   border-radius: 5px;
   padding: 10px;
->>>>>>> liblouis/main
 }
 
 .char-button:hover {
   background-color: #d4e9f7;
-<<<<<<< HEAD
-}
-=======
   border: 1px solid #a5c7e7;
 }
 
@@ -828,4 +702,3 @@ QFrame#entry_line {
     border-radius: 1px;
     border: none;
 }
->>>>>>> liblouis/main

@@ -1,15 +1,6 @@
 # style_utils.py
 
 from PyQt5.QtCore import QFile, QTextStream
-<<<<<<< HEAD
-
-def apply_styles(widget):
-    
-    stylesheet_path = "./src/styles.qss"
-    style_file = QFile(stylesheet_path)
-    if not style_file.open(QFile.ReadOnly | QFile.Text):
-        print(f"Failed to open stylesheet: {stylesheet_path}")
-=======
 import os
 import sys
 
@@ -51,7 +42,6 @@ def apply_styles(widget):
     style_file = QFile(stylesheet_path)
     if not style_file.open(QFile.ReadOnly | QFile.Text):
         print(f"Error: Could not open stylesheet at {stylesheet_path}")
->>>>>>> liblouis/main
         return False
     
     style_stream = QTextStream(style_file)
@@ -59,8 +49,5 @@ def apply_styles(widget):
     widget.setStyleSheet(style_sheet)
     
     style_file.close()
-<<<<<<< HEAD
-=======
     print(f"Successfully loaded styles from: {stylesheet_path}")
->>>>>>> liblouis/main
     return True

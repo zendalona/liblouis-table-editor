@@ -1,30 +1,18 @@
 import sys
-<<<<<<< HEAD
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel
-from PyQt5.QtGui import QPalette, QColor, QPixmap
-=======
 import os
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel, QStackedLayout, QMessageBox, QFileDialog
 from PyQt5.QtGui import QPalette, QColor, QPixmap, QIcon
->>>>>>> liblouis/main
 from PyQt5.QtCore import Qt
 from config import WINDOW_WIDTH, WINDOW_HEIGHT
 from components.Menubar import create_menubar
 from components.TableEditor import TableEditor
-<<<<<<< HEAD
-=======
 from components.Homepage import HomeScreen
->>>>>>> liblouis/main
 from utils.ApplyStyles import apply_styles
 
 class TableManager(QWidget):
     def __init__(self):
         super().__init__()
 
-<<<<<<< HEAD
-        self.setWindowTitle('Liblouis Tables Manager')
-        self.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
-=======
         self.setWindowTitle('Liblouis-Tables-Editor')
         
         # Set application icon
@@ -47,7 +35,6 @@ class TableManager(QWidget):
         x = (screen.width() - width) // 2
         y = (screen.height() - height) // 2
         self.move(x, y)
->>>>>>> liblouis/main
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -55,24 +42,12 @@ class TableManager(QWidget):
         self.menubar = create_menubar(self)
         layout.setMenuBar(self.menubar)
 
-<<<<<<< HEAD
-=======
         self.stacked_layout = QStackedLayout()
         
->>>>>>> liblouis/main
         self.tab_widget = QTabWidget()
         self.tab_widget.setTabsClosable(True)
         self.tab_widget.tabCloseRequested.connect(self.close_tab)
 
-<<<<<<< HEAD
-        self.background_label = QLabel(self)
-        self.background_label.setAlignment(Qt.AlignCenter)
-        self.background_label.setPixmap(QPixmap('src/assets/images/background.png'))
-        self.background_label.setScaledContents(True)
-
-        layout.addWidget(self.tab_widget)
-        layout.addWidget(self.background_label)
-=======
         self.home_screen = HomeScreen(self)
         self.home_screen.file_opened.connect(self.handle_file_opened)
         
@@ -80,7 +55,6 @@ class TableManager(QWidget):
         self.stacked_layout.addWidget(self.tab_widget)
 
         layout.addLayout(self.stacked_layout)
->>>>>>> liblouis/main
 
         self.setLayout(layout)
 
@@ -88,23 +62,6 @@ class TableManager(QWidget):
 
         self.update_background_visibility()
 
-<<<<<<< HEAD
-    def add_tab(self, file_name, file_content):
-        new_tab = QWidget()
-        layout = QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
-
-        table_editor = TableEditor()
-        table_editor.set_content(file_content)
-
-        layout.addWidget(table_editor)
-        new_tab.setLayout(layout)
-
-        self.tab_widget.addTab(new_tab, file_name)
-        self.tab_widget.setCurrentWidget(new_tab)
-
-        self.update_background_visibility()
-=======
     def handle_file_opened(self, file_name, file_content, file_path):
         self.add_tab(file_name, file_content, file_path)
         self.stacked_layout.setCurrentIndex(1)
@@ -132,7 +89,6 @@ class TableManager(QWidget):
             self.update_background_visibility()
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to add tab: {str(e)}")
->>>>>>> liblouis/main
 
     def get_current_table_editor(self):
         current_widget = self.tab_widget.currentWidget()
@@ -141,19 +97,6 @@ class TableManager(QWidget):
         return None
 
     def close_tab(self, index):
-<<<<<<< HEAD
-        self.tab_widget.removeTab(index)
-        self.update_background_visibility()
-
-    def update_background_visibility(self):
-        if self.tab_widget.count() == 0:
-            self.background_label.show()
-        else:
-            self.background_label.hide()
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-=======
         try:
             widget = self.tab_widget.widget(index)
             
@@ -311,7 +254,6 @@ if __name__ == '__main__':
                     bus.call(message)
             except Exception as e:
                 print(f"Warning: Could not set Linux theme integration: {e}")
->>>>>>> liblouis/main
 
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(240, 248, 255))
@@ -329,12 +271,6 @@ if __name__ == '__main__':
 
     app.setPalette(palette)
 
-<<<<<<< HEAD
-    window = TableManager()
-    window.show()
-
-    sys.exit(app.exec_())
-=======
     try:
         window = TableManager()
         window.show()
@@ -342,4 +278,3 @@ if __name__ == '__main__':
     except Exception as e:
         QMessageBox.critical(None, "Fatal Error", f"Application failed to start: {str(e)}")
         sys.exit(1)
->>>>>>> liblouis/main
