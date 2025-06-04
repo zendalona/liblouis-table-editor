@@ -63,5 +63,3 @@ The editor provides various tools and options to help you define translation rul
 ## License
 
 [MIT License](LICENSE)
->>>>>>> liblouis/main
-
