@@ -36,12 +36,3 @@ ls /usr/share/liblouis/tables
    h. Click 'OK' on all windows
    i. Restart your terminal/command prompt
 
-### Troubleshooting:
-- If tables directory is not found, check these locations:
-  - Linux: /usr/share/liblouis/tables
-  - Linux: /usr/local/share/liblouis/tables
-  - Windows: C:\Program Files\liblouis\share\liblouis	ables
-
-- If lou_translate is not found:
-  - Linux: Run ```sudo apt-get install liblouis-bin```
-  - Windows: Make sure the bin directory is in your system PATH
