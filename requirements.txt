@@ -1,6 +1,2 @@
-<<<<<<< HEAD
-PyQt5
-=======
 PyQt5
 pyinstaller
->>>>>>> liblouis/main
