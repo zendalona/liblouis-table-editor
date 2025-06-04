@@ -23,7 +23,7 @@ ls /usr/share/liblouis/tables
 3. Copy the extracted folder to "C:\Program Files\liblouis" (remove extra word from name only extracted as 'liblouis')
 4. Make sure the following structure exists:
    - C:\Program Files\liblouis\bin\lou_translate.exe
-   - C:\Program Files\liblouis\share\liblouis	ables
+   - C:\Program Files\liblouis\share\liblouis	tables
 
 5. Add liblouis to Windows PATH:
    a. Press Windows + R, type 'sysdm.cpl' and press Enter \n
