@@ -26,13 +26,22 @@ ls /usr/share/liblouis/tables
    - C:\Program Files\liblouis\share\liblouis	tables
 
 5. Add liblouis to Windows PATH:
-   a. Press Windows + R, type 'sysdm.cpl' and press Enter \n
+    
+   a. Press Windows + R, type 'sysdm.cpl' and press Enter
+   
    b. Go to 'Advanced' tab
+   
    c. Click 'Environment Variables'
+   
    d. Under 'User variables', find and select 'Path'
+   
    e. Click 'Edit'
+   
    f. Click 'New'
+   
    g. Add 'C:\Program Files\liblouis\bin'
+   
    h. Click 'OK' on all windows
-   i. Restart your terminal/command prompt
+   
+   i. Restart your PC/Laptop
 
