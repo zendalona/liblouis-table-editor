@@ -478,9 +478,9 @@ class UnicodeSelector(QWidget):
         char_button = self.sender()
         selected_char = char_button.text()
 
-        self.selected_characters.append(selected_char)
-
-        self.selected_text_edit.setPlainText("".join(self.selected_characters))
+        cursor = self.selected_text_edit.textCursor()
+        cursor.insertText(selected_char)
+        self.selected_text_edit.setTextCursor(cursor)
 
     def confirm_selection(self):
         manual_input = self.selected_text_edit.toPlainText()
