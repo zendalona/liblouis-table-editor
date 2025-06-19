@@ -17,10 +17,8 @@ class TableManager(QWidget):
         self.setWindowTitle('Liblouis Table Editor')
         self.setObjectName("liblouis-table-editor")
         
-        # Set minimum size constraints to prevent geometry conflicts
         self.setMinimumSize(1000, 600)
         
-        # Try to load the application icon using the improved asset system
         icon_path = get_icon_path('liblouis-table-editor.ico')
         if not icon_path:
             icon_path = get_icon_path('icon.ico')
@@ -30,28 +28,22 @@ class TableManager(QWidget):
             self.setWindowIcon(app_icon)
             QApplication.setWindowIcon(app_icon)  
         
-        # Use QDesktopWidget for better screen geometry handling
         desktop = QDesktopWidget()
-        screen_rect = desktop.availableGeometry()  # This excludes taskbars and other UI elements
+        screen_rect = desktop.availableGeometry()  
         
-        # Account for window frame margins and system UI elements
-        margin = 50  # Reduced margin for better space utilization
+        margin = 50  
         available_width = screen_rect.width() - (margin * 2)
         available_height = screen_rect.height() - (margin * 2)
         
-        # Calculate window size respecting minimum constraints
         min_size = self.minimumSize()
         width = max(min_size.width(), min(WINDOW_WIDTH, available_width))
         height = max(min_size.height(), min(WINDOW_HEIGHT, available_height))
         
-        # Set the window size
         self.resize(width, height)
         
-        # Center the window on the available screen area
         x = screen_rect.x() + (screen_rect.width() - width) // 2
         y = screen_rect.y() + (screen_rect.height() - height) // 2
         
-        # Ensure the window is within screen bounds
         x = max(screen_rect.x(), min(x, screen_rect.x() + screen_rect.width() - width))
         y = max(screen_rect.y(), min(y, screen_rect.y() + screen_rect.height() - height))
         
@@ -83,7 +75,6 @@ class TableManager(QWidget):
 
         self.update_background_visibility()
 
-        # Open the window maximized (moved to the end)
         self.showMaximized()
 
     def handle_file_opened(self, file_name, file_content, file_path):
