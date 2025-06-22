@@ -12,6 +12,7 @@ class UnicodeSelector(QWidget):
         super().__init__()
         self.setWindowTitle('Unicode Character Map')
         self.selected_characters = []
+        self.on_select_callback = None
         self.initUI()
 
     def initUI(self):
@@ -67,6 +68,7 @@ class UnicodeSelector(QWidget):
         self.selected_text_edit.setPlaceholderText("Selected characters")
         self.selected_text_edit.setFixedHeight(40)
         self.selected_text_edit.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.selected_text_edit.textChanged.connect(self.sync_selected_characters)
         selection_layout.addWidget(self.selected_text_edit)
 
         self.done_button = QPushButton("Done")
@@ -479,8 +481,14 @@ class UnicodeSelector(QWidget):
         selected_char = char_button.text()
 
         self.selected_characters.append(selected_char)
-
         self.selected_text_edit.setPlainText("".join(self.selected_characters))
+        
+        cursor = self.selected_text_edit.textCursor()
+        cursor.movePosition(cursor.End)
+        self.selected_text_edit.setTextCursor(cursor)
+
+    def sync_selected_characters(self):
+        self.selected_characters = list(self.selected_text_edit.toPlainText())
 
     def confirm_selection(self):
         manual_input = self.selected_text_edit.toPlainText()
