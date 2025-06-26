@@ -1,0 +1,19 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Liblouis Table Editor
+Name[en]=Liblouis Table Editor
+Comment=GUI tool to create and edit Liblouis braille tables
+Comment[en]=GUI tool to create and edit Liblouis braille tables
+GenericName=Braille Table Editor
+GenericName[en]=Braille Table Editor
+Exec=liblouis-table-editor
+Icon=liblouis-table-editor
+Terminal=false
+StartupNotify=true
+StartupWMClass=liblouis-table-editor
+Categories=Utility;Accessibility;TextEditor;Development;
+Keywords=braille;accessibility;liblouis;table;editor;text;development;
+MimeType=text/plain;application/x-liblouis-table;
+X-GNOME-UsesNotifications=true
+X-Desktop-File-Install-Version=0.24 

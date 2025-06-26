@@ -1,0 +1,22 @@
+Source: liblouis-table-editor
+Section: utils
+Priority: optional
+Maintainer: sahilrakhaiya05 <sahilrakhaiya05@users.noreply.launchpad.net>
+Build-Depends: debhelper-compat (= 13), dh-python, python3-setuptools, python3-all, desktop-file-utils
+Standards-Version: 4.6.0
+Homepage: https://github.com/SahilRakhaiya05/Liblouis-Table-Editor
+Vcs-Browser: https://github.com/SahilRakhaiya05/Liblouis-Table-Editor
+Vcs-Git: https://github.com/SahilRakhaiya05/Liblouis-Table-Editor.git
+Rules-Requires-Root: no
+
+Package: liblouis-table-editor
+Architecture: all
+Section: utils
+Depends: ${python3:Depends}, ${misc:Depends}, python3-pyqt5, liblouis-bin, liblouis-data, python3-louis, desktop-file-utils
+Description: GUI tool to create and edit Liblouis braille tables (Python 3)
+ Liblouis Table Editor is a graphical interface for creating and editing 
+ braille translation tables used by the Liblouis library. It allows users 
+ to modify `.tbl` files visually, test translations in real-time, and 
+ export tables compatible with assistive technologies.
+ .
+ This package installs the editor application for Python 3.

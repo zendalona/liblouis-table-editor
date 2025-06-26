@@ -1,0 +1,77 @@
+{
+    "codes": [
+        {
+            "code": "space",
+            "fields": [
+                "unicode",
+                "dots"
+            ],
+            "description": "space: This is description"
+        },
+        {
+            "code": "punctuation",
+            "fields": [
+                "unicode",
+                "dots"
+            ],
+            "description": "punctuation: This is description"
+        },
+        {
+            "code": "digit",
+            "fields": [
+                "unicode",
+                "dots"
+            ],
+            "description": "digit: This is description"
+        },
+        {
+            "code": "lowercase",
+            "fields": [
+                "unicode",
+                "dots"
+            ],
+            "description": "lowercase: This is description"
+        },
+        {
+            "code": "letter",
+            "fields": [
+                "unicode",
+                "dots"
+            ],
+            "description": "letter: uppercase"
+        },
+        {
+            "code": "word",
+            "fields": [
+                "unicode",
+                "dots"
+            ],
+            "description": "word: This is description"
+        },
+        {
+            "code": "litdigit",
+            "fields": [
+                "unicode",
+                "dots"
+            ],
+            "description": "litdigit: This is description"
+        },
+        {
+            "code": "sign",
+            "fields": [
+                "unicode",
+                "dots"
+            ],
+            "description": "sign: This is description"
+        },
+        {
+            "code": "math",
+            "fields": [
+                "unicode",
+                "dots",
+                "dots"
+            ],
+            "description": "math: This is description"
+        }
+    ]
+}

@@ -24,11 +24,11 @@ def build_app():
     
     clean_build_dirs()
     
-    main_script = os.path.abspath('src/main.py')
+    main_script = os.path.abspath('src/liblouis_table_editor/__main__.py')
     
-    assets_dir = os.path.abspath('src/assets')
+    assets_dir = os.path.abspath('src/liblouis_table_editor/assets')
     
-    styles_path = os.path.abspath('src/styles.qss')
+    styles_path = os.path.abspath('src/liblouis_table_editor/styles.qss')
     
     if not os.path.exists(styles_path):
         print(f"Error: styles.qss not found at {styles_path}")
@@ -36,7 +36,7 @@ def build_app():
     
     print(f"Using styles.qss from: {styles_path}")
     
-    icon_path = os.path.abspath('src/assets/icons/icon.ico')
+    icon_path = os.path.abspath('src/liblouis_table_editor/assets/icons/icon.ico')
     
     args = [
         main_script,
