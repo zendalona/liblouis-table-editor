@@ -191,7 +191,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-  image: url(./src/assets/icons/down-arrow.png);
+  image: url(./liblouis_table_editor/assets/icons/down-arrow.png);
   height: 16px;
   width: 16px;
 }

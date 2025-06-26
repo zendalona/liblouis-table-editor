@@ -4,6 +4,7 @@ from PyQt5.QtGui import QIcon, QFont, QKeySequence
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import Qt
 from liblouis_table_editor.components.HelpDialogs import AboutDialog, UserGuideDialog, ReportBugDialog
+from liblouis_table_editor.utils.asset_utils import get_icon_path
 
 def create_action(parent, title, icon_path=None, shortcut=None, status_tip=None, triggered=None):
     action = QAction(title, parent)
@@ -29,33 +30,31 @@ def add_menu_with_actions(menubar, title, actions):
 def create_menubar(parent):
     menubar = QMenuBar(parent)
 
-    icon_base_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'icons')
-
     menu_structure = {
         'File': [
-            ('New', os.path.join(icon_base_path, 'new.png'), 'Ctrl+N', 'Create a new table file', lambda: open_new_file_dialog(parent)),
-            ('Open', os.path.join(icon_base_path, 'open.png'), 'Ctrl+O', 'Open an existing table file', lambda: open_file_dialog(parent)),
-            ('Save', os.path.join(icon_base_path, 'save.png'), 'Ctrl+S', 'Save the current table', lambda: save_file_dialog(parent)),
-            ('Save As', os.path.join(icon_base_path, 'save_as.png'), 'Ctrl+Shift+S', 'Save the current table with a new name', lambda: save_as_file_dialog(parent)),
+            ('New', get_icon_path('new.png'), 'Ctrl+N', 'Create a new table file', lambda: open_new_file_dialog(parent)),
+            ('Open', get_icon_path('open.png'), 'Ctrl+O', 'Open an existing table file', lambda: open_file_dialog(parent)),
+            ('Save', get_icon_path('save.png'), 'Ctrl+S', 'Save the current table', lambda: save_file_dialog(parent)),
+            ('Save As', get_icon_path('save_as.png'), 'Ctrl+Shift+S', 'Save the current table with a new name', lambda: save_as_file_dialog(parent)),
             'separator',
-            ('Exit', os.path.join(icon_base_path, 'exit.png'), 'Alt+F4', 'Exit the application', lambda: parent.close())
+            ('Exit', get_icon_path('about.png'), 'Alt+F4', 'Exit the application', lambda: parent.close())  # Use about.png as fallback since exit.png doesn't exist
         ],
         'Edit': [
-            ('Undo', os.path.join(icon_base_path, 'undo.png'), 'Ctrl+Z', 'Undo the last action', lambda: undo_action(parent)),
-            ('Redo', os.path.join(icon_base_path, 'redo.png'), 'Ctrl+Y', 'Redo the last undone action', lambda: redo_action(parent)),
+            ('Undo', get_icon_path('undo.png'), 'Ctrl+Z', 'Undo the last action', lambda: undo_action(parent)),
+            ('Redo', get_icon_path('redo.png'), 'Ctrl+Y', 'Redo the last undone action', lambda: redo_action(parent)),
             'separator',
-            ('Go to Entry', os.path.join(icon_base_path, 'go_to_entry.png'), 'Ctrl+I', 'Go to a specific entry', lambda: go_to_entry(parent)),
-            ('Find', os.path.join(icon_base_path, 'find.png'), 'Ctrl+F', 'Find text in the current table', lambda: find_text(parent)),
-            ('Find and Replace', os.path.join(icon_base_path, 'find_replace.png'), 'Ctrl+H', 'Find and replace text', lambda: find_replace(parent))
+            ('Go to Entry', get_icon_path('go_to_entry.png'), 'Ctrl+I', 'Go to a specific entry', lambda: go_to_entry(parent)),
+            ('Find', get_icon_path('find.png'), 'Ctrl+F', 'Find text in the current table', lambda: find_text(parent)),
+            ('Find and Replace', get_icon_path('find_replace.png'), 'Ctrl+H', 'Find and replace text', lambda: find_replace(parent))
         ],
          'Tools': [
-            ('Increase Font Size', os.path.join(icon_base_path, 'increase_font.png'), 'Ctrl+]', 'Increase the font size', lambda: change_font_size(parent, True)),
-            ('Decrease Font Size', os.path.join(icon_base_path, 'decrease_font.png'), 'Ctrl+[', 'Decrease the font size', lambda: change_font_size(parent, False))
+            ('Increase Font Size', get_icon_path('increase_font.png'), 'Ctrl+]', 'Increase the font size', lambda: change_font_size(parent, True)),
+            ('Decrease Font Size', get_icon_path('decrease_font.png'), 'Ctrl+[', 'Decrease the font size', lambda: change_font_size(parent, False))
         ],
         'Help': [
-            ('About', os.path.join(icon_base_path, 'about.png'), 'F1', 'About this application', lambda: AboutDialog(parent).exec_()),
-            ('User Guide', os.path.join(icon_base_path, 'user_guide.png'), 'F2', 'View the user guide', lambda: UserGuideDialog(parent).exec_()),
-            ('Report a bug', os.path.join(icon_base_path, 'report_bug.png'), 'F3', 'Report a bug', lambda: ReportBugDialog(parent).exec_())
+            ('About', get_icon_path('about.png'), 'F1', 'About this application', lambda: AboutDialog(parent).exec_()),
+            ('User Guide', get_icon_path('user_guide.png'), 'F2', 'View the user guide', lambda: UserGuideDialog(parent).exec_()),
+            ('Report a bug', get_icon_path('report_bug.png'), 'F3', 'Report a bug', lambda: ReportBugDialog(parent).exec_())
         ]
     }
 

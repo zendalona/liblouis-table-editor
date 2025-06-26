@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont, QPixmap, QKeySequence, QIcon, QPainter, QColor
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
+from liblouis_table_editor.utils.asset_utils import get_image_path
 
 
 class HomeScreen(QWidget):
@@ -84,7 +85,7 @@ class HomeScreen(QWidget):
         self.right_panel.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.right_panel.setMinimumWidth(400)
 
-        self.original_image_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'images', 'background.png')
+        self.original_image_path = get_image_path('background.png')
         self.updateBackgroundImage()
 
         self.main_layout.addWidget(left_panel, 45)
@@ -95,7 +96,7 @@ class HomeScreen(QWidget):
         self.setMinimumSize(1000, 600)
 
     def updateBackgroundImage(self):
-        if os.path.exists(self.original_image_path):
+        if self.original_image_path and os.path.exists(self.original_image_path):
             original = QPixmap(self.original_image_path)
             if not original.isNull():
                 available_width = self.right_panel.width()

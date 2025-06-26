@@ -1,6 +1,6 @@
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel, QStackedLayout, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel, QStackedLayout, QMessageBox, QFileDialog, QDesktopWidget
 from PyQt5.QtGui import QPalette, QColor, QPixmap, QIcon
 from PyQt5.QtCore import Qt
 from liblouis_table_editor.config import WINDOW_WIDTH, WINDOW_HEIGHT
@@ -8,40 +8,53 @@ from liblouis_table_editor.components.Menubar import create_menubar
 from liblouis_table_editor.components.TableEditor import TableEditor
 from liblouis_table_editor.components.Homepage import HomeScreen
 from liblouis_table_editor.utils.ApplyStyles import apply_styles
+from liblouis_table_editor.utils.asset_utils import get_icon_path
 
 class TableManager(QWidget):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle('Liblouis Table Editor')
-
         self.setObjectName("liblouis-table-editor")
         
-        icon_path = os.path.join(os.path.dirname(__file__), 'assets', 'icons', 'liblouis-table-editor.ico')
-        if os.path.exists(icon_path):
+        # Set minimum size constraints to prevent geometry conflicts
+        self.setMinimumSize(1000, 600)
+        
+        # Try to load the application icon using the improved asset system
+        icon_path = get_icon_path('liblouis-table-editor.ico')
+        if not icon_path:
+            icon_path = get_icon_path('icon.ico')
+        
+        if icon_path:
             app_icon = QIcon(icon_path)
             self.setWindowIcon(app_icon)
             QApplication.setWindowIcon(app_icon)  
-        else:
-
-            icon_path = os.path.join(os.path.dirname(__file__), 'assets', 'icons', 'icon.ico')
-            if os.path.exists(icon_path):
-                app_icon = QIcon(icon_path)
-                self.setWindowIcon(app_icon)
-                QApplication.setWindowIcon(app_icon)  
         
-        screen = QApplication.primaryScreen().geometry()
+        # Use QDesktopWidget for better screen geometry handling
+        desktop = QDesktopWidget()
+        screen_rect = desktop.availableGeometry()  # This excludes taskbars and other UI elements
         
-        available_height = screen.height() - 100  
-        available_width = screen.width() - 100
+        # Account for window frame margins and system UI elements
+        margin = 50  # Reduced margin for better space utilization
+        available_width = screen_rect.width() - (margin * 2)
+        available_height = screen_rect.height() - (margin * 2)
         
-        width = min(WINDOW_WIDTH, available_width)
-        height = min(WINDOW_HEIGHT, available_height)
+        # Calculate window size respecting minimum constraints
+        min_size = self.minimumSize()
+        width = max(min_size.width(), min(WINDOW_WIDTH, available_width))
+        height = max(min_size.height(), min(WINDOW_HEIGHT, available_height))
         
+        # Set the window size
         self.resize(width, height)
         
-        x = (screen.width() - width) // 2
-        y = (screen.height() - height) // 2
+        # Center the window on the available screen area
+        x = screen_rect.x() + (screen_rect.width() - width) // 2
+        y = screen_rect.y() + (screen_rect.height() - height) // 2
+        
+        # Ensure the window is within screen bounds
+        x = max(screen_rect.x(), min(x, screen_rect.x() + screen_rect.width() - width))
+        y = max(screen_rect.y(), min(y, screen_rect.y() + screen_rect.height() - height))
+        
         self.move(x, y)
 
         layout = QVBoxLayout()
@@ -69,6 +82,9 @@ class TableManager(QWidget):
         apply_styles(self)
 
         self.update_background_visibility()
+
+        # Open the window maximized (moved to the end)
+        self.showMaximized()
 
     def handle_file_opened(self, file_name, file_content, file_path):
         self.add_tab(file_name, file_content, file_path)
@@ -229,13 +245,13 @@ class TableManager(QWidget):
 
 
 def main():
-    # Set application icon path before creating QApplication
-    icon_path = os.path.join(os.path.dirname(__file__), 'assets', 'icons', 'liblouis-table-editor.ico')
-    
     app = QApplication(sys.argv)
     
-    # Set application icon
-    if os.path.exists(icon_path):
+    icon_path = get_icon_path('liblouis-table-editor.ico')
+    if not icon_path:
+        icon_path = get_icon_path('icon.ico')
+    
+    if icon_path:
         app_icon = QIcon(icon_path)
         app.setWindowIcon(app_icon)
         QApplication.setWindowIcon(app_icon)  

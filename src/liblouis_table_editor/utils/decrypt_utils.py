@@ -4,5 +4,5 @@ def decrypt_file_to_string(file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
             return file.read()
     except Exception as e:
-        print(f"Error reading file {file_path}: {e}")
+        # Removed error print to reduce console spam - file reading errors handled gracefully
         return "" 

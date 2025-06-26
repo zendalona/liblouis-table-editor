@@ -11,6 +11,7 @@ from liblouis_table_editor.components.TablePreview import TablePreview
 from liblouis_table_editor.components.TestingWidget import TestingWidget
 from liblouis_table_editor.utils.ApplyStyles import apply_styles
 from liblouis_table_editor.utils.Toast import Toast
+from liblouis_table_editor.utils.asset_utils import get_icon_for_toast
 
 
 class TableEditor(QWidget):
@@ -66,14 +67,14 @@ class TableEditor(QWidget):
     def add_entry(self):
         entry_data = self.add_entry_widget.collect_entry_data()
         if not self.validate_entry_data(entry_data):
-            self.show_toast("Invalid entry data!", "./src/assets/icons/error.png", 255, 0, 0)
+            self.show_toast("Invalid entry data!", get_icon_for_toast('error'), 255, 0, 0)
             return
         
         self._save_state_for_undo()
         
         self.table_preview.add_entry(entry_data)
         self.mark_as_unsaved()
-        self.show_toast("Entry added successfully!", "./src/assets/icons/tick.png", 75, 175, 78)
+        self.show_toast("Entry added successfully!", get_icon_for_toast('success'), 75, 175, 78)
 
     def _save_state_for_undo(self):
         current_content = self.get_content().copy() if isinstance(self.get_content(), list) else self.get_content()
@@ -93,12 +94,11 @@ class TableEditor(QWidget):
             
             self.testing_widget.set_current_table(file_path)
             
-            self.show_toast("File saved successfully!", "./src/assets/icons/tick.png", 75, 175, 78)
+            self.show_toast("File saved successfully!", get_icon_for_toast('success'), 75, 175, 78)
             
             return True
         except Exception as e:
-            self.show_toast(f"Error saving file: {str(e)}", "./src/assets/icons/error.png", 255, 0, 0)
-            print(f"Error saving file: {str(e)}")
+            self.show_toast(f"Error saving file: {str(e)}", get_icon_for_toast('error'), 255, 0, 0)
             return False
 
     def load_entries(self, file_path):
@@ -115,13 +115,13 @@ class TableEditor(QWidget):
                 self.table_preview.update_content()
                 
             self.testing_widget.set_current_table(file_path)
-            self.show_toast("File loaded successfully!", "./src/assets/icons/tick.png", 75, 175, 78)
+            self.show_toast("File loaded successfully!", get_icon_for_toast('success'), 75, 175, 78)
             
             self.mark_as_saved()
         except FileNotFoundError:
-            self.show_toast("Error: File not found", "./src/assets/icons/error.png", 255, 0, 0)
+            self.show_toast("Error: File not found", get_icon_for_toast('error'), 255, 0, 0)
         except Exception as e:
-            self.show_toast(f"Error loading file: {str(e)}", "./src/assets/icons/error.png", 255, 0, 0)
+            self.show_toast(f"Error loading file: {str(e)}", get_icon_for_toast('error'), 255, 0, 0)
 
     def set_content(self, content):
         try:
@@ -136,7 +136,7 @@ class TableEditor(QWidget):
             self._original_content = self.get_content()
             self._unsaved_changes = False
         except Exception as e:
-            self.show_toast(f"Error setting content: {str(e)}", "./src/assets/icons/error.png", 255, 0, 0)
+            self.show_toast(f"Error setting content: {str(e)}", get_icon_for_toast('error'), 255, 0, 0)
 
     def get_content(self):
         try:
@@ -165,7 +165,7 @@ class TableEditor(QWidget):
             
             self.toast.show_toast()
         except Exception as e:
-            print(f"Error showing toast: {str(e)}") 
+            pass
 
     def load_entry_into_editor(self, entry):
         self.add_entry_widget.clear_form()
@@ -235,9 +235,9 @@ class TableEditor(QWidget):
             self.table_preview.entries = previous_state
             self.table_preview.update_content()
             self.mark_as_unsaved()
-            self.show_toast("Action undone", "./src/assets/icons/tick.png", 75, 175, 78)
+            self.show_toast("Action undone", get_icon_for_toast('success'), 75, 175, 78)
         else:
-            self.show_toast("Nothing to undo", "./src/assets/icons/info.png", 0, 0, 255)
+            self.show_toast("Nothing to undo", get_icon_for_toast('info'), 0, 0, 255)
             
     def redo(self):
         if self._redo_stack:
@@ -248,9 +248,9 @@ class TableEditor(QWidget):
             self.table_preview.entries = next_state
             self.table_preview.update_content()
             self.mark_as_unsaved()
-            self.show_toast("Action redone", "./src/assets/icons/tick.png", 75, 175, 78)
+            self.show_toast("Action redone", get_icon_for_toast('success'), 75, 175, 78)
         else:
-            self.show_toast("Nothing to redo", "./src/assets/icons/info.png", 0, 0, 255)
+            self.show_toast("Nothing to redo", get_icon_for_toast('info'), 0, 0, 255)
             
     def go_to_entry(self, entry_text):
         if not entry_text:
@@ -259,10 +259,10 @@ class TableEditor(QWidget):
         for i, entry in enumerate(self.table_preview.entries):
             if entry_text in str(entry):
                 self.table_preview.select_entry(i)
-                self.show_toast(f"Found entry: {entry_text}", "./src/assets/icons/tick.png", 75, 175, 78)
+                self.show_toast(f"Found entry: {entry_text}", get_icon_for_toast('success'), 75, 175, 78)
                 return
                 
-        self.show_toast(f"Entry not found: {entry_text}", "./src/assets/icons/error.png", 255, 0, 0)
+        self.show_toast(f"Entry not found: {entry_text}", get_icon_for_toast('error'), 255, 0, 0)
         
     def find_text(self, search_text):
         if not search_text:
@@ -271,10 +271,10 @@ class TableEditor(QWidget):
         for i, entry in enumerate(self.table_preview.entries):
             if search_text in str(entry):
                 self.table_preview.select_entry(i)
-                self.show_toast(f"Found text: {search_text}", "./src/assets/icons/tick.png", 75, 175, 78)
+                self.show_toast(f"Found text: {search_text}", get_icon_for_toast('success'), 75, 175, 78)
                 return
                 
-        self.show_toast(f"Text not found: {search_text}", "./src/assets/icons/error.png", 255, 0, 0)
+        self.show_toast(f"Text not found: {search_text}", get_icon_for_toast('error'), 255, 0, 0)
         
     def find_replace(self, find_text, replace_text):
         if not find_text:
@@ -292,9 +292,9 @@ class TableEditor(QWidget):
         if replaced_count > 0:
             self.table_preview.update_content()
             self.mark_as_unsaved()
-            self.show_toast(f"Replaced {replaced_count} occurrences", "./src/assets/icons/tick.png", 75, 175, 78)
+            self.show_toast(f"Replaced {replaced_count} occurrences", get_icon_for_toast('success'), 75, 175, 78)
         else:
-            self.show_toast(f"Text not found: {find_text}", "./src/assets/icons/error.png", 255, 0, 0)
+            self.show_toast(f"Text not found: {find_text}", get_icon_for_toast('error'), 255, 0, 0)
             
     def change_font_size(self, increase=True):
         if increase:
@@ -308,4 +308,4 @@ class TableEditor(QWidget):
         self.table_preview.scroll_widget.adjustSize()
         self.table_preview.update()
             
-        self.show_toast(f"Font size: {self._current_font_size}pt", "./src/assets/icons/tick.png", 75, 175, 78)
+        self.show_toast(f"Font size: {self._current_font_size}pt", get_icon_for_toast('success'), 75, 175, 78)

@@ -30,9 +30,8 @@ class TestingWidget(QWidget):
                 
                 try:
                     import shutil
-                    lou_translate_path = shutil.which('lou_translate')
-                    if lou_translate_path:
-                        self.translator_exe = lou_translate_path
+                    if not shutil.which('lou_translate'):
+                        pass
                 except:
                     pass
             
@@ -52,9 +51,10 @@ class TestingWidget(QWidget):
             self.liblouis_base = None
             self.tables_dir = None
             self.translator_exe = None
-            print("Warning: Could not find lou_translate executable")
+            # Removed warning print to reduce console spam - executable missing handled gracefully
         elif not os.path.exists(self.tables_dir):
-            print(f"Warning: Could not find liblouis tables directory at {self.tables_dir}")
+            # Removed warning print to reduce console spam - tables directory missing handled gracefully
+            pass
 
     def initUI(self):
         main_layout = QVBoxLayout()

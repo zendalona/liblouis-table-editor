@@ -27,8 +27,7 @@ class EntryWidget(QFrame):
                     result += char
             return result
         except Exception as e:
-            print(f"Error converting {hex_str}: {e}")
-            return ''
+            return ""
 
     def initUI(self):
         display_text = self.entry

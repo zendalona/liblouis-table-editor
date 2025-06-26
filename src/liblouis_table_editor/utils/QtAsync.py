@@ -201,7 +201,6 @@ class RunThreadCallback(QtCore.QThread):
         try:
             result = self.func(*self.args, **self.kwargs)
         except Exception as e:
-            print("e is %s" % e)
             result = e
         finally:
             CallbackEvent.post_to(self.parent(), self.on_finished, result)
@@ -242,7 +241,6 @@ def coroutine(func):
                 else:
                     raise Exception("Using yield is only supported with AsyncTasks.")
             else:
-                print("result is %s" % result)
                 return result
         result = func(*args, **kwargs)
         execute(result)

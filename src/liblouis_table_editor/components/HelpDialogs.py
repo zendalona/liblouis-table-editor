@@ -2,86 +2,102 @@ from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QTextBrowser, QPushBut
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon, QFont, QPixmap, QPalette, QColor, QKeySequence
 import os
+from ..utils.asset_utils import get_image_path
 
 class StyledDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        
+        self.setStyleSheet("""
+            QDialog {
+                background: #f8f9fa;
+            }
+            QLabel#sectionHeader {
+                font-size: 18px;
+                font-weight: bold;
+                color: #2d2d2d;
+                margin-top: 16px;
+                margin-bottom: 8px;
+            }
+            QFrame[divider="true"] {
+                background: #e0e0e0;
+                max-height: 1px;
+                min-height: 1px;
+                border: none;
+                margin-top: 12px;
+                margin-bottom: 12px;
+            }
+            QPushButton#openBtn {
+                background: #1976d2;
+                color: white;
+                border-radius: 6px;
+                padding: 8px 24px;
+                font-size: 15px;
+                font-weight: 500;
+            }
+            QPushButton#openBtn:hover {
+                background: #1565c0;
+            }
+            QTextBrowser {
+                background: #ffffff;
+                border-radius: 6px;
+                padding: 12px;
+                font-size: 15px;
+            }
+        """)
         self.close_shortcut = QShortcut(QKeySequence("Esc"), self)
         self.close_shortcut.activated.connect(self.close)
 
 class AboutDialog(StyledDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        this_dir = os.path.dirname(os.path.abspath(__file__))
         self.setWindowTitle("About Liblouis Table Editor")
-        self.setWindowIcon(QIcon(os.path.join(this_dir, '..', 'assets', 'icons', 'about.png')))
         self.setMinimumSize(800, 600)
         self.resize(800, 600)
         self.setFocusPolicy(Qt.StrongFocus)
-        
+
         main_layout = QVBoxLayout()
         main_layout.setSpacing(0)
-        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setContentsMargins(32, 32, 32, 32)
 
-        header_frame = QFrame()
-        header_frame.setObjectName("header")
-        header_layout = QHBoxLayout(header_frame)
-        header_layout.setContentsMargins(16, 16, 16, 16)
-        
-        logo_path = os.path.join(this_dir, '..', 'assets', 'images', 'logo.png')
-        if os.path.exists(logo_path):
-            logo_label = QLabel()
-            logo_label.setPixmap(QPixmap(logo_path).scaled(180, 180, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-            logo_label.setAccessibleName("Application Logo")
-            header_layout.addWidget(logo_label)
-        
-        title_layout = QVBoxLayout()
-        title_label = QLabel("Liblouis Table Editor")
-        title_label.setStyleSheet("font-size: 32px; font-weight: 600; color: #2d2d2d;")
-        title_label.setAccessibleName("Application Title")
-        
-        version_label = QLabel("Version 1.0.0")
-        version_label.setStyleSheet("color: #666666;")
-        version_label.setAccessibleName("Application Version")
-        
-        title_layout.addWidget(title_label)
-        title_layout.addWidget(version_label)
-        header_layout.addLayout(title_layout)
-        header_layout.addStretch()
-        
-        content_frame = QFrame()
-        content_frame.setObjectName("content")
-        content_layout = QVBoxLayout(content_frame)
-        content_layout.setContentsMargins(16, 16, 16, 16)
-        
-        content_text = """
-        <div class='section'>
-            <p>An intuitive, accessible, and user-friendly tool designed to simplify the creation, editing, and management of translation tables used by the Liblouis Braille translation system.</p>
-        </div>
-        
-        <div class='section'>
-            <h3>Development</h3>
-            <p>Developed By Zendalona</p>
-            <p>© 2025 Zendalona</p>
-        </div>
-        
-        <div class='section'>
-            <h3>License</h3>
-            <p>This project is licensed under the MIT License.</p>
-        </div>
+        # Documentation-style QTextBrowser
+        about_browser = QTextBrowser()
+        about_browser.setOpenExternalLinks(True)
+        about_browser.setStyleSheet("QTextBrowser { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 32px; font-size: 16px; font-family: 'Segoe UI', 'Arial', 'sans-serif'; color: #222; }")
+
+        zendalona_logo_path = get_image_path('zendalona.png')
+        logo_html = f"<img src='{zendalona_logo_path}' class='zendalona-logo' style='display:block; max-width:15px; margin-bottom:12px;'>" if zendalona_logo_path else ""
+
+        about_html = f"""
+        {logo_html}
+        <h1 style='font-size:2.2em; margin-bottom:0.2em;'>Liblouis Table Editor</h1>
+        <div style='color:#666; font-size:1.1em; margin-bottom:1.5em;'>Version 1.0.0</div>
+        <hr style='margin: 1.5em 0;'>
+        <h2>Description</h2>
+        <p>An intuitive, accessible, and user-friendly tool designed to simplify the creation, editing, and management of translation tables used by the <b>Liblouis Braille translation system</b>.</p>
+        <h2>Features</h2>
+        <ul>
+            <li>Modern, accessible UI for editing Liblouis tables</li>
+            <li>Easy entry management and validation</li>
+            <li>Integrated testing and preview</li>
+            <li>Keyboard shortcuts for productivity</li>
+            <li>Cross-platform support</li>
+        </ul>
+        <h2>License</h2>
+        <pre style='background:#f8f8f8; border:1px solid #e5e5e5; border-radius:4px; padding:12px; font-size:1em; color:#333;'>MIT License</pre>
+        <h2>Credits</h2>
+        <p>Developed by <b>Riya Jain & Sahil Rakhaiya</b><br>© 2025 Zendalona</p>
+        <h2>Links</h2>
+        <ul>
+            <li><a href='https://github.com/zendalona/liblouis-table-editor'>GitHub Repository</a></li>
+            <li><a href='https://liblouis.io/'>Liblouis Project</a></li>
+        </ul>
         """
-        
-        content_label = QLabel(content_text)
-        content_label.setWordWrap(True)
-        content_label.setAccessibleName("About Content")
-        content_layout.addWidget(content_label)
-        
-        footer_frame = QFrame()
-        footer_frame.setObjectName("footer")
-        footer_layout = QHBoxLayout(footer_frame)
-        footer_layout.setContentsMargins(16, 16, 16, 16)
-        
+        about_browser.setHtml(about_html)
+        main_layout.addWidget(about_browser)
+
+        # Close button at the bottom
+        footer_layout = QHBoxLayout()
+        footer_layout.setContentsMargins(0, 24, 0, 0)
         close_button = QPushButton("Close")
         close_button.setObjectName("openBtn")
         close_button.setAccessibleName("Close Dialog")
@@ -89,11 +105,8 @@ class AboutDialog(StyledDialog):
         close_button.clicked.connect(self.close)
         footer_layout.addStretch()
         footer_layout.addWidget(close_button)
-        
-        main_layout.addWidget(header_frame)
-        main_layout.addWidget(content_frame)
-        main_layout.addWidget(footer_frame)
-        
+        main_layout.addLayout(footer_layout)
+
         self.setLayout(main_layout)
 
 class UserGuideDialog(StyledDialog):
@@ -113,18 +126,23 @@ class UserGuideDialog(StyledDialog):
         header_frame = QFrame()
         header_frame.setObjectName("header")
         header_layout = QHBoxLayout(header_frame)
-        header_layout.setContentsMargins(16, 16, 16, 16)
-        
+        header_layout.setContentsMargins(32, 32, 32, 16)
         title_label = QLabel("User Guide")
-        title_label.setStyleSheet("font-size: 20px; font-weight: 600; color: #2d2d2d;")
+        title_label.setStyleSheet("font-size: 28px; font-weight: 700; color: #1976d2;")
         title_label.setAccessibleName("User Guide Title")
         header_layout.addWidget(title_label)
         header_layout.addStretch()
         
+        divider1 = QFrame()
+        divider1.setProperty("divider", True)
+        divider1.setFrameShape(QFrame.HLine)
+        divider1.setFrameShadow(QFrame.Sunken)
+        
         content_frame = QFrame()
         content_frame.setObjectName("content")
         content_layout = QVBoxLayout(content_frame)
-        content_layout.setContentsMargins(16, 16, 16, 16)
+        content_layout.setContentsMargins(32, 16, 32, 16)
+        content_layout.setSpacing(0)
         
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
@@ -134,12 +152,13 @@ class UserGuideDialog(StyledDialog):
         scroll_layout = QVBoxLayout(content_widget)
         scroll_layout.setContentsMargins(0, 0, 0, 0)
         
-        guide_text = """
+        guide_browser = QTextBrowser()
+        guide_browser.setHtml("""
         <div class='section info-section'>
             <h2>Getting Started</h2>
             <p>Welcome to the Liblouis Table Editor! This guide will help you get started with creating and managing translation tables.</p>
         </div>
-        
+        <hr>
         <div class='section'>
             <h2>Basic Operations</h2>
             <div class='info-section'>
@@ -148,7 +167,6 @@ class UserGuideDialog(StyledDialog):
                 <p>2. Choose a location to save your table</p>
                 <p>3. Start adding entries to your table</p>
             </div>
-            
             <div class='info-section'>
                 <h3>Opening Existing Tables</h3>
                 <p>1. Click on File > Open</p>
@@ -156,7 +174,7 @@ class UserGuideDialog(StyledDialog):
                 <p>3. Select and open the file</p>
             </div>
         </div>
-        
+        <hr>
         <div class='section'>
             <h2>Working with Entries</h2>
             <div class='info-section'>
@@ -165,7 +183,6 @@ class UserGuideDialog(StyledDialog):
                 <p>• Fill in the required fields</p>
                 <p>• Click Add to save the entry</p>
             </div>
-            
             <div class='info-section'>
                 <h3>Editing Entries</h3>
                 <p>• Double-click an entry to edit it</p>
@@ -173,7 +190,7 @@ class UserGuideDialog(StyledDialog):
                 <p>• Save changes when done</p>
             </div>
         </div>
-        
+        <hr>
         <div class='section'>
             <h2>Testing Your Table</h2>
             <div class='info-section'>
@@ -183,7 +200,7 @@ class UserGuideDialog(StyledDialog):
                 <p>• Verify translations are correct</p>
             </div>
         </div>
-        
+        <hr>
         <div class='section'>
             <h2>Keyboard Shortcuts</h2>
             <div class='info-section'>
@@ -200,10 +217,7 @@ class UserGuideDialog(StyledDialog):
                 <p>• <span class='shortcut'>F3</span> Report Bug</p>
             </div>
         </div>
-        """
-        
-        guide_browser = QTextBrowser()
-        guide_browser.setHtml(guide_text)
+        """)
         guide_browser.setOpenExternalLinks(True)
         guide_browser.setAccessibleName("User Guide Content")
         scroll_layout.addWidget(guide_browser)
@@ -214,7 +228,7 @@ class UserGuideDialog(StyledDialog):
         footer_frame = QFrame()
         footer_frame.setObjectName("footer")
         footer_layout = QHBoxLayout(footer_frame)
-        footer_layout.setContentsMargins(16, 16, 16, 16)
+        footer_layout.setContentsMargins(32, 16, 32, 32)
         
         close_button = QPushButton("Close")
         close_button.setObjectName("openBtn")
@@ -225,6 +239,7 @@ class UserGuideDialog(StyledDialog):
         footer_layout.addWidget(close_button)
         
         main_layout.addWidget(header_frame)
+        main_layout.addWidget(divider1)
         main_layout.addWidget(content_frame)
         main_layout.addWidget(footer_frame)
         
@@ -248,34 +263,38 @@ class ReportBugDialog(StyledDialog):
         header_frame = QFrame()
         header_frame.setObjectName("header")
         header_layout = QHBoxLayout(header_frame)
-        header_layout.setContentsMargins(16, 16, 16, 16)
-        
+        header_layout.setContentsMargins(32, 32, 32, 16)
         title_label = QLabel("Report a Bug")
-        title_label.setStyleSheet("font-size: 20px; font-weight: 600; color: #2d2d2d;")
+        title_label.setStyleSheet("font-size: 28px; font-weight: 700; color: #d32f2f;")
         title_label.setAccessibleName("Report Bug Title")
         header_layout.addWidget(title_label)
         header_layout.addStretch()
         
+        divider1 = QFrame()
+        divider1.setProperty("divider", True)
+        divider1.setFrameShape(QFrame.HLine)
+        divider1.setFrameShadow(QFrame.Sunken)
+        
         content_frame = QFrame()
         content_frame.setObjectName("content")
         content_layout = QVBoxLayout(content_frame)
-        content_layout.setContentsMargins(16, 16, 16, 16)
+        content_layout.setContentsMargins(32, 16, 32, 16)
+        content_layout.setSpacing(0)
         
-        bug_text = """
+        bug_browser = QTextBrowser()
+        bug_browser.setHtml("""
         <div class='section warning-section'>
             <h2>Found a Bug?</h2>
             <p>If you've found a bug in the Liblouis Table Editor, please help us improve by reporting it. Your feedback is valuable in making the application better for everyone.</p>
         </div>
-        
+        <hr>
         <div class='section'>
             <h2>How to Report</h2>
             <div class='info-section'>
                 <h3>Step 1: Visit GitHub</h3>
-                <p>Go to our GitHub repository: <a href="https://github.com/zendalona/liblouis-table-editor/issues">https://github.com/zendalona/liblouis-table-editor/issues</a></p>
-                
+                <p>Go to our GitHub repository: <a href=\"https://github.com/zendalona/liblouis-table-editor/issues\">https://github.com/zendalona/liblouis-table-editor/issues</a></p>
                 <h3>Step 2: Create New Issue</h3>
                 <p>Click on the "New Issue" button</p>
-                
                 <h3>Step 3: Provide Details</h3>
                 <p>Fill in the issue template with the following information:</p>
                 <ul>
@@ -288,15 +307,12 @@ class ReportBugDialog(StyledDialog):
                 </ul>
             </div>
         </div>
-        
+        <hr>
         <div class='section success-section'>
             <h2>Thank You!</h2>
             <p>Your feedback helps us make the Liblouis Table Editor better for everyone. We appreciate your contribution to improving the application.</p>
         </div>
-        """
-        
-        bug_browser = QTextBrowser()
-        bug_browser.setHtml(bug_text)
+        """)
         bug_browser.setOpenExternalLinks(True)
         bug_browser.setAccessibleName("Report Bug Content")
         content_layout.addWidget(bug_browser)
@@ -304,7 +320,7 @@ class ReportBugDialog(StyledDialog):
         footer_frame = QFrame()
         footer_frame.setObjectName("footer")
         footer_layout = QHBoxLayout(footer_frame)
-        footer_layout.setContentsMargins(16, 16, 16, 16)
+        footer_layout.setContentsMargins(32, 16, 32, 32)
         
         close_button = QPushButton("Close")
         close_button.setObjectName("openBtn")
@@ -315,6 +331,7 @@ class ReportBugDialog(StyledDialog):
         footer_layout.addWidget(close_button)
         
         main_layout.addWidget(header_frame)
+        main_layout.addWidget(divider1)
         main_layout.addWidget(content_frame)
         main_layout.addWidget(footer_frame)
         
