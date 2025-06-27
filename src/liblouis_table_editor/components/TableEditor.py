@@ -1,7 +1,7 @@
 import json
 import os
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox, QShortcut
+    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox, QShortcut, QPushButton
 )
 from PyQt5.QtGui import QKeyEvent, QFont, QKeySequence
 from PyQt5.QtCore import Qt
@@ -41,10 +41,22 @@ class TableEditor(QWidget):
 
         main_layout.addLayout(top_layout)
 
+        self.toggle_testing_button = QPushButton("Show Translation/Test Cases (Ctrl+Q)")
+        self.toggle_testing_button.setCheckable(True)
+        self.toggle_testing_button.setChecked(False)
+        self.toggle_testing_button.clicked.connect(self.toggle_testing_widget)
+        main_layout.addWidget(self.toggle_testing_button)
+
         self.testing_widget = TestingWidget(self)
         main_layout.addWidget(self.testing_widget)
 
+        self.testing_widget.hide()
+        self.add_entry_widget.show()
+
         self.setLayout(main_layout)
+
+        shortcut = QShortcut(QKeySequence("Ctrl+Q"), self)
+        shortcut.activated.connect(self.toggle_testing_widget)
 
         apply_styles(self)
 
@@ -309,3 +321,13 @@ class TableEditor(QWidget):
         self.table_preview.update()
             
         self.show_toast(f"Font size: {self._current_font_size}pt", get_icon_for_toast('success'), 75, 175, 78)
+
+    def toggle_testing_widget(self):
+        if self.testing_widget.isVisible():
+            self.testing_widget.hide()
+            self.toggle_testing_button.setText("Show Testing Panel (Ctrl+Q)")
+            self.add_entry_widget.show()  
+        else:
+            self.testing_widget.show()
+            self.toggle_testing_button.setText("Hide Testing Panel (Ctrl+Q)")
+            self.add_entry_widget.hide()  
