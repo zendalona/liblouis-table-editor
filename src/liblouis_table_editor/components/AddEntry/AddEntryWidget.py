@@ -239,6 +239,7 @@ class AddEntryWidget(QWidget):
         self.opcode_combo = QComboBox()
         self.opcode_combo.setPlaceholderText("Select Opcode")
         self.populate_opcode_combo()
+        self.opcode_combo.setCurrentIndex(0) 
         self.opcode_combo.currentIndexChanged.connect(self.on_opcode_selected)
         self.opcode_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 
