@@ -4,8 +4,9 @@ from PyQt5.QtWidgets import (
     QGridLayout, QScrollArea, QPushButton, QSizePolicy, QLineEdit, QTextEdit, QLabel
 )
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QFontDatabase
 from liblouis_table_editor.utils.ApplyStyles import apply_styles
+import os
 
 class UnicodeSelector(QWidget):
     def __init__(self):
@@ -442,6 +443,28 @@ class UnicodeSelector(QWidget):
 
         self.char_container.setFixedSize(container_width, container_height)
 
+        # Load bundled fonts if not already loaded
+        font_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'assets', 'font')
+        noto_path = os.path.join(font_dir, 'NotoSans.ttf')
+        symbola_path = os.path.join(font_dir, 'Symbola.ttf')
+        db = QFontDatabase()
+        if noto_path not in db.families():
+            QFontDatabase.addApplicationFont(noto_path)
+        if symbola_path not in db.families():
+            QFontDatabase.addApplicationFont(symbola_path)
+
+        # Font fallback logic, prefer bundled fonts
+        font_families = [
+            "Noto Sans", "Symbola", "Arial Unicode MS", "Nirmala UI", "Mangal", "Segoe UI Symbol", "Segoe UI", "Arial", "DejaVu Sans", "Liberation Sans"
+        ]
+        unicode_font = QFont()
+        for family in font_families:
+            if family in db.families():
+                unicode_font.setFamily(family)
+                break
+        unicode_font.setPointSize(16)
+        unicode_font.setStyleStrategy(QFont.PreferAntialias | QFont.PreferDefault)
+
         for row in range(num_rows):
             for col in range(num_columns):
                 index = row * num_columns + col
@@ -452,6 +475,7 @@ class UnicodeSelector(QWidget):
                 char_button = QPushButton(char)
                 char_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
                 char_button.setFixedSize(QSize(button_size, button_size))
+                char_button.setFont(unicode_font)
 
                 char_button.setStyleSheet("""
                     QPushButton {
