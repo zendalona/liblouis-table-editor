@@ -1,7 +1,7 @@
 import json
 import os
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox, QShortcut, QPushButton
+    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox, QShortcut, QPushButton, QLabel, QMessageBox
 )
 from PyQt5.QtGui import QKeyEvent, QFont, QKeySequence
 from PyQt5.QtCore import Qt
@@ -12,6 +12,7 @@ from liblouis_table_editor.components.TestingWidget import TestingWidget
 from liblouis_table_editor.utils.ApplyStyles import apply_styles
 from liblouis_table_editor.utils.Toast import Toast
 from liblouis_table_editor.utils.asset_utils import get_icon_for_toast
+from liblouis_table_editor.components.HelpDialogs import LiblouisInstallDialog
 
 
 class TableEditor(QWidget):
@@ -22,10 +23,41 @@ class TableEditor(QWidget):
         self._current_font_size = 10  
         self._undo_stack = []
         self._redo_stack = []
+        self.liblouis_found = self.check_liblouis()
         self.initUI()
+
+    def check_liblouis(self):
+        import sys, os, shutil
+        if sys.platform == 'win32':
+            translator_exe = os.path.join("C:\\Program Files\\liblouis", "bin", "lou_translate.exe")
+            return os.path.exists(translator_exe)
+        else:
+            if os.path.exists("/usr/bin/lou_translate"):
+                return True
+            if shutil.which('lou_translate'):
+                return True
+            return False
 
     def initUI(self):
         main_layout = QVBoxLayout()
+
+        if not self.liblouis_found:
+            while True:
+                dialog = LiblouisInstallDialog(self)
+                dialog.exec_()
+
+                self.liblouis_found = self.check_liblouis()
+                if self.liblouis_found:
+                    break
+
+                res = QMessageBox.question(self, "Liblouis Not Found", "liblouis is still not installed. Retry installation?", QMessageBox.Retry | QMessageBox.Close, QMessageBox.Retry)
+                if res == QMessageBox.Close:
+                    break  
+
+        if not self.liblouis_found:
+            self.liblouis_warning_label = QLabel("<b style='color: #d32f2f;'>Warning: Liblouis is not installed. Some features will not work.</b>")
+            self.liblouis_warning_label.setAlignment(Qt.AlignCenter)
+            main_layout.addWidget(self.liblouis_warning_label)
 
         top_layout = QHBoxLayout()
 
@@ -331,3 +363,6 @@ class TableEditor(QWidget):
             self.testing_widget.show()
             self.toggle_testing_button.setText("Hide Testing Panel (Ctrl+Q)")
             self.add_entry_widget.hide()  
+
+    def show_liblouis_install_dialog(self):
+        pass

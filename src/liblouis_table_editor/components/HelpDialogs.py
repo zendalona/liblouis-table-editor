@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QTextBrowser, QPushButton, QFrame, QHBoxLayout, QScrollArea, QWidget, QShortcut, QSizePolicy
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QTextBrowser, QPushButton, QFrame, QHBoxLayout, QScrollArea, QWidget, QShortcut, QSizePolicy, QApplication, QMessageBox
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon, QFont, QPixmap, QPalette, QColor, QKeySequence
 import os
-from ..utils.asset_utils import get_image_path
+from ..utils.asset_utils import get_image_path, get_icon_path
 
 class StyledDialog(QDialog):
     def __init__(self, parent=None):
@@ -336,3 +336,95 @@ class ReportBugDialog(StyledDialog):
         main_layout.addWidget(footer_frame)
         
         self.setLayout(main_layout) 
+
+class LiblouisInstallDialog(StyledDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Liblouis Installation Guide")
+        self.setMinimumSize(850, 725)
+        self.resize(600, 500)
+        self.setFocusPolicy(Qt.StrongFocus)
+
+        main_layout = QVBoxLayout()
+        main_layout.setSpacing(0)
+        main_layout.setContentsMargins(32, 32, 32, 32)
+
+        header_layout = QHBoxLayout()
+        icon_path = get_icon_path('about.png')
+        if icon_path:
+            icon_label = QLabel()
+            icon_label.setPixmap(QPixmap(icon_path).scaled(40, 40, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            header_layout.addWidget(icon_label)
+        title_label = QLabel("<b style='font-size: 2em;'>How to Install Liblouis</b>")
+        title_label.setStyleSheet("font-size: 2em; margin-left: 12px;")
+        header_layout.addWidget(title_label)
+        header_layout.addStretch()
+        main_layout.addLayout(header_layout)
+
+        instructions = QTextBrowser()
+        instructions.setOpenExternalLinks(True)
+        instructions.setStyleSheet("QTextBrowser { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; font-size: 16px; font-family: 'Segoe UI', 'Arial', 'sans-serif'; color: #222; }")
+        instructions.setHtml('''
+        <style>
+        code { font-family: "Consolas", "Courier New", monospace; font-size: 15px; color: #222; }
+        </style>
+        <h2 style="color:#1976d2;">Windows</h2>
+        <ol>
+        <li>Download the latest liblouis release from: <a href="https://github.com/liblouis/liblouis/releases">https://github.com/liblouis/liblouis/releases</a></li>
+        <li>Extract the downloaded zip file</li>
+        <li>Copy the extracted folder to <b>C:\\Program Files\\liblouis</b> (remove extra word from name only extracted as "liblouis")</li>
+        <li>Make sure the following structure exists:<br>
+            <code>C:\\Program Files\\liblouis\\bin\\lou_translate.exe</code><br>
+            <code>C:\\Program Files\\liblouis\\share\\liblouis\\tables</code>
+        </li>
+        <li>Add liblouis to Windows PATH:
+            <ol type="a">
+                <li>Press Windows + R, type <b>sysdm.cpl</b> and press Enter</li>
+                <li>Go to <b>Advanced</b> tab</li>
+                <li>Click <b>Environment Variables</b></li>
+                <li>Under <b>User variables</b>, find and select <b>Path</b></li>
+                <li>Click <b>Edit</b></li>
+                <li>Click <b>New</b></li>
+                <li>Add <code>C:\\Program Files\\liblouis\\bin</code></li>
+                <li>Click <b>OK</b> on all windows</li>
+                <li>Restart your PC/Laptop</li>
+            </ol>
+        </li>
+        </ol>
+        <p style="color:#d32f2f;"><b>After installation, click Test Installation below.</b></p>
+        ''')
+        main_layout.addWidget(instructions)
+
+        # Test Installation button
+        test_btn = QPushButton("Test Installation")
+        test_btn.setObjectName("openBtn")
+        test_btn.setToolTip("Check if lou_translate is available on your system")
+        test_btn.clicked.connect(self.test_installation)
+        main_layout.addWidget(test_btn)
+
+        # Footer with close button
+        footer_layout = QHBoxLayout()
+        footer_layout.setContentsMargins(0, 24, 0, 0)
+        close_button = QPushButton("Close")
+        close_button.setObjectName("openBtn")
+        close_button.setAccessibleName("Close Dialog")
+        close_button.setAccessibleDescription("Closes the Liblouis installation dialog")
+        close_button.clicked.connect(self.close)
+        footer_layout.addStretch()
+        footer_layout.addWidget(close_button)
+        main_layout.addLayout(footer_layout)
+
+        self.setLayout(main_layout)
+
+    def test_installation(self):
+        import shutil, os, sys
+        found = False
+        if sys.platform == 'win32':
+            exe = os.path.join("C:\\Program Files\\liblouis", "bin", "lou_translate.exe")
+            found = os.path.exists(exe)
+        else:
+            found = shutil.which('lou_translate') is not None or os.path.exists("/usr/bin/lou_translate")
+        if found:
+            QMessageBox.information(self, "Liblouis Found", "liblouis is installed and available!")
+        else:
+            QMessageBox.warning(self, "Not Found", "liblouis is still not found. Please follow the steps above.") 
