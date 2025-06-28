@@ -41,7 +41,7 @@ class TableEditor(QWidget):
 
         main_layout.addLayout(top_layout)
 
-        self.toggle_testing_button = QPushButton("Show Translation/Test Cases (Ctrl+Q)")
+        self.toggle_testing_button = QPushButton("Show Testing Panel (Ctrl+Q)")
         self.toggle_testing_button.setCheckable(True)
         self.toggle_testing_button.setChecked(False)
         self.toggle_testing_button.clicked.connect(self.toggle_testing_widget)
