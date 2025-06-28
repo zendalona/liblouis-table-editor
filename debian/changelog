@@ -1,5 +1,5 @@
-liblouis-table-editor (1.0-1) noble; urgency=medium
+liblouis-table-editor (1.0-0) noble; urgency=medium
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release to Launchpad PPA (liblouis-table-editor)
 
- -- Sahil <sahilrakhaiya05@gmail.com>  Wed, 25 Jun 2025 15:01:19 +0530
+ -- Sahil Rakhaiya <sahilrakhaiya05@gmail.com>  Sat, 28 Jun 2025 17:25:00 +0530
