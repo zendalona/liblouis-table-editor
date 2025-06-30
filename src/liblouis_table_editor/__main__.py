@@ -14,7 +14,7 @@ class TableManager(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle('Liblouis Table Editor')
+        self.setWindowTitle('Liblouis-Table-Editor')
         self.setObjectName("liblouis-table-editor")
         
         self.setMinimumSize(1000, 600)

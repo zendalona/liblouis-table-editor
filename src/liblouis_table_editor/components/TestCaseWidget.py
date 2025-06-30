@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
     QLabel, QTextEdit, QMessageBox, QTableWidget,
-    QTableWidgetItem, QHeaderView
+    QTableWidgetItem, QHeaderView, QSizePolicy
 )
 from PyQt5.QtCore import Qt
 import unicodedata
@@ -17,37 +17,55 @@ class TestCaseWidget(QWidget):
 
     def initUI(self):
         layout = QVBoxLayout()
-        
-        input_section = QHBoxLayout()
-        
-        input_group = QVBoxLayout()
+
+        # Labels row
+        labels_row = QHBoxLayout()
         input_label = QLabel("Test Input:")
+        output_label = QLabel("Expected Braille:")
+        labels_row.addWidget(input_label)
+        labels_row.addStretch(1)
+        labels_row.addWidget(output_label)
+        labels_row.addStretch(2)  # More stretch to push output_label to center
+        layout.addLayout(labels_row)
+
+        # Input fields and button column row
+        input_fields_row = QHBoxLayout()
+
+        input_group = QVBoxLayout()
         self.input_text = QTextEdit()
         self.input_text.setPlaceholderText("Enter test input text")
         self.input_text.setMaximumHeight(100)
-        input_group.addWidget(input_label)
         input_group.addWidget(self.input_text)
-        
+
         output_group = QVBoxLayout()
-        output_label = QLabel("Expected Braille:")
         self.expected_output = QTextEdit()
         self.expected_output.setPlaceholderText("Enter expected Braille output using F, D, S, J, K, L keys for dots 1-6, space for next cell, double space for word space")
         self.expected_output.setMaximumHeight(100)
         self.expected_output.keyPressEvent = self.handle_expected_braille_input
         self.current_expected_braille_cell = [False] * 6  
         self.last_expected_space_time = 0  
-        output_group.addWidget(output_label)
         output_group.addWidget(self.expected_output)
-        
-        input_section.addLayout(input_group)
-        input_section.addLayout(output_group)
-        
-        button_layout = QHBoxLayout()
+
+        button_column_layout = QVBoxLayout()
         self.add_test_button = QPushButton("Add Test Case")
         self.run_tests_button = QPushButton("Run All Tests")
-        button_layout.addWidget(self.add_test_button)
-        button_layout.addWidget(self.run_tests_button)
-        
+        button_column_layout.addWidget(self.add_test_button)
+        button_column_layout.addStretch(1)
+        button_column_layout.addWidget(self.run_tests_button)
+
+        button_column_widget = QWidget()
+        button_column_widget.setLayout(button_column_layout)
+        max_height = max(self.input_text.maximumHeight(), self.expected_output.maximumHeight())
+        button_column_widget.setMaximumHeight(max_height)
+        button_column_widget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+
+        input_fields_row.addLayout(input_group)
+        input_fields_row.addLayout(output_group)
+        input_fields_row.addWidget(button_column_widget)
+        input_fields_row.setAlignment(button_column_widget, Qt.AlignTop)
+
+        layout.addLayout(input_fields_row)
+
         self.test_table = QTableWidget()
         self.test_table.setColumnCount(4)
         self.test_table.setHorizontalHeaderLabels(["Input", "Expected", "Result", "Status"])
@@ -58,13 +76,11 @@ class TestCaseWidget(QWidget):
         header.setSectionResizeMode(3, QHeaderView.ResizeToContents)
         self.test_table.setObjectName("test_table")
         self.test_table.setEditTriggers(QTableWidget.NoEditTriggers)
-        
-        layout.addLayout(input_section)
-        layout.addLayout(button_layout)
+
         layout.addWidget(self.test_table)
-        
+
         self.setLayout(layout)
-        
+
         self.add_test_button.clicked.connect(self.add_test_case)
         self.run_tests_button.clicked.connect(self.run_all_tests)
 
