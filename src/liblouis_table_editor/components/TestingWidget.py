@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import (
     QWidget, QHBoxLayout, QVBoxLayout, QLineEdit, 
-    QPushButton, QLabel, QMessageBox, QTextEdit, QTabWidget
+    QPushButton, QLabel, QMessageBox, QTextEdit, QTabWidget, QShortcut
 )
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent
+from PyQt5.QtGui import QKeySequence
 import os
 import subprocess
 import sys
@@ -51,9 +52,8 @@ class TestingWidget(QWidget):
             self.liblouis_base = None
             self.tables_dir = None
             self.translator_exe = None
-            # Removed warning print to reduce console spam - executable missing handled gracefully
+
         elif not os.path.exists(self.tables_dir):
-            # Removed warning print to reduce console spam - tables directory missing handled gracefully
             pass
 
     def initUI(self):
@@ -61,7 +61,7 @@ class TestingWidget(QWidget):
         main_layout.setSpacing(6)
         main_layout.setContentsMargins(6, 6, 6, 6)
         
-        tab_widget = QTabWidget()
+        self.tab_widget = QTabWidget()
         
         translation_widget = QWidget()
         translation_layout = QVBoxLayout()
@@ -85,6 +85,7 @@ class TestingWidget(QWidget):
         self.forward_input.setPlaceholderText("Enter text to translate")
         self.forward_input.setMaximumHeight(100)
         self.forward_input.keyPressEvent = self.handle_forward_key_press
+        self.forward_input.installEventFilter(self)
         forward_input_group.addWidget(forward_input_label)
         forward_input_group.addWidget(self.forward_input)
         
@@ -137,6 +138,7 @@ class TestingWidget(QWidget):
         self.backward_input.keyPressEvent = self.handle_braille_input
         self.current_braille_cell = [False] * 6 
         self.last_space_time = 0 
+        self.backward_input.installEventFilter(self)
         backward_input_group.addWidget(backward_input_label)
         backward_input_group.addWidget(self.backward_input)
         
@@ -176,10 +178,10 @@ class TestingWidget(QWidget):
         
         self.test_case_widget = TestCaseWidget(self)
         
-        tab_widget.addTab(translation_widget, "Translation")
-        tab_widget.addTab(self.test_case_widget, "Test Cases")
+        self.tab_widget.addTab(translation_widget, "Translation")
+        self.tab_widget.addTab(self.test_case_widget, "Test Cases")
         
-        main_layout.addWidget(tab_widget)
+        main_layout.addWidget(self.tab_widget)
         
         self.status_label = QLabel("")
         self.status_label.setStyleSheet("color: gray; font-style: italic;")
@@ -191,6 +193,11 @@ class TestingWidget(QWidget):
         self.backward_button.clicked.connect(self.translate_backward)
         
         self.update_status()
+        
+        self.shortcut_ctrl_w = QShortcut(QKeySequence("Ctrl+W"), self)
+        self.shortcut_ctrl_w.activated.connect(lambda: self.tab_widget.setCurrentIndex(0))
+        self.shortcut_ctrl_e = QShortcut(QKeySequence("Ctrl+E"), self)
+        self.shortcut_ctrl_e.activated.connect(lambda: self.tab_widget.setCurrentIndex(1))
     
     def set_current_table(self, table_path):
         self.current_table = table_path
@@ -370,3 +377,14 @@ class TestingWidget(QWidget):
                 self.backward_output.setText(result)
         else:
             QMessageBox.warning(self, "Error", "Please enter Braille to translate")
+
+    def eventFilter(self, obj, event):
+
+        if isinstance(obj, QTextEdit) and event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Tab and not event.modifiers():
+                self.focusNextChild()
+                return True
+            elif event.key() == Qt.Key_Backtab:
+                self.focusPreviousChild()
+                return True
+        return super().eventFilter(obj, event)

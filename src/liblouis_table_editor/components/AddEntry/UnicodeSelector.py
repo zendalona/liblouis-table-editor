@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTreeWidget, QTreeWidgetItem,
     QGridLayout, QScrollArea, QPushButton, QSizePolicy, QLineEdit, QTextEdit, QLabel
 )
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QSize, QEvent
 from PyQt5.QtGui import QFont, QFontDatabase
 from liblouis_table_editor.utils.ApplyStyles import apply_styles
 import os
@@ -29,6 +29,7 @@ class UnicodeSelector(QWidget):
         self.search_bar = QLineEdit()
         self.search_bar.setPlaceholderText("Search Unicode Blocks...")
         self.search_bar.textChanged.connect(self.filter_blocks)
+        self.search_bar.installEventFilter(self)
         search_layout.addWidget(self.search_bar)
 
         self.tree = QTreeWidget()
@@ -36,6 +37,7 @@ class UnicodeSelector(QWidget):
         self.populate_tree()
         self.tree.itemClicked.connect(self.display_characters)
         self.tree.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.tree.installEventFilter(self)
         search_layout.addWidget(self.tree)
 
         right_widget = QWidget()
@@ -68,11 +70,23 @@ class UnicodeSelector(QWidget):
         self.selected_text_edit.setPlaceholderText("Selected characters")
         self.selected_text_edit.setFixedHeight(40)
         self.selected_text_edit.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.selected_text_edit.installEventFilter(self)
         selection_layout.addWidget(self.selected_text_edit)
+
+        self.unicode_display = QLineEdit()
+        self.unicode_display.setReadOnly(True)
+        self.unicode_display.setPlaceholderText("Unicode code points")
+        self.unicode_display.setFont(QFont('', 12))
+        self.unicode_display.installEventFilter(self)
+        char_search_layout.addWidget(self.unicode_display)
+
+        self.selected_text_edit.textChanged.connect(self.update_unicode_display)
+        self.update_unicode_display()
 
         self.done_button = QPushButton("Done")
         self.done_button.setObjectName("done_button")
         self.done_button.clicked.connect(self.confirm_selection)
+        self.done_button.installEventFilter(self)
         selection_layout.addWidget(self.done_button)
         char_search_layout.addWidget(selection_widget)
 
@@ -443,6 +457,8 @@ class UnicodeSelector(QWidget):
 
         self.char_container.setFixedSize(container_width, container_height)
 
+        self.char_buttons = [[None for _ in range(num_columns)] for _ in range(num_rows)]
+
         # Load bundled fonts if not already loaded
         font_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'assets', 'font')
         noto_path = os.path.join(font_dir, 'NotoSans.ttf')
@@ -476,35 +492,19 @@ class UnicodeSelector(QWidget):
                 char_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
                 char_button.setFixedSize(QSize(button_size, button_size))
                 char_button.setFont(unicode_font)
-
-                char_button.setStyleSheet("""
-                    QPushButton {
-                        font-size: 16px;
-                        font-weight: normal;
-                        background: white;
-                        border: 1px solid #ddd;
-                        border-radius: 2px;
-                        margin: 0px;
-                        padding: 0px;
-                    }
-                    QPushButton:hover {
-                        background: #e6f7ff;
-                        border: 1px solid #1890ff;
-                    }
-                    QPushButton:pressed {
-                        background: #bae7ff;
-                    }
-                """)
+                char_button.setFocusPolicy(Qt.StrongFocus)
                 char_button.clicked.connect(self.character_selected)
+                char_button.installEventFilter(self)
+                self.char_buttons[row][col] = char_button
                 self.char_layout.addWidget(char_button, row, col)
 
     def character_selected(self):
         char_button = self.sender()
         selected_char = char_button.text()
-
         cursor = self.selected_text_edit.textCursor()
         cursor.insertText(selected_char)
         self.selected_text_edit.setTextCursor(cursor)
+        self.update_unicode_display()
 
     def confirm_selection(self):
         manual_input = self.selected_text_edit.toPlainText()
@@ -523,3 +523,111 @@ class UnicodeSelector(QWidget):
     def adjust_component_sizes(self):
         self.tree.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
         self.char_container.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+    def eventFilter(self, obj, event):
+
+        if not (hasattr(self, 'search_bar') and hasattr(self, 'tree') and hasattr(self, 'selected_text_edit') and hasattr(self, 'unicode_display') and hasattr(self, 'done_button')):
+            return super().eventFilter(obj, event)
+
+        widgets = [self.search_bar, self.tree]
+
+        first_char = None
+        if hasattr(self, 'char_buttons') and self.char_buttons:
+            for row in self.char_buttons:
+                for btn in row:
+                    if btn:
+                        first_char = btn
+                        break
+                if first_char:
+                    break
+        if first_char:
+            widgets.append(first_char)
+        widgets += [self.selected_text_edit, self.unicode_display, self.done_button]
+
+        if isinstance(obj, QPushButton) and hasattr(self, 'char_buttons'):
+            if event.type() == QEvent.FocusIn:
+                obj.setProperty('kbdFocus', True)
+                obj.style().unpolish(obj)
+                obj.style().polish(obj)
+            elif event.type() == QEvent.FocusOut:
+                obj.setProperty('kbdFocus', False)
+                obj.style().unpolish(obj)
+                obj.style().polish(obj)
+
+        if isinstance(obj, QPushButton) and hasattr(self, 'char_buttons') and event.type() == QEvent.KeyPress:
+            for row_idx, row in enumerate(self.char_buttons):
+                for col_idx, btn in enumerate(row):
+                    if btn is obj:
+                        if event.key() == Qt.Key_Right:
+
+                            next_col = col_idx + 1
+                            if next_col < len(row) and row[next_col]:
+                                row[next_col].setFocus()
+                            else:
+
+                                if row_idx + 1 < len(self.char_buttons) and self.char_buttons[row_idx+1][0]:
+                                    self.char_buttons[row_idx+1][0].setFocus()
+                            return True
+                        elif event.key() == Qt.Key_Left:
+
+                            prev_col = col_idx - 1
+                            if prev_col >= 0 and row[prev_col]:
+                                row[prev_col].setFocus()
+                            else:
+
+                                if row_idx - 1 >= 0:
+                                    prev_row = self.char_buttons[row_idx-1]
+                                    for last_col in reversed(range(len(prev_row))):
+                                        if prev_row[last_col]:
+                                            prev_row[last_col].setFocus()
+                                            break
+                            return True
+                        elif event.key() == Qt.Key_Down:
+
+                            if row_idx + 1 < len(self.char_buttons) and self.char_buttons[row_idx+1][col_idx]:
+                                self.char_buttons[row_idx+1][col_idx].setFocus()
+                            return True
+                        elif event.key() == Qt.Key_Up:
+
+                            if row_idx - 1 >= 0 and self.char_buttons[row_idx-1][col_idx]:
+                                self.char_buttons[row_idx-1][col_idx].setFocus()
+                            return True
+                        elif event.key() in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Space):
+                            obj.click()
+                            return True
+                        elif event.key() == Qt.Key_Tab and not event.modifiers():
+                            self.selected_text_edit.setFocus()
+                            return True
+                        elif event.key() == Qt.Key_Backtab:
+                            self.tree.setFocus()
+                            return True
+
+        if event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Tab and not event.modifiers():
+                if obj in widgets:
+                    idx = widgets.index(obj)
+                    if idx + 1 < len(widgets):
+                        widgets[idx+1].setFocus()
+                        return True
+            elif event.key() == Qt.Key_Backtab:
+                if obj in widgets:
+                    idx = widgets.index(obj)
+                    if idx - 1 >= 0:
+                        widgets[idx-1].setFocus()
+                        return True
+
+        if obj is self.tree and event.type() == QEvent.KeyPress:
+            if event.key() in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Space):
+                item = self.tree.currentItem()
+                if item:
+                    self.display_characters(item, 0)
+                    return True
+        return super().eventFilter(obj, event)
+
+    def update_unicode_display(self):
+        text = self.selected_text_edit.toPlainText()
+        if text:
+            codes = ' '.join(f"U+{ord(c):04X}" for c in text)
+            self.unicode_display.setText(codes)
+        else:
+            self.unicode_display.clear()

@@ -239,6 +239,11 @@ QPushButton#translate_button:pressed {
   border: 1px solid #1a1a1a;
 }
 
+QPushButton#translate_button[tabFocus="true"] {
+  outline: 2px solid #339af0 !important;
+  outline-offset: 2px;
+}
+
 .char-button {
   font-size: 32px;
   background-color: #f0f8ff;
@@ -700,4 +705,11 @@ QFrame#entry_line {
     max-height: 2px;
     border-radius: 1px;
     border: none;
+}
+
+/* Only show black outline for keyboard navigation (not mouse) */
+QLineEdit[tabFocus="true"], QTextEdit[tabFocus="true"], QPushButton[tabFocus="true"] {
+  outline: 2px solid #000000;
+  outline-offset: 0px;
+  border: 1.5px solid #000000;
 }

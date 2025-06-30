@@ -1,7 +1,7 @@
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel, QStackedLayout, QMessageBox, QFileDialog, QDesktopWidget
-from PyQt5.QtGui import QPalette, QColor, QPixmap, QIcon
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel, QStackedLayout, QMessageBox, QFileDialog, QDesktopWidget, QShortcut
+from PyQt5.QtGui import QPalette, QColor, QPixmap, QIcon, QKeySequence
 from PyQt5.QtCore import Qt
 from liblouis_table_editor.config import WINDOW_WIDTH, WINDOW_HEIGHT
 from liblouis_table_editor.components.Menubar import create_menubar
@@ -76,6 +76,9 @@ class TableManager(QWidget):
         self.update_background_visibility()
 
         self.showMaximized()
+
+        self.focus_menu_shortcut = QShortcut(QKeySequence("Alt+F"), self)
+        self.focus_menu_shortcut.activated.connect(self.focus_file_menu)
 
     def handle_file_opened(self, file_name, file_content, file_path):
         self.add_tab(file_name, file_content, file_path)
@@ -234,6 +237,14 @@ class TableManager(QWidget):
         
         event.accept()
 
+    def focus_file_menu(self):
+
+        if self.menubar:
+            file_menu = self.menubar.actions()[0].menu()
+            if file_menu:
+                self.menubar.setActiveAction(self.menubar.actions()[0])
+                file_menu.popup(self.menubar.mapToGlobal(self.menubar.actionGeometry(self.menubar.actions()[0]).bottomLeft()))
+                self.menubar.setFocus()
 
 def main():
     app = QApplication(sys.argv)

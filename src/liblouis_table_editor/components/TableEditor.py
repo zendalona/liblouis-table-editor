@@ -90,6 +90,11 @@ class TableEditor(QWidget):
         shortcut = QShortcut(QKeySequence("Ctrl+Q"), self)
         shortcut.activated.connect(self.toggle_testing_widget)
 
+        self.add_entry_shortcut = QShortcut(QKeySequence("Ctrl+Return"), self)
+        self.add_entry_shortcut.activated.connect(self.add_entry)
+        self.add_entry_shortcut2 = QShortcut(QKeySequence("Ctrl+Enter"), self)
+        self.add_entry_shortcut2.activated.connect(self.add_entry)
+
         apply_styles(self)
 
         self.toast = None
@@ -111,14 +116,14 @@ class TableEditor(QWidget):
     def add_entry(self):
         entry_data = self.add_entry_widget.collect_entry_data()
         if not self.validate_entry_data(entry_data):
-            self.show_toast("Invalid entry data!", get_icon_for_toast('error'), 255, 0, 0)
+            self.show_toast("Invalid entry data! (Ctrl+Enter to add entry)", get_icon_for_toast('error'), 255, 0, 0)
             return
         
         self._save_state_for_undo()
         
         self.table_preview.add_entry(entry_data)
         self.mark_as_unsaved()
-        self.show_toast("Entry added successfully!", get_icon_for_toast('success'), 75, 175, 78)
+        self.show_toast("Entry added successfully! (Ctrl+Enter to add entry)", get_icon_for_toast('success'), 75, 175, 78)
 
     def _save_state_for_undo(self):
         current_content = self.get_content().copy() if isinstance(self.get_content(), list) else self.get_content()

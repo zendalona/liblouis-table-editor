@@ -74,8 +74,16 @@ class TablePreview(QWidget):
             
     def add_entry(self, entry):
         self.entries.append(entry)
+
+        def extract_number(e):
+            parts = e.split()
+            try:
+                return int(parts[0])
+            except (ValueError, IndexError):
+                return float('inf')
+        self.entries.sort(key=extract_number)
         self.update_content()
-        self.select_entry(len(self.entries) - 1)
+        self.select_entry(self.entries.index(entry))
 
     def handle_entry_click(self, widget, event):
         if event.button() == Qt.LeftButton:
@@ -198,13 +206,23 @@ class TablePreview(QWidget):
                 event.accept()
                 return
         elif key == Qt.Key_Tab and not event.isAutoRepeat():
-            if event.modifiers() == Qt.ShiftModifier:
-                if self.current_index > 0:
+            if modifiers == Qt.ShiftModifier:
+                if self.current_index == 0:
+                    if hasattr(self.table_editor, 'add_entry_widget'):
+                        self.table_editor.add_entry_widget.setFocus()
+                        event.accept()
+                        return
+                else:
                     self.select_entry(self.current_index - 1)
                     event.accept()
                     return
             else:
-                if self.current_index < len(self.entry_widgets) - 1:
+                if self.current_index == len(self.entry_widgets) - 1:
+                    if hasattr(self.table_editor, 'add_entry_widget'):
+                        self.table_editor.add_entry_widget.setFocus()
+                        event.accept()
+                        return
+                else:
                     self.select_entry(self.current_index + 1)
                     event.accept()
                     return

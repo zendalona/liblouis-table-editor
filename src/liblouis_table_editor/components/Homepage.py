@@ -54,11 +54,13 @@ class HomeScreen(QWidget):
         create_button.setObjectName("createBtn")
         create_button.setCursor(Qt.PointingHandCursor)
         create_button.clicked.connect(self.create_new_table)
+        create_button.setFocusPolicy(Qt.StrongFocus)
 
         open_button = QPushButton("Open existing table")
         open_button.setObjectName("openBtn")
         open_button.setCursor(Qt.PointingHandCursor)
         open_button.clicked.connect(self.open_existing_table)
+        open_button.setFocusPolicy(Qt.StrongFocus)
 
         button_layout.addWidget(create_button)
         button_layout.addWidget(open_button)
@@ -71,6 +73,10 @@ class HomeScreen(QWidget):
         self.recent_files_list.setObjectName("recentFiles")
         self.recent_files_list.setMaximumHeight(120)
         self.recent_files_list.itemDoubleClicked.connect(self.open_recent_file)
+        self.recent_files_list.setFocusPolicy(Qt.StrongFocus)
+        self.recent_files_list.setSelectionMode(QListWidget.SingleSelection)
+        self.recent_files_list.setEditTriggers(QListWidget.NoEditTriggers)
+        self.recent_files_list.installEventFilter(self)
 
         left_layout.addWidget(heading)
         left_layout.addWidget(title)
@@ -235,3 +241,12 @@ class HomeScreen(QWidget):
                 item.setData(Qt.UserRole, file_path)
                 item.setToolTip(file_path)
                 self.recent_files_list.addItem(item)
+
+    def eventFilter(self, obj, event):
+        if obj == self.recent_files_list and event.type() == event.KeyPress:
+            if event.key() in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Space):
+                selected_items = self.recent_files_list.selectedItems()
+                if selected_items:
+                    self.open_recent_file(selected_items[0])
+                    return True
+        return super().eventFilter(obj, event)

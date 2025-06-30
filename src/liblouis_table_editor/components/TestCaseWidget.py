@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (
     QLabel, QTextEdit, QMessageBox, QTableWidget,
     QTableWidgetItem, QHeaderView, QSizePolicy
 )
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent
 import unicodedata
 import re
 import time
@@ -33,6 +33,7 @@ class TestCaseWidget(QWidget):
         self.input_text = QTextEdit()
         self.input_text.setPlaceholderText("Enter test input text")
         self.input_text.setMaximumHeight(100)
+        self.input_text.installEventFilter(self)
         input_group.addWidget(self.input_text)
 
         output_group = QVBoxLayout()
@@ -42,6 +43,7 @@ class TestCaseWidget(QWidget):
         self.expected_output.keyPressEvent = self.handle_expected_braille_input
         self.current_expected_braille_cell = [False] * 6  
         self.last_expected_space_time = 0  
+        self.expected_output.installEventFilter(self)
         output_group.addWidget(self.expected_output)
 
         button_column_layout = QVBoxLayout()
@@ -223,3 +225,14 @@ class TestCaseWidget(QWidget):
             else:
                 self.expected_output.setPlainText(current_text[:-1])
                 self.current_expected_braille_cell = [False] * 6 
+
+    def eventFilter(self, obj, event):
+
+        if isinstance(obj, QTextEdit) and event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Tab and not event.modifiers():
+                self.focusNextChild()
+                return True
+            elif event.key() == Qt.Key_Backtab:
+                self.focusPreviousChild()
+                return True
+        return super().eventFilter(obj, event) 
