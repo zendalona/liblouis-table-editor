@@ -18,17 +18,15 @@ class TestCaseWidget(QWidget):
     def initUI(self):
         layout = QVBoxLayout()
 
-        # Labels row
         labels_row = QHBoxLayout()
         input_label = QLabel("Test Input:")
         output_label = QLabel("Expected Braille:")
         labels_row.addWidget(input_label)
         labels_row.addStretch(1)
         labels_row.addWidget(output_label)
-        labels_row.addStretch(2)  # More stretch to push output_label to center
+        labels_row.addStretch(2) 
         layout.addLayout(labels_row)
 
-        # Input fields and button column row
         input_fields_row = QHBoxLayout()
 
         input_group = QVBoxLayout()
