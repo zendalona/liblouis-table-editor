@@ -85,7 +85,12 @@ class AboutDialog(StyledDialog):
         <h2>License</h2>
         <pre style='background:#f8f8f8; border:1px solid #e5e5e5; border-radius:4px; padding:12px; font-size:1em; color:#333;'>MIT License</pre>
         <h2>Credits</h2>
-        <p>Developed by <b>Riya Jain & Sahil Rakhaiya</b><br>© 2025 Zendalona</p>
+        <p>
+            Developed by <b>Riya Jain  GSoC'24 Contributor</b> and <b>Sahil Rakhaiya GSoC'25 Contributor</b><br>
+            Mentors: <b>Nalin</b>, <b>Samuel Thibault</b>, <b>K Sathaseelan</b>, <b>Prabhu Kondarangi</b><br>
+            &copy; 2025 Zendalona. All rights reserved.
+        </p>
+
         <h2>Links</h2>
         <ul>
             <li><a href='https://github.com/zendalona/liblouis-table-editor'>GitHub Repository</a></li>
