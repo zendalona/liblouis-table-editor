@@ -19,16 +19,20 @@ class OpcodeSelector(QWidget):
         layout.setSpacing(10)
 
         self.search = QLineEdit()
+        self.search.setAccessibleName("Opcode Search Field")
         self.search.setPlaceholderText("Search for Opcode (hover for details)")
         self.search.textChanged.connect(self.filter_list)
 
         label = QLabel("Double click opcode to select")
+        label.setAccessibleName("Opcode Selector Instruction Label")
 
         self.list = QListWidget()
+        self.list.setAccessibleName("Opcode List Widget")
         self.list.setMouseTracking(True)
         self.list.installEventFilter(self)
 
         self.description_label = QLabel("")
+        self.description_label.setAccessibleName("Opcode Description Label")
         self.description_label.setWordWrap(True)
         self.description_label.setStyleSheet("QLabel { margin-top: 10px; }")
 
@@ -47,6 +51,7 @@ class OpcodeSelector(QWidget):
         for i, opcode in enumerate(opcodes):
             item = QListWidgetItem(f"{i}. {opcode['code']}")
             item.setToolTip(opcode["description"])
+            item.setData(Qt.AccessibleTextRole, f"Opcode: {opcode['code']}")
             self.list.addItem(item)
 
     def filter_list(self):
@@ -63,6 +68,7 @@ class OpcodeSelector(QWidget):
             item = self.list.itemAt(event.pos())
             if item:
                 self.display_description(item)
+                self.list.setCurrentItem(item) 
         return super().eventFilter(source, event)
 
     def display_description(self, item):

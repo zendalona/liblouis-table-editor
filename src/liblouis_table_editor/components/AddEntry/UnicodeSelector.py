@@ -21,18 +21,21 @@ class UnicodeSelector(QWidget):
         main_layout.setSpacing(10)
 
         left_widget = QWidget()
+        left_widget.setAccessibleName("Unicode Selector Left Panel")
         left_widget.setFixedWidth(250)
         search_layout = QVBoxLayout(left_widget)
         search_layout.setContentsMargins(0, 0, 0, 0)
         search_layout.setSpacing(8)
 
         self.search_bar = QLineEdit()
+        self.search_bar.setAccessibleName("Unicode Block Search Field")
         self.search_bar.setPlaceholderText("Search Unicode Blocks...")
         self.search_bar.textChanged.connect(self.filter_blocks)
         self.search_bar.installEventFilter(self)
         search_layout.addWidget(self.search_bar)
 
         self.tree = QTreeWidget()
+        self.tree.setAccessibleName("Unicode Blocks Tree")
         self.tree.setHeaderLabel("Unicode Blocks")
         self.populate_tree()
         self.tree.itemClicked.connect(self.display_characters)
@@ -41,17 +44,20 @@ class UnicodeSelector(QWidget):
         search_layout.addWidget(self.tree)
 
         right_widget = QWidget()
+        right_widget.setAccessibleName("Unicode Selector Right Panel")
         char_search_layout = QVBoxLayout(right_widget)
         char_search_layout.setContentsMargins(0, 0, 0, 0)
         char_search_layout.setSpacing(8)
 
         scroll_area = QScrollArea()
+        scroll_area.setAccessibleName("Unicode Characters Scroll Area")
         scroll_area.setObjectName("unicode_selector")
         scroll_area.setWidgetResizable(True)
         scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         
         self.char_container = QWidget()
+        self.char_container.setAccessibleName("Unicode Characters Container")
         self.char_layout = QGridLayout(self.char_container)
         self.char_layout.setContentsMargins(4, 4, 4, 4)
         self.char_layout.setSpacing(1)
@@ -60,11 +66,13 @@ class UnicodeSelector(QWidget):
         char_search_layout.addWidget(scroll_area)
 
         selection_widget = QWidget()
+        selection_widget.setAccessibleName("Unicode Selection Widget")
         selection_layout = QHBoxLayout(selection_widget)
         selection_layout.setContentsMargins(0, 0, 0, 0)
         selection_layout.setSpacing(8)
 
         self.selected_text_edit = QTextEdit()
+        self.selected_text_edit.setAccessibleName("Selected Characters Text Edit")
         self.selected_text_edit.setObjectName("selected_text_edit")
         self.selected_text_edit.setFont(QFont('', 16))
         self.selected_text_edit.setPlaceholderText("Selected characters")
@@ -74,6 +82,7 @@ class UnicodeSelector(QWidget):
         selection_layout.addWidget(self.selected_text_edit)
 
         self.unicode_display = QLineEdit()
+        self.unicode_display.setAccessibleName("Unicode Code Points Display")
         self.unicode_display.setReadOnly(True)
         self.unicode_display.setPlaceholderText("Unicode code points")
         self.unicode_display.setFont(QFont('', 12))
@@ -84,6 +93,7 @@ class UnicodeSelector(QWidget):
         self.update_unicode_display()
 
         self.done_button = QPushButton("Done")
+        self.done_button.setAccessibleName("Unicode Selection Done Button")
         self.done_button.setObjectName("done_button")
         self.done_button.clicked.connect(self.confirm_selection)
         self.done_button.installEventFilter(self)

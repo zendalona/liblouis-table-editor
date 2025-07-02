@@ -40,6 +40,8 @@ class OpcodeForm(QWidget):
             if field == "opcode":
                 nested_opcode_combo = QComboBox()
                 nested_opcode_combo.setPlaceholderText("Select Opcode")
+                nested_opcode_combo.setAccessibleName("Opcode Combo Box")
+                nested_opcode_combo.installEventFilter(self)
                 self.populate_opcode_combo(nested_opcode_combo, placeholder)
                 nested_opcode_combo.currentIndexChanged.connect(
                     lambda idx, combo=nested_opcode_combo: self.on_opcode_selected(idx, combo)
@@ -51,9 +53,13 @@ class OpcodeForm(QWidget):
                 unicode_container = QHBoxLayout()
                 unicode_display = QLineEdit()
                 unicode_display.setPlaceholderText("Selected Character")
+                unicode_display.setAccessibleName("Unicode Display Field")
+                unicode_display.installEventFilter(self)
                 unicode_input = QLineEdit()
                 unicode_input.setPlaceholderText(placeholder)
                 unicode_input.setProperty("includeInEntry", True)
+                unicode_input.setAccessibleName("Unicode Input Field")
+                unicode_input.installEventFilter(self)
                 
                 # Set size policy for full width
                 unicode_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -63,6 +69,8 @@ class OpcodeForm(QWidget):
                 unicode_display.textChanged.connect(lambda text, u_input=unicode_input: self.updateUnicodeInput(text, u_input))
 
                 select_button = QPushButton("Select Unicode")
+                select_button.setAccessibleName("Select Unicode Button")
+                select_button.installEventFilter(self)
                 select_button.clicked.connect(lambda _, u_display=unicode_display, u_input=unicode_input: self.showUnicodePopup(u_display, u_input))
 
                 unicode_container.addWidget(unicode_display)
@@ -78,6 +86,8 @@ class OpcodeForm(QWidget):
             elif field == "name":
                 name_input = QLineEdit()
                 name_input.setPlaceholderText(placeholder)
+                name_input.setAccessibleName("Name Input Field")
+                name_input.installEventFilter(self)
                 # Set size policy for full width
                 name_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
                 self.form_layout.addWidget(name_input)
@@ -86,6 +96,8 @@ class OpcodeForm(QWidget):
             elif field == "characters":
                 inp = QTextEdit()
                 inp.setPlaceholderText(placeholder)
+                inp.setAccessibleName("Characters Input Text Area")
+                inp.installEventFilter(self)
                 # Set size policy for full width
                 inp.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
                 self.form_layout.addWidget(inp)
@@ -93,6 +105,7 @@ class OpcodeForm(QWidget):
 
             elif field == "dots":
                 self.braille_input_widget = BrailleInputWidget()
+                self.braille_input_widget.braille_input.installEventFilter(self)
                 self.form_layout.addWidget(self.braille_input_widget)
                 self.field_inputs[field] = self.braille_input_widget.braille_input
             
@@ -105,8 +118,11 @@ class OpcodeForm(QWidget):
                 at_symbol.setFixedWidth(40)
                 at_symbol.setFixedHeight(50)
                 at_symbol.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+                at_symbol.setAccessibleName("At Symbol Field")
+                at_symbol.installEventFilter(self)
 
-                self.braille_input_widget = BrailleInputWidget()  # Reuse the BrailleInputWidget
+                self.braille_input_widget = BrailleInputWidget()
+                self.braille_input_widget.braille_input.installEventFilter(self)
 
                 exactdots_container.addWidget(at_symbol)
                 exactdots_container.addWidget(self.braille_input_widget)
@@ -119,6 +135,7 @@ class OpcodeForm(QWidget):
                 
                 for i in range(placeholder):
                     braille_input_widget = BrailleInputWidget()
+                    braille_input_widget.braille_input.installEventFilter(self)
                     groupdots_container.addWidget(braille_input_widget)
                     self.field_inputs[f"{field}_{i+1}"] = braille_input_widget.braille_input
                     
@@ -128,6 +145,8 @@ class OpcodeForm(QWidget):
                         comma_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
                         comma_label.setFixedWidth(30)
                         comma_label.setFixedHeight(50)
+                        comma_label.setAccessibleName("Comma Label Field")
+                        comma_label.installEventFilter(self)
                         groupdots_container.addWidget(comma_label)
 
                 self.form_layout.addLayout(groupdots_container)
@@ -135,6 +154,8 @@ class OpcodeForm(QWidget):
             elif field == "base_attribute":
                 base_attr_dropdown = QComboBox()
                 base_attr_dropdown.addItems(["space", "digit", "letter", "lowercase", "uppercase", "punctuation", "sign", "math", "litdigit", "attribute", "before", "after"])         
+                base_attr_dropdown.setAccessibleName("Base Attribute Combo Box")
+                base_attr_dropdown.installEventFilter(self)
                 base_attr_dropdown.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
                 self.form_layout.addWidget(base_attr_dropdown)
                 self.field_inputs[field] = base_attr_dropdown
@@ -219,6 +240,11 @@ class OpcodeForm(QWidget):
             elif isinstance(widget, OpcodeForm):
                 widgets.extend(widget.get_focusable_widgets())
         return widgets
+
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.Enter:
+            obj.setFocus()
+        return super().eventFilter(obj, event)
 
 class AddEntryWidget(QWidget):
     def __init__(self, parent=None):

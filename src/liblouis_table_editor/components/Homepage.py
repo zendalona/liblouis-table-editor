@@ -25,16 +25,19 @@ class HomeScreen(QWidget):
         self.main_layout.setSpacing(0)  
 
         left_panel = QWidget()
+        left_panel.setAccessibleName("Home Left Panel")
         left_panel.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         left_layout = QVBoxLayout(left_panel)
         left_layout.setContentsMargins(40, 40, 40, 40)
         left_layout.setSpacing(15)
 
         heading = QLabel("Table making doesn't need to be complex")
+        heading.setAccessibleName("Homepage Heading Label")
         heading.setObjectName("heading")
         heading.setWordWrap(True)
 
         title = QLabel("The Ultimate Tool\nfor Easy\nLiblouis Table Editing")
+        title.setAccessibleName("Homepage Title Label")
         title.setObjectName("title")
         title.setWordWrap(True)
 
@@ -42,21 +45,25 @@ class HomeScreen(QWidget):
             "Streamline the creation and editing of Liblouis translation tables "
             "with our intuitive, cross-platform editor."
         )
+        description.setAccessibleName("Homepage Description Label")
         description.setObjectName("description")
         description.setWordWrap(True)
 
         button_container = QWidget()
+        button_container.setAccessibleName("Homepage Button Container")
         button_layout = QHBoxLayout(button_container)
         button_layout.setSpacing(10)
         button_layout.setContentsMargins(0, 10, 0, 10)
 
         create_button = QPushButton("Create new table")
+        create_button.setAccessibleName("Create New Table Button")
         create_button.setObjectName("createBtn")
         create_button.setCursor(Qt.PointingHandCursor)
         create_button.clicked.connect(self.create_new_table)
         create_button.setFocusPolicy(Qt.StrongFocus)
 
         open_button = QPushButton("Open existing table")
+        open_button.setAccessibleName("Open Existing Table Button")
         open_button.setObjectName("openBtn")
         open_button.setCursor(Qt.PointingHandCursor)
         open_button.clicked.connect(self.open_existing_table)
@@ -67,9 +74,11 @@ class HomeScreen(QWidget):
         button_layout.addStretch()
 
         recent_label = QLabel("Recent Files")
+        recent_label.setAccessibleName("Recent Files Label")
         recent_label.setObjectName("recent_label")
         
         self.recent_files_list = QListWidget()
+        self.recent_files_list.setAccessibleName("Recent Files List")
         self.recent_files_list.setObjectName("recentFiles")
         self.recent_files_list.setMaximumHeight(120)
         self.recent_files_list.itemDoubleClicked.connect(self.open_recent_file)
@@ -87,6 +96,7 @@ class HomeScreen(QWidget):
         left_layout.addStretch()
 
         self.right_panel = QLabel()
+        self.right_panel.setAccessibleName("Homepage Right Panel")
         self.right_panel.setObjectName("rightPanel")
         self.right_panel.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.right_panel.setMinimumWidth(400)

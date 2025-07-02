@@ -14,6 +14,7 @@ class BrailleInputWidget(QWidget):
 
         self.braille_input = QLineEdit()
         self.braille_input.setPlaceholderText("Enter Braille Dots (e.g., 12-34-56)")
+        self.braille_input.setAccessibleName("Braille Dots Input Field")
         
         braille_regex = QRegExp("^([1-6]{1,6})(-([1-6]{1,6}))*$")
         validator = QRegExpValidator(braille_regex, self.braille_input)
@@ -38,6 +39,7 @@ class BrailleInputWidget(QWidget):
             if self.is_valid_braille_sequence(sequence):
                 preview_label = QLabel(self.get_braille_representation(sequence))
                 preview_label.setAlignment(Qt.AlignCenter)
+                preview_label.setAccessibleName(f"Braille Preview: {sequence}")
                 self.braille_preview_container.addWidget(preview_label)
 
     def is_valid_braille_sequence(self, sequence):

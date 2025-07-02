@@ -63,6 +63,7 @@ class EntryWidget(QFrame):
                 
         self.label_text = QLabel(display_text)
         self.label_text.setWordWrap(False)
+        self.label_text.setAccessibleName(f"Entry: {display_text}")
         
         font = QFont()
         font.setPointSize(self.current_font_size)
@@ -86,6 +87,7 @@ class EntryWidget(QFrame):
         self.edit_line = QLineEdit(self.entry)
         self.edit_line.setVisible(False)
         self.edit_line.setFont(font)
+        self.edit_line.setAccessibleName(f"Edit Entry: {display_text}")
         self.layout.addWidget(self.edit_line)
         self.edit_line.editingFinished.connect(self.save_entry)
 
@@ -111,6 +113,10 @@ class EntryWidget(QFrame):
         delete_action = QAction('Delete', self)
         delete_action.triggered.connect(self.delete_entry)
         menu.addAction(delete_action)
+
+        read_action = QAction('Read Entry', self)
+        read_action.triggered.connect(self.read_entry)
+        menu.addAction(read_action)
 
         menu.exec_(self.mapToGlobal(event.pos()))
 
@@ -153,9 +159,12 @@ class EntryWidget(QFrame):
         self.setParent(None)
         self.deleteLater()
 
+    def read_entry(self):
+        self.label_text.setFocus()
+
     def onHoverEnter(self, event):
         if not self.property("selected"):
-            pass
+            self.setFocus() 
 
     def onHoverLeave(self, event):
         if not self.property("selected"):

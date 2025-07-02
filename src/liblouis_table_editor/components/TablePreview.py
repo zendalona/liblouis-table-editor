@@ -16,7 +16,7 @@ class TablePreview(QWidget):
         self.max_font_size = 24
         apply_styles(self)
         self.initUI()
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(Qt.NoFocus)
 
     def initUI(self):
         self.setObjectName("table_preview")
@@ -25,12 +25,14 @@ class TablePreview(QWidget):
         self.layout.setSpacing(2)
 
         self.scroll_area = QScrollArea(self)
+        self.scroll_area.setAccessibleName("Table Preview Scroll Area")
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll_area.setFocusPolicy(Qt.NoFocus) 
         
         self.scroll_widget = QWidget()
+        self.scroll_widget.setAccessibleName("Table Preview Scroll Widget")
         self.scroll_layout = QVBoxLayout(self.scroll_widget)
         self.scroll_layout.setAlignment(Qt.AlignTop)
         self.scroll_layout.setContentsMargins(0, 0, 0, 0)
@@ -120,14 +122,10 @@ class TablePreview(QWidget):
         if 0 <= index < len(self.entry_widgets):
             if 0 <= self.current_index < len(self.entry_widgets):
                 self.entry_widgets[self.current_index].setSelected(False)
-            
             self.current_index = index  
-            
             widget = self.entry_widgets[index]
             widget.setSelected(True)
-            
             self.ensure_widget_visible(widget)
-            
             if hasattr(self.table_editor, 'load_entry_into_editor'):
                 self.table_editor.load_entry_into_editor(self.entries[index])
 

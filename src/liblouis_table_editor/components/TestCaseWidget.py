@@ -20,7 +20,9 @@ class TestCaseWidget(QWidget):
 
         labels_row = QHBoxLayout()
         input_label = QLabel("Test Input:")
+        input_label.setAccessibleName("Test Input Label")
         output_label = QLabel("Expected Braille:")
+        output_label.setAccessibleName("Expected Braille Label")
         labels_row.addWidget(input_label)
         labels_row.addStretch(1)
         labels_row.addWidget(output_label)
@@ -31,6 +33,7 @@ class TestCaseWidget(QWidget):
 
         input_group = QVBoxLayout()
         self.input_text = QTextEdit()
+        self.input_text.setAccessibleName("Test Input Text Area")
         self.input_text.setPlaceholderText("Enter test input text")
         self.input_text.setMaximumHeight(100)
         self.input_text.installEventFilter(self)
@@ -38,6 +41,7 @@ class TestCaseWidget(QWidget):
 
         output_group = QVBoxLayout()
         self.expected_output = QTextEdit()
+        self.expected_output.setAccessibleName("Expected Braille Text Area")
         self.expected_output.setPlaceholderText("Enter expected Braille output using F, D, S, J, K, L keys for dots 1-6, space for next cell, double space for word space")
         self.expected_output.setMaximumHeight(100)
         self.expected_output.keyPressEvent = self.handle_expected_braille_input
@@ -48,7 +52,9 @@ class TestCaseWidget(QWidget):
 
         button_column_layout = QVBoxLayout()
         self.add_test_button = QPushButton("Add Test Case")
+        self.add_test_button.setAccessibleName("Add Test Case Button")
         self.run_tests_button = QPushButton("Run All Tests")
+        self.run_tests_button.setAccessibleName("Run All Tests Button")
         button_column_layout.addWidget(self.add_test_button)
         button_column_layout.addStretch(1)
         button_column_layout.addWidget(self.run_tests_button)
@@ -67,6 +73,7 @@ class TestCaseWidget(QWidget):
         layout.addLayout(input_fields_row)
 
         self.test_table = QTableWidget()
+        self.test_table.setAccessibleName("Test Cases Table")
         self.test_table.setColumnCount(4)
         self.test_table.setHorizontalHeaderLabels(["Input", "Expected", "Result", "Status"])
         header = self.test_table.horizontalHeader()

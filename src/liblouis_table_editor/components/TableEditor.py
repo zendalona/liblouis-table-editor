@@ -56,15 +56,18 @@ class TableEditor(QWidget):
 
         if not self.liblouis_found:
             self.liblouis_warning_label = QLabel("<b style='color: #d32f2f;'>Warning: Liblouis is not installed. Some features will not work.</b>")
+            self.liblouis_warning_label.setAccessibleName("Liblouis Warning Label")
             self.liblouis_warning_label.setAlignment(Qt.AlignCenter)
             main_layout.addWidget(self.liblouis_warning_label)
 
         top_layout = QHBoxLayout()
 
         self.table_preview = TablePreview(self)
+        self.table_preview.setAccessibleName("Table Preview Widget")
         top_layout.addWidget(self.table_preview)
 
         self.add_entry_widget = AddEntryWidget()
+        self.add_entry_widget.setAccessibleName("Add Entry Widget")
         
         self.add_entry_widget.add_button.clicked.connect(self.add_entry)
         top_layout.addWidget(self.add_entry_widget)
@@ -74,12 +77,14 @@ class TableEditor(QWidget):
         main_layout.addLayout(top_layout)
 
         self.toggle_testing_button = QPushButton("Show Testing Panel (Ctrl+Q)")
+        self.toggle_testing_button.setAccessibleName("Show Testing Panel Button")
         self.toggle_testing_button.setCheckable(True)
         self.toggle_testing_button.setChecked(False)
         self.toggle_testing_button.clicked.connect(self.toggle_testing_widget)
         main_layout.addWidget(self.toggle_testing_button)
 
         self.testing_widget = TestingWidget(self)
+        self.testing_widget.setAccessibleName("Testing Widget")
         main_layout.addWidget(self.testing_widget)
 
         self.testing_widget.hide()

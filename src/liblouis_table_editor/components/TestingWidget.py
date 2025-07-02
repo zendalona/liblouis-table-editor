@@ -62,8 +62,10 @@ class TestingWidget(QWidget):
         main_layout.setContentsMargins(6, 6, 6, 6)
         
         self.tab_widget = QTabWidget()
+        self.tab_widget.setAccessibleName("Translation and Test Cases Tabs")
         
         translation_widget = QWidget()
+        translation_widget.setAccessibleName("Translation Widget")
         translation_layout = QVBoxLayout()
         translation_layout.setSpacing(6)
         translation_layout.setContentsMargins(6, 6, 6, 6)
@@ -72,6 +74,7 @@ class TestingWidget(QWidget):
         forward_group.setSpacing(6)
         forward_group.setContentsMargins(6, 6, 6, 6)
         forward_label = QLabel("Forward Translation (Text to Braille):")
+        forward_label.setAccessibleName("Forward Translation Label")
         
         forward_io_layout = QHBoxLayout()
         forward_io_layout.setSpacing(6)
@@ -81,7 +84,9 @@ class TestingWidget(QWidget):
         forward_input_group.setSpacing(3)
         forward_input_group.setContentsMargins(0, 0, 0, 0)
         forward_input_label = QLabel("Input Text:")
+        forward_input_label.setAccessibleName("Forward Input Label")
         self.forward_input = QTextEdit(self)
+        self.forward_input.setAccessibleName("Forward Input Text Area")
         self.forward_input.setPlaceholderText("Enter text to translate")
         self.forward_input.setMaximumHeight(100)
         self.forward_input.keyPressEvent = self.handle_forward_key_press
@@ -93,7 +98,9 @@ class TestingWidget(QWidget):
         forward_output_group.setSpacing(3)
         forward_output_group.setContentsMargins(0, 0, 0, 0)
         forward_output_label = QLabel("Output Braille:")
+        forward_output_label.setAccessibleName("Forward Output Label")
         self.forward_output = QTextEdit(self)
+        self.forward_output.setAccessibleName("Forward Output Text Area")
         self.forward_output.setPlaceholderText("Braille output will appear here")
         self.forward_output.setMaximumHeight(100)
         self.forward_output.setReadOnly(True)
@@ -104,6 +111,7 @@ class TestingWidget(QWidget):
         forward_button_layout.setSpacing(0)
         forward_button_layout.setContentsMargins(0, 45, 0, 0) 
         self.forward_button = QPushButton("→ Translate to Braille", self)
+        self.forward_button.setAccessibleName("Translate to Braille Button")
         self.forward_button.setObjectName("forward_button")
         self.forward_button.setToolTip("Click to translate text to Braille (or press Ctrl+Enter)")
         self.forward_button.setFixedSize(200, 40)
@@ -123,6 +131,7 @@ class TestingWidget(QWidget):
         backward_group.setSpacing(6)
         backward_group.setContentsMargins(6, 6, 6, 6)
         backward_label = QLabel("Backward Translation (Braille to Text):")
+        backward_label.setAccessibleName("Backward Translation Label")
         
         backward_io_layout = QHBoxLayout()
         backward_io_layout.setSpacing(6)
@@ -132,7 +141,9 @@ class TestingWidget(QWidget):
         backward_input_group.setSpacing(3)
         backward_input_group.setContentsMargins(0, 0, 0, 0)
         backward_input_label = QLabel("Input Braille:")
+        backward_input_label.setAccessibleName("Backward Input Label")
         self.backward_input = QTextEdit(self)
+        self.backward_input.setAccessibleName("Backward Input Text Area")
         self.backward_input.setPlaceholderText("Enter Braille using F, D, S, J, K, L keys for dots 1-6, space for next cell, double space for word space")
         self.backward_input.setMaximumHeight(100)
         self.backward_input.keyPressEvent = self.handle_braille_input
@@ -146,7 +157,9 @@ class TestingWidget(QWidget):
         backward_output_group.setSpacing(3)
         backward_output_group.setContentsMargins(0, 0, 0, 0)
         backward_output_label = QLabel("Output Text:")
+        backward_output_label.setAccessibleName("Backward Output Label")
         self.backward_output = QTextEdit(self)
+        self.backward_output.setAccessibleName("Backward Output Text Area")
         self.backward_output.setPlaceholderText("Text output will appear here")
         self.backward_output.setMaximumHeight(100)
         self.backward_output.setReadOnly(True)
@@ -157,6 +170,7 @@ class TestingWidget(QWidget):
         backward_button_layout.setSpacing(0)
         backward_button_layout.setContentsMargins(0, 45, 0, 0)  
         self.backward_button = QPushButton("← Translate to Text", self)
+        self.backward_button.setAccessibleName("Translate to Text Button")
         self.backward_button.setObjectName("backward_button")
         self.backward_button.setToolTip("Click to translate Braille to text (or press Ctrl+Enter)")
         self.backward_button.setFixedSize(200, 40)
@@ -184,6 +198,7 @@ class TestingWidget(QWidget):
         main_layout.addWidget(self.tab_widget)
         
         self.status_label = QLabel("")
+        self.status_label.setAccessibleName("Status Label")
         self.status_label.setStyleSheet("color: gray; font-style: italic;")
         main_layout.addWidget(self.status_label)
         
