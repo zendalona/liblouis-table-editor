@@ -2,7 +2,8 @@ MIT License
 
 Copyright (c) 2025 
 
-Developers: Riya Jain & Sahil Rakhaiya - Zendalona
+Developed by Riya Jain  GSoC'24 Contributor and Sahil Rakhaiya GSoC'25 Contributor
+Mentors: Nalin, Samuel Thibault, K Sathaseelan, Prabhu Kondarangi
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
