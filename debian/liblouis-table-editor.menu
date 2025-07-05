@@ -1,0 +1,7 @@
+?package(liblouis-table-editor):\
+  needs="X11"\
+  section="Applications/Utility"\
+  title="Liblouis-Table-Editor"\
+  command="/usr/bin/liblouis-table-editor"\
+  hints="Edit Liblouis Braille Tables"\
+  icon="/usr/share/pixmaps/liblouis-table-editor-128-0.png"

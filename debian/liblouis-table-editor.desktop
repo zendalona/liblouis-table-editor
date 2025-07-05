@@ -1,14 +1,14 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Liblouis Table Editor
-Name[en]=Liblouis Table Editor
+Name=Liblouis-Table-Editor
+Name[en]=Liblouis-Table-Editor
 Comment=GUI tool to create and edit Liblouis braille tables
 Comment[en]=GUI tool to create and edit Liblouis braille tables
-GenericName=Braille Table Editor
-GenericName[en]=Braille Table Editor
+GenericName=Braille-Table-Editor
+GenericName[en]=Braille-Table-Editor
 Exec=liblouis-table-editor
-Icon=liblouis-table-editor
+Icon=/usr/share/pixmaps/liblouis-table-editor-128-0.png
 Terminal=false
 StartupNotify=true
 StartupWMClass=liblouis-table-editor

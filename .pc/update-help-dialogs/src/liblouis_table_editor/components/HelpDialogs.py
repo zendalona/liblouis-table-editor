@@ -51,8 +51,8 @@ class AboutDialog(StyledDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("About Liblouis Table Editor")
-        self.setMinimumSize(900, 700)
-        self.resize(850, 600)
+        self.setMinimumSize(800, 600)
+        self.resize(800, 600)
         self.setFocusPolicy(Qt.StrongFocus)
 
         main_layout = QVBoxLayout()

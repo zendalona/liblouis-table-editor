@@ -51,8 +51,8 @@ class AboutDialog(StyledDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("About Liblouis Table Editor")
-        self.setMinimumSize(900, 700)
-        self.resize(850, 600)
+        self.setMinimumSize(800, 600)
+        self.resize(800, 600)
         self.setFocusPolicy(Qt.StrongFocus)
 
         main_layout = QVBoxLayout()
@@ -85,12 +85,7 @@ class AboutDialog(StyledDialog):
         <h2>License</h2>
         <pre style='background:#f8f8f8; border:1px solid #e5e5e5; border-radius:4px; padding:12px; font-size:1em; color:#333;'>MIT License</pre>
         <h2>Credits</h2>
-        <p>
-            Developed by <b>Riya Jain  GSoC'24 Contributor</b> and <b>Sahil Rakhaiya GSoC'25 Contributor</b><br>
-            Mentors: <b>Nalin</b>, <b>Samuel Thibault</b>, <b>K Sathaseelan</b>, <b>Prabhu Kondarangi</b><br>
-            &copy; 2025 Zendalona. All rights reserved.
-        </p>
-
+        <p>Developed by <b>Riya Jain & Sahil Rakhaiya</b><br>© 2025 Zendalona</p>
         <h2>Links</h2>
         <ul>
             <li><a href='https://github.com/zendalona/liblouis-table-editor'>GitHub Repository</a></li>

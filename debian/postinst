@@ -11,6 +11,10 @@ case "$1" in
         if command -v gtk-update-icon-cache >/dev/null 2>&1; then
             gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
         fi
+
+        if command -v update-menus >/dev/null 2>&1; then
+        update-menus
+        fi
         
         if command -v update-applications >/dev/null 2>&1; then
             update-applications 2>/dev/null || true
