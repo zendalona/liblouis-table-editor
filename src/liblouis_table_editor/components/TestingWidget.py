@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (
     QWidget, QHBoxLayout, QVBoxLayout, QLineEdit, 
-    QPushButton, QLabel, QMessageBox, QTextEdit, QTabWidget, QShortcut
+    QPushButton, QLabel, QMessageBox, QTextEdit, QTabWidget, QShortcut, QScrollArea
 )
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QKeySequence
@@ -57,7 +57,26 @@ class TestingWidget(QWidget):
             pass
 
     def initUI(self):
-        main_layout = QVBoxLayout()
+        container_layout = QVBoxLayout()
+        container_layout.setContentsMargins(0, 0, 0, 0)
+        
+        scroll_area = QScrollArea()
+        scroll_area.setObjectName("translation_scroll")
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        
+        content_widget = QWidget()
+        content_widget.setObjectName("translation_content")
+        
+        self.content_widget = content_widget
+        
+        content_widget.setMaximumHeight(600)  
+
+        from PyQt5.QtWidgets import QSizePolicy
+        content_widget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        
+        main_layout = QVBoxLayout(content_widget)
         main_layout.setSpacing(6)
         main_layout.setContentsMargins(6, 6, 6, 6)
         
@@ -202,7 +221,11 @@ class TestingWidget(QWidget):
         self.status_label.setStyleSheet("color: gray; font-style: italic;")
         main_layout.addWidget(self.status_label)
         
-        self.setLayout(main_layout)
+        scroll_area.setWidget(content_widget)
+        
+        container_layout.addWidget(scroll_area)
+        
+        self.setLayout(container_layout)
         
         self.forward_button.clicked.connect(self.translate_forward)
         self.backward_button.clicked.connect(self.translate_backward)

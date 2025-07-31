@@ -17,7 +17,7 @@ class TableManager(QWidget):
         self.setWindowTitle('Liblouis-Table-Editor')
         self.setObjectName("liblouis-table-editor")
         
-        self.setMinimumSize(1000, 600)
+        self.setMinimumSize(1200, 800)
         
         icon_path = get_icon_path('liblouis-table-editor.ico')
         if not icon_path:

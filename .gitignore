@@ -14,3 +14,4 @@ __pypackages__/
 .env
 .venv
 venv
+.pc/

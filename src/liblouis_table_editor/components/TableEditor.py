@@ -1,7 +1,7 @@
 import json
 import os
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout , QSizePolicy, QTextEdit, QLineEdit, QComboBox, QShortcut, QPushButton, QLabel, QMessageBox
+    QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy, QTextEdit, QLineEdit, QComboBox, QShortcut, QPushButton, QLabel, QMessageBox, QSplitter
 )
 from PyQt5.QtGui import QKeyEvent, QFont, QKeySequence
 from PyQt5.QtCore import Qt
@@ -60,40 +60,60 @@ class TableEditor(QWidget):
             self.liblouis_warning_label.setAlignment(Qt.AlignCenter)
             main_layout.addWidget(self.liblouis_warning_label)
 
-        top_layout = QHBoxLayout()
+        main_splitter = QSplitter(Qt.Vertical)
+        main_splitter.setAccessibleName("Main Window Splitter")
+        main_splitter.setObjectName("main_splitter")
+        
+        top_splitter = QSplitter(Qt.Horizontal)
+        top_splitter.setAccessibleName("Top Section Splitter")
+        top_splitter.setObjectName("top_splitter")
 
         self.table_preview = TablePreview(self)
         self.table_preview.setAccessibleName("Table Preview Widget")
-        top_layout.addWidget(self.table_preview)
+        self.table_preview.setObjectName("table_preview")
+        self.table_preview.setMinimumWidth(250)
+        self.table_preview.setMinimumHeight(200)
+        top_splitter.addWidget(self.table_preview)
 
         self.add_entry_widget = AddEntryWidget()
         self.add_entry_widget.setAccessibleName("Add Entry Widget")
-        
+        self.add_entry_widget.setObjectName("add_entry_widget")
         self.add_entry_widget.add_button.clicked.connect(self.add_entry)
-        top_layout.addWidget(self.add_entry_widget)
+        self.add_entry_widget.setMinimumWidth(300)
+        self.add_entry_widget.setMinimumHeight(200)
+        top_splitter.addWidget(self.add_entry_widget)
 
-        self.add_entry_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-
-        main_layout.addLayout(top_layout)
-
-        self.toggle_testing_button = QPushButton("Show Testing Panel (Ctrl+Q)")
-        self.toggle_testing_button.setAccessibleName("Show Testing Panel Button")
-        self.toggle_testing_button.setCheckable(True)
-        self.toggle_testing_button.setChecked(False)
-        self.toggle_testing_button.clicked.connect(self.toggle_testing_widget)
-        main_layout.addWidget(self.toggle_testing_button)
+        top_splitter.setSizes([400, 600])
+        
+        main_splitter.addWidget(top_splitter)
 
         self.testing_widget = TestingWidget(self)
-        self.testing_widget.setAccessibleName("Testing Widget")
-        main_layout.addWidget(self.testing_widget)
+        self.testing_widget.setAccessibleName("Translation Widget")
+        self.testing_widget.setObjectName("testing_widget")
+        self.testing_widget.setMinimumHeight(200)
+        self.testing_widget.setMinimumWidth(400)
+        main_splitter.addWidget(self.testing_widget)
 
-        self.testing_widget.hide()
-        self.add_entry_widget.show()
+        main_splitter.setSizes([650, 350])
+        
+        main_splitter.setChildrenCollapsible(False)
+        top_splitter.setChildrenCollapsible(False)
+        
+        main_splitter.setHandleWidth(6)
+        top_splitter.setHandleWidth(6)
+        
+        main_splitter.setStretchFactor(0, 2)  
+        main_splitter.setStretchFactor(1, 1)  
+        
+        top_splitter.setStretchFactor(0, 1)  
+        top_splitter.setStretchFactor(1, 2) 
+        
+        main_layout.addWidget(main_splitter)
+
+        self.main_splitter = main_splitter
+        self.top_splitter = top_splitter
 
         self.setLayout(main_layout)
-
-        shortcut = QShortcut(QKeySequence("Ctrl+Q"), self)
-        shortcut.activated.connect(self.toggle_testing_widget)
 
         self.add_entry_shortcut = QShortcut(QKeySequence("Ctrl+Return"), self)
         self.add_entry_shortcut.activated.connect(self.add_entry)
@@ -337,7 +357,7 @@ class TableEditor(QWidget):
         replaced_count = 0
         for i, entry in enumerate(self.table_preview.entries):
             if find_text in str(entry):
-                # Replace the text
+
                 if isinstance(entry, str):
                     new_entry = entry.replace(find_text, replace_text)
                     self.table_preview.entries[i] = new_entry
@@ -354,7 +374,7 @@ class TableEditor(QWidget):
         if increase:
             self._current_font_size += 1
         else:
-            self._current_font_size = max(8, self._current_font_size - 1)  # Don't go below 8pt
+            self._current_font_size = max(8, self._current_font_size - 1)  
             
         self.table_preview.update_font_size(self._current_font_size)
         
@@ -364,15 +384,33 @@ class TableEditor(QWidget):
             
         self.show_toast(f"Font size: {self._current_font_size}pt", get_icon_for_toast('success'), 75, 175, 78)
 
-    def toggle_testing_widget(self):
-        if self.testing_widget.isVisible():
-            self.testing_widget.hide()
-            self.toggle_testing_button.setText("Show Testing Panel (Ctrl+Q)")
-            self.add_entry_widget.show()  
-        else:
-            self.testing_widget.show()
-            self.toggle_testing_button.setText("Hide Testing Panel (Ctrl+Q)")
-            self.add_entry_widget.hide()  
-
     def show_liblouis_install_dialog(self):
         pass
+
+    def save_splitter_state(self):
+        """Save the current splitter positions"""
+        try:
+            main_sizes = self.main_splitter.sizes()
+            top_sizes = self.top_splitter.sizes()
+            return {
+                'main_splitter': main_sizes,
+                'top_splitter': top_sizes
+            }
+        except Exception:
+            return None
+
+    def restore_splitter_state(self, state):
+
+        try:
+            if state and isinstance(state, dict):
+                if 'main_splitter' in state:
+                    self.main_splitter.setSizes(state['main_splitter'])
+                if 'top_splitter' in state:
+                    self.top_splitter.setSizes(state['top_splitter'])
+        except Exception:
+            pass
+
+    def reset_splitter_layout(self):
+
+        self.main_splitter.setSizes([650, 350])  
+        self.top_splitter.setSizes([400, 600])  

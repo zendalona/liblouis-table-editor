@@ -707,7 +707,159 @@ QFrame#entry_line {
     border: none;
 }
 
-/* Only show black outline for keyboard navigation (not mouse) */
+QSplitter {
+    background-color: #f8f9fa;
+    border: none;
+}
+
+QSplitter::handle {
+    background-color: transparent;
+    border: none;
+    margin: 0px;
+}
+
+QSplitter::handle:horizontal {
+    width: 6px;
+    min-width: 6px;
+    max-width: 6px;
+    background-color: transparent;
+}
+
+QSplitter::handle:vertical {
+    height: 6px;
+    min-height: 6px;
+    max-height: 6px;
+    background-color: transparent;
+}
+
+QSplitter::handle:hover {
+    background-color: rgba(0, 123, 255, 0.3);
+}
+
+QSplitter::handle:horizontal:hover {
+    background-color: rgba(0, 123, 255, 0.3);
+    cursor: col-resize;
+}
+
+QSplitter::handle:vertical:hover {
+    background-color: rgba(0, 123, 255, 0.3);
+    cursor: row-resize;
+}
+
+QSplitter::handle:pressed {
+    background-color: rgba(0, 123, 255, 0.5);
+}
+
+QSplitter#main_splitter::handle:vertical {
+    background-color: transparent;
+}
+
+QSplitter#top_splitter::handle:horizontal {
+    background-color: transparent;
+}
+
+QSplitter#main_splitter::handle:vertical:hover {
+    background-color: rgba(0, 123, 255, 0.3);
+}
+
+QSplitter#top_splitter::handle:horizontal:hover {
+    background-color: rgba(0, 123, 255, 0.3);
+}
+
+QScrollArea {
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+
+QScrollArea QWidget {
+    background-color: #ffffff;
+}
+
+QScrollBar:vertical {
+    background: #f8f9fa;
+    width: 12px;
+    border-radius: 6px;
+    margin: 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: #ced4da;
+    border-radius: 6px;
+    min-height: 20px;
+    margin: 2px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #007bff;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+}
+
+QScrollBar:horizontal {
+    background: #f8f9fa;
+    height: 12px;
+    border-radius: 6px;
+    margin: 0px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #ced4da;
+    border-radius: 6px;
+    min-width: 20px;
+    margin: 2px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #007bff;
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    border: none;
+    background: none;
+    width: 0px;
+}
+
+QWidget#table_preview {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+}
+
+QWidget#add_entry_widget {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+QWidget#testing_widget {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+QWidget#translation_content {
+    background-color: #ffffff;
+    border: none;
+    padding: 4px;
+}
+
+QScrollArea#translation_scroll {
+    border: none;
+    background-color: #ffffff;
+    /* No minimum height - let scroll area shrink as needed */
+}
+
+QScrollArea#translation_scroll QWidget {
+    background-color: #ffffff;
+}
+
 QLineEdit[tabFocus="true"], QTextEdit[tabFocus="true"], QPushButton[tabFocus="true"] {
   outline: 2px solid #000000;
   outline-offset: 0px;

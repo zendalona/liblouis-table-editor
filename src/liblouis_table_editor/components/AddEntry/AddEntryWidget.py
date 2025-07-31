@@ -4,7 +4,7 @@ import os
 import sys
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit,
-    QLineEdit, QComboBox, QLabel, QPushButton, QSizePolicy, QLayout
+    QLineEdit, QComboBox, QLabel, QPushButton, QSizePolicy, QLayout, QScrollArea
 )
 from PyQt5.QtCore import Qt, QEvent
 from liblouis_table_editor.components.AddEntry.BrailleInputWidget import BrailleInputWidget
@@ -327,8 +327,21 @@ class AddEntryWidget(QWidget):
         self.field_inputs.clear()
 
     def initUI(self):
-        main_layout = QVBoxLayout(self)
+        # Create main container
+        container_layout = QVBoxLayout(self)
+        container_layout.setContentsMargins(0, 0, 0, 0)
+        
+        # Create scroll area
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        
+        # Create content widget
+        content_widget = QWidget()
+        main_layout = QVBoxLayout(content_widget)
         main_layout.setAlignment(Qt.AlignTop)
+        main_layout.setContentsMargins(8, 8, 8, 8)
 
         self.opcode_combo_layout = QHBoxLayout()
 
@@ -354,7 +367,9 @@ class AddEntryWidget(QWidget):
         self.add_button = QPushButton("Add")
         main_layout.addWidget(self.add_button, alignment=Qt.AlignTop)
 
-        self.setLayout(main_layout)
+        # Set content widget to scroll area and add to main container
+        scroll_area.setWidget(content_widget)
+        container_layout.addWidget(scroll_area)
 
     def populate_opcode_combo(self, combo=None):
         if combo is None:
