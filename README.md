@@ -1,4 +1,4 @@
-# Liblouis Table Editor
+# liblouis-table-editor
 
 A graphical editor for Liblouis translation tables. This application provides a user-friendly interface for creating and editing Liblouis braille translation tables.
 
@@ -21,14 +21,14 @@ If you want to build the application from source:
 1. Install Python 3.8 or later
 2. Clone the repository:
    ```
-   git clone https://github.com/yourusername/Liblouis-Table-Editor.git
+   git clone https://github.com/zendalona/liblouis-table-editor
    cd Liblouis-Table-Editor
    ```
 3. Install the required dependencies:
    ```
    pip install -r requirements.txt
    ```
-4. Run the build script:
+4. Run the build script (Windows):
    ```
    python build.py
    ```
