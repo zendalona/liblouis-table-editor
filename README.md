@@ -28,11 +28,19 @@ If you want to build the application from source:
    ```
    pip install -r requirements.txt
    ```
-4. Run the build script (Windows):
+#### For Windows
+4. Run the build script:
    ```
-   python build.py
+   python windows-build.py
    ```
 5. The built application will be in the `dist/LiblouisTableEditor` directory
+
+#### For Linux
+   
+6. Run the Setup script:
+   ```
+   sudo python3 setup.py install --install-data=/usr
+   ```
 
 ## Troubleshooting
 
