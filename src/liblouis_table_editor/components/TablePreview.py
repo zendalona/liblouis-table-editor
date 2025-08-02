@@ -92,7 +92,6 @@ class TablePreview(QWidget):
         if event.button() == Qt.LeftButton:
             index = self.entry_widgets.index(widget)
             self.select_entry(index)
-            # Ensure the TablePreview widget has focus for keyboard navigation
             self.setFocus()
         elif event.button() == Qt.RightButton:
             widget.contextMenuEvent(event)

@@ -4,9 +4,9 @@ import os
 import sys
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit,
-    QLineEdit, QComboBox, QLabel, QPushButton, QSizePolicy, QLayout, QScrollArea
+    QLineEdit, QComboBox, QLabel, QPushButton, QSizePolicy, QLayout, QScrollArea, QApplication
 )
-from PyQt5.QtCore import Qt, QEvent
+from PyQt5.QtCore import Qt, QEvent, QTimer
 from liblouis_table_editor.components.AddEntry.BrailleInputWidget import BrailleInputWidget
 from liblouis_table_editor.components.AddEntry.UnicodeSelector import UnicodeSelector
 from liblouis_table_editor.utils.view import clearLayout
@@ -269,6 +269,8 @@ class AddEntryWidget(QWidget):
         self.last_nav_was_tab = False
         self.ensure_focus_policies(self)
         self.install_input_event_filters()
+        
+        self.setup_tab_order()
 
     def install_input_event_filters(self):
         def install_on_widget(w):
@@ -425,6 +427,8 @@ class AddEntryWidget(QWidget):
             apply_styles(nested_form)
             
         self.install_input_event_filters()
+        
+        QTimer.singleShot(100, self.setup_tab_order)
 
     def ensure_focus_policies(self, widget):
 
@@ -488,42 +492,54 @@ class AddEntryWidget(QWidget):
         return widgets
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Tab and not event.isAutoRepeat():
-            if event.modifiers() == Qt.ShiftModifier:
-                focusable = self.get_focusable_widgets()
-                current = self.focusWidget()
-                try:
-                    idx = focusable.index(current)
-                    if idx == 0:
-                        p = self.parent()
-                        if hasattr(p, 'table_preview'):
-                            p.table_preview.setFocus()
-                            event.accept()
-                            return
-                except (ValueError, IndexError):
-                    pass
-                self.focusPreviousChild()
-                event.accept()
+        if event.key() in (Qt.Key_Return, Qt.Key_Enter):
+            focused_widget = QApplication.focusWidget()
+            if isinstance(focused_widget, QPushButton):
+                focused_widget.click()
                 return
-            else:
-                focusable = self.get_focusable_widgets()
-                current = self.focusWidget()
-                try:
-                    idx = focusable.index(current)
-                    if idx == len(focusable) - 1:
-                        p = self.parent()
-                        if hasattr(p, 'table_preview'):
-                            p.table_preview.setFocus()
-                            event.accept()
-                            return
-                except (ValueError, IndexError):
-                    pass
-                self.focusNextChild()
-                event.accept()
-                return
-        elif event.key() in (Qt.Key_Return, Qt.Key_Enter):
-            self.focusNextChild()
-            event.accept()
-            return
         
         super().keyPressEvent(event)
+    
+    def setup_tab_order(self):
+
+        focusable_widgets = []
+        
+        if hasattr(self, 'opcode_combo') and self.opcode_combo.isVisible():
+            focusable_widgets.append(self.opcode_combo)
+        
+        if hasattr(self, 'form_layout'):
+            for i in range(self.form_layout.count()):
+                item = self.form_layout.itemAt(i)
+                if item:
+                    if item.widget():
+                        widget = item.widget()
+                        if widget.focusPolicy() != Qt.NoFocus and widget.isVisible() and widget.isEnabled():
+                            focusable_widgets.append(widget)
+                        for child in widget.findChildren(QWidget):
+                            if (child.focusPolicy() != Qt.NoFocus and 
+                                child.isVisible() and child.isEnabled() and
+                                isinstance(child, (QLineEdit, QTextEdit, QComboBox, QPushButton))):
+                                focusable_widgets.append(child)
+                    
+                    elif item.layout():
+                        layout = item.layout()
+                        for j in range(layout.count()):
+                            sub_item = layout.itemAt(j)
+                            if sub_item and sub_item.widget():
+                                widget = sub_item.widget()
+                                if widget.focusPolicy() != Qt.NoFocus and widget.isVisible() and widget.isEnabled():
+                                    focusable_widgets.append(widget)
+                                for child in widget.findChildren(QWidget):
+                                    if (child.focusPolicy() != Qt.NoFocus and 
+                                        child.isVisible() and child.isEnabled() and
+                                        isinstance(child, (QLineEdit, QTextEdit, QComboBox, QPushButton))):
+                                        focusable_widgets.append(child)
+        
+        if hasattr(self, 'comment_input') and self.comment_input.isVisible():
+            focusable_widgets.append(self.comment_input)
+            
+        if hasattr(self, 'add_button') and self.add_button.isVisible():
+            focusable_widgets.append(self.add_button)
+        
+        for i in range(len(focusable_widgets) - 1):
+            self.setTabOrder(focusable_widgets[i], focusable_widgets[i + 1])
