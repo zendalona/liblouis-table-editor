@@ -16,7 +16,7 @@ class TablePreview(QWidget):
         self.max_font_size = 24
         apply_styles(self)
         self.initUI()
-        self.setFocusPolicy(Qt.NoFocus)
+        self.setFocusPolicy(Qt.StrongFocus)  
 
     def initUI(self):
         self.setObjectName("table_preview")
@@ -29,10 +29,11 @@ class TablePreview(QWidget):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.scroll_area.setFocusPolicy(Qt.NoFocus) 
+        self.scroll_area.setFocusPolicy(Qt.NoFocus)  
         
         self.scroll_widget = QWidget()
         self.scroll_widget.setAccessibleName("Table Preview Scroll Widget")
+        self.scroll_widget.setFocusPolicy(Qt.NoFocus)  
         self.scroll_layout = QVBoxLayout(self.scroll_widget)
         self.scroll_layout.setAlignment(Qt.AlignTop)
         self.scroll_layout.setContentsMargins(0, 0, 0, 0)
@@ -91,7 +92,8 @@ class TablePreview(QWidget):
         if event.button() == Qt.LeftButton:
             index = self.entry_widgets.index(widget)
             self.select_entry(index)
-            self.setFocus()  
+            # Ensure the TablePreview widget has focus for keyboard navigation
+            self.setFocus()
         elif event.button() == Qt.RightButton:
             widget.contextMenuEvent(event)
 
@@ -203,6 +205,14 @@ class TablePreview(QWidget):
                 self.select_entry(self.current_index + 1)
                 event.accept()
                 return
+        elif key in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Space):
+
+            if 0 <= self.current_index < len(self.entry_widgets):
+                entry_widget = self.entry_widgets[self.current_index]
+                if hasattr(entry_widget, 'load_into_editor'):
+                    entry_widget.load_into_editor()
+                event.accept()
+                return
         elif key == Qt.Key_Tab and not event.isAutoRepeat():
             if modifiers == Qt.ShiftModifier:
                 if self.current_index == 0:
@@ -253,6 +263,10 @@ class TablePreview(QWidget):
 
     def focusInEvent(self, event):
         super().focusInEvent(event)
+
         if self.current_index == -1 and self.entry_widgets:
             self.select_entry(0)
+
+    def focusOutEvent(self, event):
+        super().focusOutEvent(event)
             

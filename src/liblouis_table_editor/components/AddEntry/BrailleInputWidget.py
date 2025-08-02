@@ -15,6 +15,7 @@ class BrailleInputWidget(QWidget):
         self.braille_input = QLineEdit()
         self.braille_input.setPlaceholderText("Enter Braille Dots (e.g., 12-34-56)")
         self.braille_input.setAccessibleName("Braille Dots Input Field")
+        self.braille_input.setFocusPolicy(Qt.StrongFocus)  
         
         braille_regex = QRegExp("^([1-6]{1,6})(-([1-6]{1,6}))*$")
         validator = QRegExpValidator(braille_regex, self.braille_input)

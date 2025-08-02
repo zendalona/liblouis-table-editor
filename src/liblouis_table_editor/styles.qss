@@ -860,8 +860,65 @@ QScrollArea#translation_scroll QWidget {
     background-color: #ffffff;
 }
 
-QLineEdit[tabFocus="true"], QTextEdit[tabFocus="true"], QPushButton[tabFocus="true"] {
-  outline: 2px solid #000000;
-  outline-offset: 0px;
-  border: 1.5px solid #000000;
+QLineEdit[tabFocus="true"], QTextEdit[tabFocus="true"], QComboBox[tabFocus="true"] {
+  outline: 3px solid #007bff !important;
+  outline-offset: 1px;
+  border: 2px solid #007bff !important;
+  background-color: #f0f8ff !important;
+}
+
+QPushButton[tabFocus="true"] {
+  border: 2px solid #007bff !important;
+  background-color: #e3f2fd !important;
+  color: #333 !important;
+}
+
+QComboBox[tabFocus="true"]::drop-down {
+  border: 2px solid #007bff !important;
+  background-color: #f0f8ff !important;
+}
+
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
+  border: 2px solid #007bff !important;
+  background-color: #f8f9ff !important;
+}
+
+QPushButton:focus {
+  border: 2px solid #007bff !important;
+  background-color: #e3f2fd !important;
+  color: #333 !important;
+}
+
+QScrollArea:focus {
+  border: 2px solid #007bff !important;
+}
+
+QWidget#add_entry_widget QLineEdit:focus, 
+QWidget#add_entry_widget QTextEdit:focus, 
+QWidget#add_entry_widget QComboBox:focus {
+  border: 2px solid #007bff !important;
+  background-color: #f8f9ff !important;
+  outline: 2px solid #007bff !important;
+  outline-offset: 1px;
+}
+
+QWidget#add_entry_widget QPushButton:focus {
+  border: 2px solid #007bff !important;
+  background-color: #e3f2fd !important;
+  color: #333 !important;
+}
+
+QWidget#add_entry_widget QLineEdit[tabFocus="true"], 
+QWidget#add_entry_widget QTextEdit[tabFocus="true"], 
+QWidget#add_entry_widget QComboBox[tabFocus="true"] {
+  outline: 3px solid #007bff !important;
+  outline-offset: 1px;
+  border: 2px solid #007bff !important;
+  background-color: #f0f8ff !important;
+}
+
+QWidget#add_entry_widget QPushButton[tabFocus="true"] {
+  border: 2px solid #007bff !important;
+  background-color: #e3f2fd !important;
+  color: #333 !important;
 }

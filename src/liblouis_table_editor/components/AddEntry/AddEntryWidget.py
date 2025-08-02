@@ -10,6 +10,7 @@ from PyQt5.QtCore import Qt, QEvent
 from liblouis_table_editor.components.AddEntry.BrailleInputWidget import BrailleInputWidget
 from liblouis_table_editor.components.AddEntry.UnicodeSelector import UnicodeSelector
 from liblouis_table_editor.utils.view import clearLayout
+from liblouis_table_editor.utils.ApplyStyles import apply_styles
 
 def resource_path(relative_path):
     try:
@@ -26,6 +27,8 @@ class OpcodeForm(QWidget):
         super().__init__(parent)
         self.field_inputs = {}
         self.initUI(fields)
+        
+        apply_styles(self)
 
     def initUI(self, fields):
         layout = QVBoxLayout(self)
@@ -41,6 +44,7 @@ class OpcodeForm(QWidget):
                 nested_opcode_combo = QComboBox()
                 nested_opcode_combo.setPlaceholderText("Select Opcode")
                 nested_opcode_combo.setAccessibleName("Opcode Combo Box")
+                nested_opcode_combo.setFocusPolicy(Qt.StrongFocus)  # Ensure strong focus
                 nested_opcode_combo.installEventFilter(self)
                 self.populate_opcode_combo(nested_opcode_combo, placeholder)
                 nested_opcode_combo.currentIndexChanged.connect(
@@ -54,11 +58,13 @@ class OpcodeForm(QWidget):
                 unicode_display = QLineEdit()
                 unicode_display.setPlaceholderText("Selected Character")
                 unicode_display.setAccessibleName("Unicode Display Field")
+                unicode_display.setFocusPolicy(Qt.StrongFocus) 
                 unicode_display.installEventFilter(self)
                 unicode_input = QLineEdit()
                 unicode_input.setPlaceholderText(placeholder)
                 unicode_input.setProperty("includeInEntry", True)
                 unicode_input.setAccessibleName("Unicode Input Field")
+                unicode_input.setFocusPolicy(Qt.StrongFocus)  
                 unicode_input.installEventFilter(self)
                 
                 # Set size policy for full width
@@ -70,6 +76,7 @@ class OpcodeForm(QWidget):
 
                 select_button = QPushButton("Select Unicode")
                 select_button.setAccessibleName("Select Unicode Button")
+                select_button.setFocusPolicy(Qt.StrongFocus)  
                 select_button.installEventFilter(self)
                 select_button.clicked.connect(lambda _, u_display=unicode_display, u_input=unicode_input: self.showUnicodePopup(u_display, u_input))
 
@@ -87,6 +94,7 @@ class OpcodeForm(QWidget):
                 name_input = QLineEdit()
                 name_input.setPlaceholderText(placeholder)
                 name_input.setAccessibleName("Name Input Field")
+                name_input.setFocusPolicy(Qt.StrongFocus)  
                 name_input.installEventFilter(self)
                 # Set size policy for full width
                 name_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -97,6 +105,7 @@ class OpcodeForm(QWidget):
                 inp = QTextEdit()
                 inp.setPlaceholderText(placeholder)
                 inp.setAccessibleName("Characters Input Text Area")
+                inp.setFocusPolicy(Qt.StrongFocus) 
                 inp.installEventFilter(self)
                 # Set size policy for full width
                 inp.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -242,8 +251,14 @@ class OpcodeForm(QWidget):
         return widgets
 
     def eventFilter(self, obj, event):
-        if event.type() == QEvent.Enter:
-            obj.setFocus()
+        if event.type() == QEvent.FocusIn:
+            obj.setProperty('tabFocus', True)
+            obj.style().unpolish(obj)
+            obj.style().polish(obj)
+        elif event.type() == QEvent.FocusOut:
+            obj.setProperty('tabFocus', False)
+            obj.style().unpolish(obj)
+            obj.style().polish(obj)
         return super().eventFilter(obj, event)
 
 class AddEntryWidget(QWidget):
@@ -252,49 +267,54 @@ class AddEntryWidget(QWidget):
         self.field_inputs = {}
         self.initUI()
         self.last_nav_was_tab = False
+        self.ensure_focus_policies(self)
         self.install_input_event_filters()
 
     def install_input_event_filters(self):
         def install_on_widget(w):
-            if isinstance(w, QLineEdit) or isinstance(w, QTextEdit):
+            if isinstance(w, (QLineEdit, QTextEdit, QComboBox, QPushButton)):
                 w.installEventFilter(self)
             elif hasattr(w, 'field_inputs'):
                 for subw in w.field_inputs.values():
                     install_on_widget(subw)
+        
         if hasattr(self, 'opcode_combo'):
             self.opcode_combo.installEventFilter(self)
-        for w in self.field_inputs.values():
-            install_on_widget(w)
         if hasattr(self, 'comment_input'):
             self.comment_input.installEventFilter(self)
+        if hasattr(self, 'add_button'):
+            self.add_button.installEventFilter(self)
+            
+        for w in self.field_inputs.values():
+            install_on_widget(w)
 
         for textedit in self.findChildren(QTextEdit):
             textedit.installEventFilter(self)
+        for combobox in self.findChildren(QComboBox):
+            combobox.installEventFilter(self)
+        for button in self.findChildren(QPushButton):
+            button.installEventFilter(self)
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.FocusIn:
-            if self.last_nav_was_tab:
-                obj.setProperty('tabFocus', True)
-                obj.style().unpolish(obj)
-                obj.style().polish(obj)
-            else:
-                obj.setProperty('tabFocus', False)
-                obj.style().unpolish(obj)
-                obj.style().polish(obj)
+            obj.setProperty('tabFocus', True)
+            obj.style().unpolish(obj)
+            obj.style().polish(obj)
         elif event.type() == QEvent.FocusOut:
             obj.setProperty('tabFocus', False)
             obj.style().unpolish(obj)
             obj.style().polish(obj)
         elif event.type() == QEvent.KeyPress:
-
             if isinstance(obj, QTextEdit):
                 if event.key() == Qt.Key_Tab and not event.modifiers():
+                    self.last_nav_was_tab = True
                     self.focusNextChild()
                     return True
                 elif event.key() == Qt.Key_Backtab:
+                    self.last_nav_was_tab = True
                     self.focusPreviousChild()
                     return True
-            if isinstance(obj, QLineEdit):
+            elif isinstance(obj, QLineEdit):
                 if event.key() in (Qt.Key_Tab, Qt.Key_Backtab):
                     self.last_nav_was_tab = True
                 elif event.key() in (Qt.Key_Return, Qt.Key_Enter):
@@ -303,8 +323,12 @@ class AddEntryWidget(QWidget):
                     return True
                 else:
                     self.last_nav_was_tab = False
-
-            elif not isinstance(obj, (QLineEdit, QTextEdit)):
+            elif isinstance(obj, QComboBox):
+                if event.key() in (Qt.Key_Tab, Qt.Key_Backtab):
+                    self.last_nav_was_tab = True
+                else:
+                    self.last_nav_was_tab = False
+            else:
                 self.last_nav_was_tab = False
         elif event.type() == QEvent.MouseButtonPress:
             self.last_nav_was_tab = False
@@ -336,6 +360,7 @@ class AddEntryWidget(QWidget):
         scroll_area.setWidgetResizable(True)
         scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll_area.setFocusPolicy(Qt.NoFocus) 
         
         # Create content widget
         content_widget = QWidget()
@@ -347,6 +372,8 @@ class AddEntryWidget(QWidget):
 
         self.opcode_combo = QComboBox()
         self.opcode_combo.setPlaceholderText("Select Opcode")
+        self.opcode_combo.setFocusPolicy(Qt.StrongFocus)  
+        self.opcode_combo.setAccessibleName("Main Opcode Selector")
         self.populate_opcode_combo()
         self.opcode_combo.setCurrentIndex(0) 
         self.opcode_combo.currentIndexChanged.connect(self.on_opcode_selected)
@@ -360,16 +387,22 @@ class AddEntryWidget(QWidget):
 
         self.comment_input = QLineEdit()
         self.comment_input.setPlaceholderText("Add a comment (optional)")
+        self.comment_input.setFocusPolicy(Qt.StrongFocus) 
+        self.comment_input.setAccessibleName("Comment Input Field")
         # Set size policy for full width
         self.comment_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         main_layout.addWidget(self.comment_input)
 
         self.add_button = QPushButton("Add")
+        self.add_button.setFocusPolicy(Qt.StrongFocus)  
+        self.add_button.setAccessibleName("Add Entry Button")
         main_layout.addWidget(self.add_button, alignment=Qt.AlignTop)
 
         # Set content widget to scroll area and add to main container
         scroll_area.setWidget(content_widget)
         container_layout.addWidget(scroll_area)
+        
+        apply_styles(self)
 
     def populate_opcode_combo(self, combo=None):
         if combo is None:
@@ -386,7 +419,25 @@ class AddEntryWidget(QWidget):
             nested_form = OpcodeForm(opcode["fields"], self)
             self.form_layout.addWidget(nested_form)
             self.field_inputs["nested_form"] = nested_form
-        self.install_input_event_filters()  
+            
+            self.ensure_focus_policies(nested_form)
+            
+            apply_styles(nested_form)
+            
+        self.install_input_event_filters()
+
+    def ensure_focus_policies(self, widget):
+
+        if isinstance(widget, (QLineEdit, QTextEdit, QComboBox, QPushButton)):
+            widget.setFocusPolicy(Qt.StrongFocus)
+            widget.style().unpolish(widget)
+            widget.style().polish(widget)
+            
+        for child in widget.findChildren(QWidget):
+            if isinstance(child, (QLineEdit, QTextEdit, QComboBox, QPushButton)):
+                child.setFocusPolicy(Qt.StrongFocus)
+                child.style().unpolish(child)
+                child.style().polish(child)  
 
     def collect_entry_data(self):
         collected_data = [self.opcode_combo.currentText()]
@@ -437,41 +488,42 @@ class AddEntryWidget(QWidget):
         return widgets
 
     def keyPressEvent(self, event):
-        focusable = self.get_focusable_widgets()
-        if not focusable:
-            super().keyPressEvent(event)
-            return
-        current = self.focusWidget()
-        try:
-            idx = focusable.index(current)
-        except ValueError:
-            idx = -1
         if event.key() == Qt.Key_Tab and not event.isAutoRepeat():
             if event.modifiers() == Qt.ShiftModifier:
-                if idx == 0:
-                    p = self.parent()
-                    if hasattr(p, 'table_preview'):
-                        p.table_preview.setFocus()
-                        event.accept()
-                        return
-                elif idx > 0:
-                    focusable[idx-1].setFocus()
-                    event.accept()
-                    return
-            else:
-                if idx == len(focusable) - 1:
-                    p = self.parent()
-                    if hasattr(p, 'table_preview'):
-                        p.table_preview.setFocus()
-                        event.accept()
-                        return
-                elif idx < len(focusable) - 1:
-                    focusable[idx+1].setFocus()
-                    event.accept()
-                    return
-        elif event.key() in (Qt.Key_Return, Qt.Key_Enter):
-            if idx < len(focusable) - 1:
-                focusable[idx+1].setFocus()
+                focusable = self.get_focusable_widgets()
+                current = self.focusWidget()
+                try:
+                    idx = focusable.index(current)
+                    if idx == 0:
+                        p = self.parent()
+                        if hasattr(p, 'table_preview'):
+                            p.table_preview.setFocus()
+                            event.accept()
+                            return
+                except (ValueError, IndexError):
+                    pass
+                self.focusPreviousChild()
                 event.accept()
                 return
+            else:
+                focusable = self.get_focusable_widgets()
+                current = self.focusWidget()
+                try:
+                    idx = focusable.index(current)
+                    if idx == len(focusable) - 1:
+                        p = self.parent()
+                        if hasattr(p, 'table_preview'):
+                            p.table_preview.setFocus()
+                            event.accept()
+                            return
+                except (ValueError, IndexError):
+                    pass
+                self.focusNextChild()
+                event.accept()
+                return
+        elif event.key() in (Qt.Key_Return, Qt.Key_Enter):
+            self.focusNextChild()
+            event.accept()
+            return
+        
         super().keyPressEvent(event)
