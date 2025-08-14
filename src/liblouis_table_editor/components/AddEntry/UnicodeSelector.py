@@ -518,7 +518,11 @@ class UnicodeSelector(QWidget):
 
     def confirm_selection(self):
         manual_input = self.selected_text_edit.toPlainText()
+        # Clean the input to remove null bytes
+        manual_input = manual_input.replace('\0', '').replace('\x00', '')
         selected_string = "".join(self.selected_characters) + manual_input
+        # Clean the selected string as well
+        selected_string = selected_string.replace('\0', '').replace('\x00', '')
 
         selected_string = "".join(sorted(set(selected_string), key=selected_string.index))
 

@@ -1,12 +1,15 @@
 from PyQt5.QtWidgets import (
     QWidget, QHBoxLayout, QVBoxLayout, QLineEdit, 
-    QPushButton, QLabel, QMessageBox, QTextEdit, QTabWidget, QShortcut, QScrollArea
+    QPushButton, QLabel, QMessageBox, QTextEdit, QTabWidget, QShortcut, QScrollArea,
+    QApplication
 )
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QKeySequence
 import os
 import subprocess
 import sys
+import unicodedata
+import re
 from .TestCaseWidget import TestCaseWidget
 
 class TestingWidget(QWidget):
@@ -15,6 +18,34 @@ class TestingWidget(QWidget):
         self.current_table = None
         self.find_liblouis()
         self.initUI()
+
+    def clean_text(self, text):
+
+        if not text:
+            return ""
+        
+        cleaned = text.replace('\0', '').replace('\x00', '')
+        
+        cleaned = cleaned.replace('\u200D', '').replace('\u200C', '').replace('\uFEFF', '')
+        
+        cleaned = cleaned.replace('\u200B', '')  
+        cleaned = cleaned.replace('\u2060', '') 
+        cleaned = cleaned.replace('\uFFF9', '').replace('\uFFFA', '').replace('\uFFFB', '')  # Interlinear annotation
+        
+        cleaned = ''.join(char for char in cleaned 
+                         if unicodedata.category(char) not in ('Cc', 'Cf') 
+                         or char in [' ', '\t', '\n', '\r'])
+        
+        cleaned = unicodedata.normalize('NFC', cleaned)
+        
+        cleaned = re.sub(r'\s+', ' ', cleaned)
+        
+        cleaned = cleaned.replace('\\0/', '').replace('\0/', '').replace('\\0\\/', '')
+        
+        cleaned = re.sub(r'\\[0x]+/', '', cleaned)
+        cleaned = re.sub(r'\x00+/', '', cleaned)
+        
+        return cleaned.strip()
 
     def find_liblouis(self):
         if sys.platform == 'win32':
@@ -270,9 +301,11 @@ class TestingWidget(QWidget):
             
         if not text.strip():
             return ""
+        
+        clean_text = self.clean_text(text)
             
         try:
-            # Use CREATE_NO_WINDOW flag to prevent command prompt from appearing
+
             startupinfo = None
             if sys.platform == 'win32':
                 startupinfo = subprocess.STARTUPINFO()
@@ -294,7 +327,7 @@ class TestingWidget(QWidget):
                 creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0
             )
             
-            stdout, stderr = process.communicate(input=text)
+            stdout, stderr = process.communicate(input=clean_text)
             
             if process.returncode != 0:
                 error_msg = stderr.strip() if stderr else "Unknown error occurred"
@@ -302,11 +335,24 @@ class TestingWidget(QWidget):
                 return None
             
             output = stdout.strip()
+
+            output = self.clean_text(output)
+            
+            if '\\0/' in output:
+                output = output.replace('\\0/', '')
+                
             if direction == "forward" and ("⠭" in output or "⡳" in output):
-                QMessageBox.warning(self, "Translation Error", 
-                    "Some characters in your input are not defined in the current table.\n"
-                    f"Current table: {os.path.basename(self.current_table)}\n"
-                    "Please check if you're using the correct table for these characters.")
+                cleaned_input_for_check = self.clean_text(clean_text)
+                if any(ord(char) > 127 and not (0x0A80 <= ord(char) <= 0x0AFF) for char in cleaned_input_for_check):  # Non-Gujarati Unicode
+                    QMessageBox.warning(self, "Translation Warning", 
+                        "Your input contains characters that are not supported by the current table.\n"
+                        f"Current table: {os.path.basename(self.current_table)}\n"
+                        "Please ensure you're using characters appropriate for this script.")
+                else:
+                    QMessageBox.warning(self, "Translation Error", 
+                        "Some characters in your input are not defined in the current table.\n"
+                        f"Current table: {os.path.basename(self.current_table)}\n"
+                        "Please check if you're using the correct table for these characters.")
                 return None
             
             return output
@@ -422,6 +468,8 @@ class TestingWidget(QWidget):
     
     def translate_forward(self):
         forward_text = self.forward_input.toPlainText().strip()
+
+        forward_text = self.clean_text(forward_text)
         if forward_text:
             result = self.translate_text(forward_text, "forward")
             if result is not None:
@@ -431,6 +479,8 @@ class TestingWidget(QWidget):
     
     def translate_backward(self):
         backward_text = self.backward_input.toPlainText().strip()
+
+        backward_text = self.clean_text(backward_text)
         if backward_text:
             result = self.translate_text(backward_text, "backward")
             if result is not None:
@@ -447,4 +497,14 @@ class TestingWidget(QWidget):
             elif event.key() == Qt.Key_Backtab:
                 self.focusPreviousChild()
                 return True
+            elif event.key() == Qt.Key_V and event.modifiers() == Qt.ControlModifier:
+
+                clipboard = QApplication.clipboard()
+                if clipboard:
+                    original_text = clipboard.text()
+                    cleaned_text = self.clean_text(original_text)
+                    if original_text != cleaned_text:
+                        clipboard.setText(cleaned_text)
+
+                return False
         return super().eventFilter(obj, event)

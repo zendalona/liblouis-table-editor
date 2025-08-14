@@ -33,6 +33,7 @@ class BrailleInputWidget(QWidget):
 
     def updateBraillePreview(self):
         text = self.braille_input.text()
+        text = text.replace('\0', '').replace('\x00', '')
         clearLayout(self.braille_preview_container)
 
         braille_sequences = text.split('-')
@@ -64,6 +65,11 @@ class BrailleInputWidget(QWidget):
         return (f"{braille_representation[0][0]} {braille_representation[0][1]}\n"
                 f"{braille_representation[1][0]} {braille_representation[1][1]}\n"
                 f"{braille_representation[2][0]} {braille_representation[2][1]}")
+
+    def get_clean_text(self):
+        """Get the text from the input field with null bytes removed."""
+        text = self.braille_input.text()
+        return text.replace('\0', '').replace('\x00', '')
 
 def clearLayout(layout):
     while layout.count():

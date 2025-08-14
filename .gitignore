@@ -1,17 +1,25 @@
-# Project
-liblouis-master
-
-# Python
 __pycache__/
 *.py[cod]
-*.pyc
 *$py.class
+
 .Python
+env/
+.venv/
+venv/
+ENV/
+env.bak/
+.venv.bak/
 dist/
+build/
+.eggs/
+*.egg-info
 pip-log.txt
 pip-delete-this-directory.txt
 __pypackages__/
-.env
-.venv
-venv
+
 .pc/
+
+Liblouis_Table_Editor.egg-info
+
+.DS_Store
+Thumbs.db

@@ -128,6 +128,10 @@ class TestCaseWidget(QWidget):
     def normalize_braille(self, text):
         if not text:
             return ''
+
+        text = text.replace('\0', '').replace('\x00', '')
+
+        text = text.replace('\u200D', '').replace('\u200C', '').replace('\uFEFF', '')
         # Replace all Unicode space characters (including Braille blank) with a regular space
         # Unicode spaces: https://en.wikipedia.org/wiki/Whitespace_character#Unicode
         # Braille pattern blank: U+2800
