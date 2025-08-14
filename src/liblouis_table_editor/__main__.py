@@ -1,14 +1,37 @@
 import sys
 import os
+import argparse
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel, QStackedLayout, QMessageBox, QFileDialog, QDesktopWidget, QShortcut
-from PyQt5.QtGui import QPalette, QColor, QPixmap, QIcon, QKeySequence
-from PyQt5.QtCore import Qt
-from liblouis_table_editor.config import WINDOW_WIDTH, WINDOW_HEIGHT
-from liblouis_table_editor.components.Menubar import create_menubar
-from liblouis_table_editor.components.TableEditor import TableEditor
-from liblouis_table_editor.components.Homepage import HomeScreen
-from liblouis_table_editor.utils.ApplyStyles import apply_styles
-from liblouis_table_editor.utils.asset_utils import get_icon_path
+from PyQt5.QtGui import QPalette, QColor, QPixmap, QIcon, QKeySequence, QDragEnterEvent, QDropEvent
+from PyQt5.QtCore import Qt, QUrl
+
+# Handle imports for both module execution and PyInstaller builds
+try:
+    # Try relative imports first (when run as module)
+    from .config import WINDOW_WIDTH, WINDOW_HEIGHT
+    from .components.Menubar import create_menubar
+    from .components.TableEditor import TableEditor
+    from .components.Homepage import HomeScreen
+    from .utils.ApplyStyles import apply_styles
+    from .utils.asset_utils import get_icon_path
+except ImportError:
+    # Fallback to absolute imports (for PyInstaller builds)
+    try:
+        from liblouis_table_editor.config import WINDOW_WIDTH, WINDOW_HEIGHT
+        from liblouis_table_editor.components.Menubar import create_menubar
+        from liblouis_table_editor.components.TableEditor import TableEditor
+        from liblouis_table_editor.components.Homepage import HomeScreen
+        from liblouis_table_editor.utils.ApplyStyles import apply_styles
+        from liblouis_table_editor.utils.asset_utils import get_icon_path
+    except ImportError:
+        # Last resort: try importing from current directory structure
+        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+        from config import WINDOW_WIDTH, WINDOW_HEIGHT
+        from components.Menubar import create_menubar
+        from components.TableEditor import TableEditor
+        from components.Homepage import HomeScreen
+        from utils.ApplyStyles import apply_styles
+        from utils.asset_utils import get_icon_path
 
 class TableManager(QWidget):
     def __init__(self):
@@ -72,6 +95,9 @@ class TableManager(QWidget):
         self.setLayout(layout)
 
         apply_styles(self)
+
+        # Enable drag and drop
+        self.setAcceptDrops(True)
 
         self.update_background_visibility()
 
@@ -246,7 +272,96 @@ class TableManager(QWidget):
                 file_menu.popup(self.menubar.mapToGlobal(self.menubar.actionGeometry(self.menubar.actions()[0]).bottomLeft()))
                 self.menubar.setFocus()
 
+    def open_file_from_path(self, file_path):
+        """Open a file from the given file path (used for command line arguments)"""
+        if not os.path.exists(file_path):
+            QMessageBox.warning(self, 'Error', f'File not found: {file_path}')
+            return False
+        
+        if not file_path.lower().endswith(('.cti', '.ctb', '.utb')):
+            QMessageBox.warning(self, 'Error', f'Unsupported file type. Only .cti, .ctb, and .utb files are supported.')
+            return False
+        
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                file_content = file.read()
+            
+            self.add_tab(os.path.basename(file_path), file_content, file_path)
+            self.stacked_layout.setCurrentIndex(1)
+            return True
+            
+        except Exception as e:
+            QMessageBox.warning(self, 'Error', f'Failed to open file: {str(e)}')
+            return False
+
+    def dragEnterEvent(self, event: QDragEnterEvent):
+        """Handle drag enter events for file dropping"""
+        if event.mimeData().hasUrls():
+            # Check if any of the dragged files have supported extensions
+            urls = event.mimeData().urls()
+            for url in urls:
+                if url.isLocalFile():
+                    file_path = url.toLocalFile()
+                    if file_path.lower().endswith(('.cti', '.ctb', '.utb')):
+                        event.acceptProposedAction()
+                        return
+        event.ignore()
+
+    def dropEvent(self, event: QDropEvent):
+        """Handle drop events for opening files"""
+        if event.mimeData().hasUrls():
+            urls = event.mimeData().urls()
+            files_opened = 0
+            
+            for url in urls:
+                if url.isLocalFile():
+                    file_path = url.toLocalFile()
+                    if file_path.lower().endswith(('.cti', '.ctb', '.utb')):
+                        if self.open_file_from_path(file_path):
+                            files_opened += 1
+            
+            if files_opened > 0:
+                event.acceptProposedAction()
+            else:
+                event.ignore()
+        else:
+            event.ignore()
+
+def parse_arguments():
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser(
+        description='Liblouis Table Editor - GUI tool to create and edit Liblouis braille tables',
+        epilog='Supported file types: .cti, .ctb, .utb'
+    )
+    parser.add_argument(
+        'files',
+        nargs='*',
+        help='Table files to open (.cti, .ctb, .utb)'
+    )
+    parser.add_argument(
+        '--version',
+        action='version',
+        version='Liblouis Table Editor 1.0.0'
+    )
+    
+    try:
+        return parser.parse_args()
+    except SystemExit:
+        # Handle --help and --version which call sys.exit()
+        # For GUI applications, we want to continue and show the GUI
+        return argparse.Namespace(files=[])
+
 def main():
+    # Fix for PyInstaller builds where console might not be available
+    import sys
+    if sys.stdout is None:
+        sys.stdout = open(os.devnull, 'w')
+    if sys.stderr is None:
+        sys.stderr = open(os.devnull, 'w')
+    
+    # Parse command line arguments first
+    args = parse_arguments()
+    
     app = QApplication(sys.argv)
     
     icon_path = get_icon_path('liblouis-table-editor.ico')
@@ -300,6 +415,20 @@ def main():
 
     try:
         window = TableManager()
+        
+        # Open files from command line arguments
+        if args.files:
+            files_opened = 0
+            for file_path in args.files:
+                # Convert relative paths to absolute paths
+                abs_path = os.path.abspath(file_path)
+                if window.open_file_from_path(abs_path):
+                    files_opened += 1
+            
+            # If no files were successfully opened, show an error
+            if files_opened == 0:
+                QMessageBox.warning(None, 'Error', 'No valid files could be opened from command line arguments.')
+        
         window.show()
         sys.exit(app.exec_())
     except Exception as e:

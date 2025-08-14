@@ -178,6 +178,15 @@ class UserGuideDialog(StyledDialog):
                 <p>2. Navigate to your table file</p>
                 <p>3. Select and open the file</p>
             </div>
+            <div class='info-section'>
+                <h3>"Open With" Integration</h3>
+                <p>The Liblouis Table Editor now supports multiple ways to open files:</p>
+                <p>• <strong>Right-click context menu:</strong> Right-click any .cti, .ctb, or .utb file and select "Open with Liblouis Table Editor"</p>
+                <p>• <strong>Command line:</strong> Open files directly from terminal/command prompt</p>
+                <p>• <strong>Drag and drop:</strong> Drag table files directly onto the application window</p>
+                <p>• <strong>Multiple files:</strong> Open several files simultaneously from command line or file manager</p>
+                <p><strong>Supported file types:</strong> .cti, .ctb, .utb</p>
+            </div>
         </div>
         <hr>
         <div class='section'>

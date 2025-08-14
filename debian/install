@@ -1,4 +1,5 @@
 debian/liblouis-table-editor.desktop usr/share/applications/
+debian/liblouis-table-editor.xml usr/share/mime/packages/
 src/liblouis_table_editor/assets/icons/liblouis-table-editor-128-0.png /usr/share/pixmaps/
 
 debian/liblouis-table-editor.menu   usr/share/menu/

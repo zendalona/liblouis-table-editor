@@ -14,6 +14,36 @@ For detailed installation instructions, see [Liblouis Installation Guide](Prereq
 2. Install to your desired location
 3. Run `LiblouisTableEditor.exe` (Windows) or the appropriate executable for your platform
 
+## "Open With" Functionality
+
+The Liblouis Table Editor now supports full "Open With" integration, allowing you to open `.cti`, `.ctb`, and `.utb` files directly from your file manager.
+
+### Features:
+- **Command Line Support**: Open files directly from command line
+  ```bash
+  # Open a single file
+  LiblouisTableEditor.exe "path/to/file.cti"
+  
+  # Open multiple files
+  LiblouisTableEditor.exe "file1.cti" "file2.ctb" "file3.utb"
+  
+  # Show help
+  LiblouisTableEditor.exe --help
+  ```
+
+- **File Association**: 
+  - **Windows**: Right-click any `.cti`, `.ctb`, or `.utb` file and select "Open with Liblouis Table Editor"
+  - **Linux**: Files are automatically associated with the application when installed via the `.deb` package
+
+- **Drag and Drop**: Drag table files directly onto the application window to open them
+
+- **Multiple File Support**: Open multiple files simultaneously from command line or file manager
+
+### Supported File Types:
+- `.cti` - Liblouis CTI Table files
+- `.ctb` - Liblouis CTB Table files  
+- `.utb` - Liblouis UTB Table files
+
 ## Building from Source
 
 If you want to build the application from source:

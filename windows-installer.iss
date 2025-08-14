@@ -30,6 +30,35 @@ Name: "{group}\Liblouis-Table-Editor"; Filename: "{app}\LiblouisTableEditor.exe"
 Name: "{group}\Uninstall Liblouis-Table-Editor"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\Liblouis-Table-Editor"; Filename: "{app}\LiblouisTableEditor.exe"; IconFilename: "{app}\icon.ico"
 
+[Registry]
+; Register file associations for .cti files
+Root: HKCR; Subkey: ".cti"; ValueType: string; ValueName: ""; ValueData: "LiblouisTableFile"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: ".cti"; ValueType: string; ValueName: "Content Type"; ValueData: "application/x-liblouis-table"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: "LiblouisTableFile"; ValueType: string; ValueName: ""; ValueData: "Liblouis Table File"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "LiblouisTableFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icon.ico"
+Root: HKCR; Subkey: "LiblouisTableFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\LiblouisTableEditor.exe"" ""%1"""
+
+; Register file associations for .ctb files
+Root: HKCR; Subkey: ".ctb"; ValueType: string; ValueName: ""; ValueData: "LiblouisTableFile"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: ".ctb"; ValueType: string; ValueName: "Content Type"; ValueData: "application/x-liblouis-table"; Flags: uninsdeletevalue
+
+; Register file associations for .utb files
+Root: HKCR; Subkey: ".utb"; ValueType: string; ValueName: ""; ValueData: "LiblouisTableFile"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: ".utb"; ValueType: string; ValueName: "Content Type"; ValueData: "application/x-liblouis-table"; Flags: uninsdeletevalue
+
+; Add "Open with Liblouis Table Editor" context menu
+Root: HKCR; Subkey: "LiblouisTableFile\shell\open"; ValueType: string; ValueName: ""; ValueData: "&Open with Liblouis Table Editor"
+Root: HKCR; Subkey: "LiblouisTableFile\shell\open"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\LiblouisTableEditor.exe,0"
+
+; Add to "Open With" list for text files
+Root: HKCR; Subkey: "Applications\LiblouisTableEditor.exe"; ValueType: string; ValueName: ""; ValueData: "Liblouis Table Editor"
+Root: HKCR; Subkey: "Applications\LiblouisTableEditor.exe"; ValueType: string; ValueName: "FriendlyAppName"; ValueData: "Liblouis Table Editor"
+Root: HKCR; Subkey: "Applications\LiblouisTableEditor.exe\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icon.ico"
+Root: HKCR; Subkey: "Applications\LiblouisTableEditor.exe\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\LiblouisTableEditor.exe"" ""%1"""
+Root: HKCR; Subkey: "Applications\LiblouisTableEditor.exe\SupportedTypes"; ValueType: string; ValueName: ".cti"; ValueData: ""
+Root: HKCR; Subkey: "Applications\LiblouisTableEditor.exe\SupportedTypes"; ValueType: string; ValueName: ".ctb"; ValueData: ""
+Root: HKCR; Subkey: "Applications\LiblouisTableEditor.exe\SupportedTypes"; ValueType: string; ValueName: ".utb"; ValueData: ""
+
 [Run]
 Filename: "{app}\LiblouisTableEditor.exe"; Description: "Launch Liblouis-Table-Editor"; Flags: nowait postinstall skipifsilent
 

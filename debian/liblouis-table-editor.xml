@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-liblouis-table">
+        <comment>Liblouis Braille Table</comment>
+        <comment xml:lang="en">Liblouis Braille Table</comment>
+        <icon name="text-x-generic"/>
+        <glob-deleteall/>
+        <glob pattern="*.cti"/>
+        <glob pattern="*.ctb"/>
+        <glob pattern="*.utb"/>
+        <magic priority="50">
+            <match type="string" offset="0" value="# Liblouis"/>
+            <match type="string" offset="0" value="#-index-name:"/>
+            <match type="string" offset="0" value="#-display-name:"/>
+        </magic>
+    </mime-type>
+    
+    <mime-type type="application/x-liblouis-cti">
+        <comment>Liblouis CTI Table</comment>
+        <comment xml:lang="en">Liblouis CTI Table</comment>
+        <icon name="text-x-generic"/>
+        <glob pattern="*.cti"/>
+        <sub-class-of type="application/x-liblouis-table"/>
+    </mime-type>
+    
+    <mime-type type="application/x-liblouis-ctb">
+        <comment>Liblouis CTB Table</comment>
+        <comment xml:lang="en">Liblouis CTB Table</comment>
+        <icon name="text-x-generic"/>
+        <glob pattern="*.ctb"/>
+        <sub-class-of type="application/x-liblouis-table"/>
+    </mime-type>
+    
+    <mime-type type="application/x-liblouis-utb">
+        <comment>Liblouis UTB Table</comment>
+        <comment xml:lang="en">Liblouis UTB Table</comment>
+        <icon name="text-x-generic"/>
+        <glob pattern="*.utb"/>
+        <sub-class-of type="application/x-liblouis-table"/>
+    </mime-type>
+</mime-info>

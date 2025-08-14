@@ -20,6 +20,16 @@ case "$1" in
             fi
         done
         
+        # Update MIME database after removal
+        if command -v update-mime-database >/dev/null 2>&1; then
+            update-mime-database /usr/share/mime
+        fi
+        
+        # Update desktop database
+        if command -v update-desktop-database >/dev/null 2>&1; then
+            update-desktop-database /usr/share/applications
+        fi
+        
         if command -v update-applications >/dev/null 2>&1; then
             update-applications 2>/dev/null || true
         fi
