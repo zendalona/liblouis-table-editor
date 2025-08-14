@@ -554,12 +554,11 @@ class AddEntryWidget(QWidget):
                 elif isinstance(widget, OpcodeForm):
                     collected_data.extend(collect_nested_form_data(widget))
 
-        # Always add the comment, even if there's no opcode
+
         comment_text = self.comment_input.text().strip()
         if comment_text:
             collected_data.append(comment_text)
 
-        # If we have no opcode but have a comment, return just the comment
         if not collected_data and comment_text:
             return comment_text
         elif collected_data:

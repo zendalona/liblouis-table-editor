@@ -84,18 +84,20 @@ class TableEditor(QWidget):
         self.add_entry_widget.setMinimumHeight(200)
         top_splitter.addWidget(self.add_entry_widget)
 
-        top_splitter.setSizes([400, 600])
+        # Set top splitter to balanced middle position (50-50 split)
+        top_splitter.setSizes([500, 500])  # Equal split for top panels
         
         main_splitter.addWidget(top_splitter)
 
         self.testing_widget = TestingWidget(self)
         self.testing_widget.setAccessibleName("Translation Widget")
         self.testing_widget.setObjectName("testing_widget")
-        self.testing_widget.setMinimumHeight(200)
+        self.testing_widget.setMinimumHeight(150)  # Reduced from 200 to 150
         self.testing_widget.setMinimumWidth(400)
         main_splitter.addWidget(self.testing_widget)
 
-        main_splitter.setSizes([650, 350])
+        # Remove predefined sizes - let panels use natural sizing  
+        # main_splitter.setSizes([650, 350])  # Commented out for natural sizing
         
         main_splitter.setChildrenCollapsible(False)
         top_splitter.setChildrenCollapsible(False)
@@ -490,6 +492,9 @@ class TableEditor(QWidget):
             pass
 
     def reset_splitter_layout(self):
-
-        self.main_splitter.setSizes([650, 350])  
-        self.top_splitter.setSizes([400, 600])  
+        """Reset splitter to natural sizing instead of predefined ratios"""
+        # Set top splitter to balanced middle position (50-50 split)
+        self.top_splitter.setSizes([500, 500])  # Equal split for top panels
+        
+        # For main splitter, use natural proportional sizing without forcing extra height
+        # Let it use the natural content-based sizing  

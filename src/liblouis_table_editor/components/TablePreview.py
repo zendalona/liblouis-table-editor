@@ -14,10 +14,10 @@ class TablePreview(QWidget):
         self.entry_font_size = 12 
         self.min_font_size = 8
         self.max_font_size = 24
-        self.copied_entry = None  # Store copied entry
-        self.is_editing_mode = False  # Track if we're in editing mode
-        self._maintain_position = False  # Flag to maintain scroll position
-        self._fresh_load = True  # Flag for initial content load
+        self.copied_entry = None  
+        self.is_editing_mode = False 
+        self._maintain_position = False  
+        self._fresh_load = True  
         apply_styles(self)
         self.initUI()
         self.setFocusPolicy(Qt.StrongFocus)  
@@ -54,7 +54,6 @@ class TablePreview(QWidget):
         
         self.scroll_area.viewport().installEventFilter(self)
         
-        # Install event filter on the main widget to detect clicks outside entries
         self.installEventFilter(self)
         
     def eventFilter(self, obj, event):
@@ -62,13 +61,12 @@ class TablePreview(QWidget):
             self.keyPressEvent(event)
             return True
         elif obj == self and event.type() == event.MouseButtonPress:
-            # Check if click is outside any entry widget
+
             if event.button() == Qt.LeftButton:
                 click_pos = event.pos()
-                # Convert to scroll widget coordinates
+                
                 scroll_pos = self.scroll_widget.mapFromParent(click_pos)
                 
-                # Check if click is on any entry widget
                 clicked_on_entry = False
                 for widget in self.entry_widgets:
                     try:
@@ -77,13 +75,11 @@ class TablePreview(QWidget):
                             clicked_on_entry = True
                             break
                     except RuntimeError:
-                        # Widget deleted, skip
+
                         continue
                 
-                # If not clicked on any entry, clear selection
                 if not clicked_on_entry:
                     self.clear_selection()
-                    # Clear the form in table editor
                     if hasattr(self.table_editor, 'clear_editor_form'):
                         self.table_editor.clear_editor_form()
                     return True
@@ -91,7 +87,7 @@ class TablePreview(QWidget):
         return super().eventFilter(obj, event)
         
     def update_content(self):
-        # Remember current position
+
         scroll_position = self.scroll_area.verticalScrollBar().value()
         
         self.clear_layout()
@@ -99,7 +95,7 @@ class TablePreview(QWidget):
         for i, entry in enumerate(self.entries):
             entry_widget = EntryWidget(entry, self.table_editor)
             entry_widget.update_font_size(self.entry_font_size) 
-            # Store the index directly in the widget to avoid closure issues
+
             entry_widget._preview_index = i
             entry_widget.mousePressEvent = lambda e, idx=i: self.handle_entry_click_by_index(idx, e)
             entry_widget.setFocusPolicy(Qt.NoFocus) 
