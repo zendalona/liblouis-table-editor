@@ -1,7 +1,7 @@
 import json
 import os
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy, QTextEdit, QLineEdit, QComboBox, QShortcut, QPushButton, QLabel, QMessageBox, QSplitter
+    QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy, QTextEdit, QLineEdit, QComboBox, QShortcut, QPushButton, QLabel, QMessageBox, QSplitter, QApplication
 )
 from PyQt5.QtGui import QKeyEvent, QFont, QKeySequence
 from PyQt5.QtCore import Qt
@@ -79,6 +79,7 @@ class TableEditor(QWidget):
         self.add_entry_widget.setAccessibleName("Add Entry Widget")
         self.add_entry_widget.setObjectName("add_entry_widget")
         self.add_entry_widget.add_button.clicked.connect(self.add_entry)
+        self.add_entry_widget.clear_button.clicked.connect(self.clear_editor_form)
         self.add_entry_widget.setMinimumWidth(300)
         self.add_entry_widget.setMinimumHeight(200)
         top_splitter.addWidget(self.add_entry_widget)
@@ -144,11 +145,41 @@ class TableEditor(QWidget):
             self.show_toast("Invalid entry data! (Ctrl+Enter to add entry)", get_icon_for_toast('error'), 255, 0, 0)
             return
         
-        self._save_state_for_undo()
-        
-        self.table_preview.add_entry(entry_data)
-        self.mark_as_unsaved()
-        self.show_toast("Entry added successfully! (Ctrl+Enter to add entry)", get_icon_for_toast('success'), 75, 175, 78)
+        # Check if we're in editing mode
+        if hasattr(self.table_preview, 'is_editing_mode') and self.table_preview.is_editing_mode:
+            self.update_current_entry(entry_data)
+        else:
+            self._save_state_for_undo()
+            self.table_preview.add_entry(entry_data)
+            self.mark_as_unsaved()
+            self.show_toast("Entry added successfully! (Ctrl+Enter to add entry)", get_icon_for_toast('success'), 75, 175, 78)
+
+    def update_current_entry(self, entry_data):
+        """Update the currently selected entry in the table preview"""
+        if hasattr(self.table_preview, 'current_index') and 0 <= self.table_preview.current_index < len(self.table_preview.entries):
+            self._save_state_for_undo()
+            # Update the entry in place without re-sorting
+            self.table_preview.update_current_entry(entry_data)
+            self.table_preview.is_editing_mode = False  # Exit editing mode
+            # Clear the form after successful update
+            self.clear_editor_form()
+            self.show_toast("Entry updated successfully!", get_icon_for_toast('success'), 75, 175, 78)
+        else:
+            # Fallback to adding new entry
+            self._save_state_for_undo()
+            self.table_preview.add_entry(entry_data)
+            self.mark_as_unsaved()
+            self.show_toast("Entry added successfully! (Ctrl+Enter to add entry)", get_icon_for_toast('success'), 75, 175, 78)
+
+    def clear_editor_form(self):
+        """Clear the add entry form and exit editing mode"""
+        # Only clear if not already being cleared to avoid recursion
+        if not hasattr(self, '_clearing_form') or not self._clearing_form:
+            self._clearing_form = True
+            self.add_entry_widget.clear_form()
+            if hasattr(self.table_preview, 'clear_selection'):
+                self.table_preview.clear_selection()
+            self._clearing_form = False
 
     def _save_state_for_undo(self):
         current_content = self.get_content().copy() if isinstance(self.get_content(), list) else self.get_content()
@@ -186,6 +217,8 @@ class TableEditor(QWidget):
                         self.table_preview.entries = json.loads(content)
                     except json.JSONDecodeError:
                         self.table_preview.entries = [line for line in content.splitlines() if line.strip()]
+                # Mark as fresh load so scroll position resets to top
+                self.table_preview._fresh_load = True
                 self.table_preview.update_content()
                 
             self.testing_widget.set_current_table(file_path)
@@ -206,6 +239,8 @@ class TableEditor(QWidget):
                     self.table_preview.entries = json.loads(content)
                 except json.JSONDecodeError:
                     self.table_preview.entries = [line for line in content.splitlines() if line.strip()]
+            # Mark as fresh load so scroll position resets to top
+            self.table_preview._fresh_load = True
             self.table_preview.update_content()
             self._original_content = self.get_content()
             self._unsaved_changes = False
@@ -242,29 +277,73 @@ class TableEditor(QWidget):
             pass
 
     def load_entry_into_editor(self, entry):
+        self.add_entry_widget._programmatic_update = True  # Prevent popups
         self.add_entry_widget.clear_form()
 
-        parts = entry.split()
+        # Handle empty or whitespace-only entries
+        if not entry or not entry.strip():
+            self.add_entry_widget.set_editing_mode(True)
+            self.add_entry_widget._programmatic_update = False
+            return
+
+        entry_text = entry.strip()
+        parts = entry_text.split()
         if not parts:
+            self.add_entry_widget.set_editing_mode(True)
+            self.add_entry_widget._programmatic_update = False
+            return
+
+        # Check if the entry starts with a comment (like "# some comment")
+        if entry_text.startswith('#'):
+            # Entire entry is a comment
+            self.add_entry_widget.comment_input.setText(entry_text)
+            self.add_entry_widget.set_editing_mode(True)
+            self.add_entry_widget._programmatic_update = False
+            return
+
+        # Look for comment starting with # anywhere in the entry
+        comment_text = ""
+        
+        for i, part in enumerate(parts):
+            if part.startswith('#'):
+                comment_text = " ".join(parts[i:])  # Everything from # onwards
+                parts = parts[:i]  # Remove comment from main parts
+                break
+
+        # Check if we still have parts after removing comments
+        if not parts:
+            # Entry became empty after removing comments - treat as comment-only
+            if comment_text:
+                self.add_entry_widget.comment_input.setText(comment_text)
+            else:
+                self.add_entry_widget.comment_input.setText(entry_text)
+            self.add_entry_widget.set_editing_mode(True)
+            self.add_entry_widget._programmatic_update = False
             return
 
         opcode = parts[0]
         index = self.add_entry_widget.opcode_combo.findText(opcode)
         if index != -1 and index != 0:
             self.add_entry_widget.opcode_combo.setCurrentIndex(index)
+            
+            # Wait for the form to be created
+            QApplication.processEvents()
 
             nested_form = self.add_entry_widget.field_inputs.get("nested_form")
             if nested_form:
                 form_data = parts[1:]
                 self.fill_form_data(nested_form, form_data)
-        
-                filled_fields_count = len(nested_form.field_inputs)
-                remaining_parts = form_data[filled_fields_count:]
-                if remaining_parts:
-                    remaining_comment = " ".join(remaining_parts)
-                    self.add_entry_widget.comment_input.setText(remaining_comment)
         else:
-            self.add_entry_widget.comment_input.setText(entry)
+            # If no valid opcode found, put everything in comment
+            comment_text = entry_text
+            
+        # Always set the comment text if we found one
+        if comment_text:
+            self.add_entry_widget.comment_input.setText(comment_text)
+            
+        # Set editing mode
+        self.add_entry_widget.set_editing_mode(True)
+        self.add_entry_widget._programmatic_update = False  # Re-enable popups
 
     def fill_form_data(self, form, data):
         field_index = 0

@@ -78,7 +78,7 @@ class OpcodeForm(QWidget):
                 select_button.setAccessibleName("Select Unicode Button")
                 select_button.setFocusPolicy(Qt.StrongFocus)  
                 select_button.installEventFilter(self)
-                select_button.clicked.connect(lambda _, u_display=unicode_display, u_input=unicode_input: self.showUnicodePopup(u_display, u_input))
+                select_button.clicked.connect(lambda _, u_display=unicode_display, u_input=unicode_input, parent=self: self.get_main_widget(parent).showUnicodePopup(u_display, u_input))
 
                 unicode_container.addWidget(unicode_display)
                 unicode_container.addWidget(unicode_input)
@@ -195,6 +195,13 @@ class OpcodeForm(QWidget):
         for form in self.nested_forms:
             form.deleteLater()
         self.nested_forms.clear()
+        
+    def get_main_widget(self, widget):
+        """Get the main AddEntryWidget from any nested form"""
+        current = widget
+        while current and not isinstance(current, AddEntryWidget):
+            current = current.parent()
+        return current
 
     def updateUnicodeInput(self, text, unicode_input):
         if text:
@@ -223,19 +230,31 @@ class OpcodeForm(QWidget):
             print(f"Error converting Unicode: {e}")
 
     def showUnicodePopup(self, unicode_display, unicode_input):
-        if not hasattr(self, 'unicode_popup') or self.unicode_popup is None or not self.unicode_popup.isVisible():
+        # Only show popup if user explicitly clicks the select button
+        # Don't auto-show popups during form population or updates
+        if hasattr(self, '_programmatic_update') and self._programmatic_update:
+            return
+            
+        if not hasattr(self, 'unicode_popup') or self.unicode_popup is None:
             self.unicode_popup = UnicodeSelector()
             self.unicode_popup.on_select(lambda char, code: self.setUnicode(unicode_display, unicode_input, char, code))
-        self.unicode_popup.show()
-        self.unicode_popup.raise_()
-        self.unicode_popup.activateWindow()
+            # Set parent to keep it associated with the main window
+            if self.parent():
+                main_window = self.parent()
+                while main_window.parent():
+                    main_window = main_window.parent()
+                self.unicode_popup.setParent(main_window, Qt.Dialog)
+            
+        if not self.unicode_popup.isVisible():
+            self.unicode_popup.show()
+            self.unicode_popup.raise_()
+            self.unicode_popup.activateWindow()
         
     def setUnicode(self, unicode_display, unicode_input, char, code):
         unicode_display.setText(char)
         unicode_input.setText(code)
-        if hasattr(self, 'unicode_popup'):
-            self.unicode_popup.close()
-            self.unicode_popup = None
+        if hasattr(self, 'unicode_popup') and self.unicode_popup:
+            self.unicode_popup.hide()  # Hide instead of close to reuse
 
     def get_focusable_widgets(self):
         widgets = []
@@ -265,6 +284,7 @@ class AddEntryWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.field_inputs = {}
+        self._programmatic_update = False  # Flag to prevent unwanted popups
         self.initUI()
         self.last_nav_was_tab = False
         self.ensure_focus_policies(self)
@@ -284,6 +304,8 @@ class AddEntryWidget(QWidget):
             self.opcode_combo.installEventFilter(self)
         if hasattr(self, 'comment_input'):
             self.comment_input.installEventFilter(self)
+        if hasattr(self, 'clear_button'):
+            self.clear_button.installEventFilter(self)
         if hasattr(self, 'add_button'):
             self.add_button.installEventFilter(self)
             
@@ -337,6 +359,8 @@ class AddEntryWidget(QWidget):
         return super().eventFilter(obj, event)
 
     def clear_form(self):
+        self._programmatic_update = True  # Flag to prevent unwanted popups
+        
         self.opcode_combo.setCurrentIndex(0)
 
         for field, widget in self.field_inputs.items():
@@ -351,6 +375,20 @@ class AddEntryWidget(QWidget):
 
         clearLayout(self.form_layout)
         self.field_inputs.clear()
+        
+        # Reset button text to "Add"
+        self.set_editing_mode(False)
+        
+        self._programmatic_update = False  # Reset flag
+        
+    def set_editing_mode(self, is_editing):
+        """Set the widget to editing mode or add mode"""
+        if is_editing:
+            self.add_button.setText("Update")
+            self.add_button.setAccessibleName("Update Entry Button")
+        else:
+            self.add_button.setText("Add")
+            self.add_button.setAccessibleName("Add Entry Button")
 
     def initUI(self):
         # Create main container
@@ -398,7 +436,18 @@ class AddEntryWidget(QWidget):
         self.add_button = QPushButton("Add")
         self.add_button.setFocusPolicy(Qt.StrongFocus)  
         self.add_button.setAccessibleName("Add Entry Button")
-        main_layout.addWidget(self.add_button, alignment=Qt.AlignTop)
+        
+        # Add a clear button
+        self.clear_button = QPushButton("Clear")
+        self.clear_button.setFocusPolicy(Qt.StrongFocus)
+        self.clear_button.setAccessibleName("Clear Form Button")
+        
+        # Create a button layout
+        button_layout = QHBoxLayout()
+        button_layout.addWidget(self.clear_button)
+        button_layout.addWidget(self.add_button)
+        
+        main_layout.addLayout(button_layout)
 
         # Set content widget to scroll area and add to main container
         scroll_area.setWidget(content_widget)
@@ -415,6 +464,11 @@ class AddEntryWidget(QWidget):
             combo.addItem(opcode["code"], opcode)
 
     def on_opcode_selected(self, index):
+        # Prevent unwanted popups during programmatic selection
+        was_programmatic = getattr(self, '_programmatic_update', False)
+        if not was_programmatic:
+            self._programmatic_update = True
+            
         clearLayout(self.form_layout)  
         if index > 0:
             opcode = self.opcode_combo.itemData(index)
@@ -429,6 +483,10 @@ class AddEntryWidget(QWidget):
         self.install_input_event_filters()
         
         QTimer.singleShot(100, self.setup_tab_order)
+        
+        # Only reset flag if we set it here
+        if not was_programmatic:
+            self._programmatic_update = False
 
     def ensure_focus_policies(self, widget):
 
@@ -444,40 +502,71 @@ class AddEntryWidget(QWidget):
                 child.style().polish(child)  
 
     def collect_entry_data(self):
-        collected_data = [self.opcode_combo.currentText()]
+        # Get opcode data instead of text to avoid placeholder
+        opcode_data = self.opcode_combo.itemData(self.opcode_combo.currentIndex())
+        
+        collected_data = []
+        
+        # If there's a valid opcode, add it first
+        if opcode_data is not None:
+            collected_data.append(opcode_data["code"])
+            
+            def collect_nested_form_data(nested_form):
+                nested_data = []
+                for field, widget in nested_form.field_inputs.items():
+                    if isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
+                        nested_data.append(widget.text())
+                    elif isinstance(widget, QComboBox):
+                        # Check if it's an opcode combo and avoid placeholder text
+                        if field == "opcode":
+                            combo_data = widget.itemData(widget.currentIndex())
+                            if combo_data is not None:
+                                nested_data.append(combo_data["code"])
+                            # Skip if no valid opcode selected
+                        else:
+                            nested_data.append(widget.currentText())
+                    elif isinstance(widget, BrailleInputWidget):
+                        nested_data.append(widget.braille_input.text())
+                    elif field == "exactdots":
+                        at_symbol, braille_input = widget
+                        nested_data.append(at_symbol.text() + braille_input.text())
+                    elif isinstance(widget, OpcodeForm):
+                        nested_data.extend(collect_nested_form_data(widget))
+                return nested_data
 
-        def collect_nested_form_data(nested_form):
-            nested_data = []
-            for field, widget in nested_form.field_inputs.items():
+            for field, widget in self.field_inputs.items():
                 if isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
-                    nested_data.append(widget.text())
+                    collected_data.append(widget.text())
                 elif isinstance(widget, QComboBox):
-                    nested_data.append(widget.currentText())
+                    # Check if it's an opcode combo and avoid placeholder text
+                    if field == "opcode":
+                        combo_data = widget.itemData(widget.currentIndex())
+                        if combo_data is not None:
+                            collected_data.append(combo_data["code"])
+                        # Skip if no valid opcode selected
+                    else:
+                        collected_data.append(widget.currentText())
                 elif isinstance(widget, BrailleInputWidget):
-                    nested_data.append(widget.braille_input.text())
+                    collected_data.append(widget.braille_input.text())
                 elif field == "exactdots":
                     at_symbol, braille_input = widget
-                    nested_data.append(at_symbol.text() + braille_input.text())
+                    collected_data.append(at_symbol.text() + braille_input.text())
                 elif isinstance(widget, OpcodeForm):
-                    nested_data.extend(collect_nested_form_data(widget))
-            return nested_data
+                    collected_data.extend(collect_nested_form_data(widget))
 
-        for field, widget in self.field_inputs.items():
-            if isinstance(widget, QLineEdit) or isinstance(widget, QTextEdit):
-                collected_data.append(widget.text())
-            elif isinstance(widget, QComboBox):
-                collected_data.append(widget.currentText())
-            elif isinstance(widget, BrailleInputWidget):
-                collected_data.append(widget.braille_input.text())
-            elif field == "exactdots":
-                at_symbol, braille_input = widget
-                collected_data.append(at_symbol.text() + braille_input.text())
-            elif isinstance(widget, OpcodeForm):
-                collected_data.extend(collect_nested_form_data(widget))
+        # Always add the comment, even if there's no opcode
+        comment_text = self.comment_input.text().strip()
+        if comment_text:
+            collected_data.append(comment_text)
 
-        collected_data.append(self.comment_input.text())
-
-        return ' '.join(collected_data).strip()
+        # If we have no opcode but have a comment, return just the comment
+        if not collected_data and comment_text:
+            return comment_text
+        elif collected_data:
+            return ' '.join(collected_data).strip()
+        else:
+            # Return empty if nothing is entered
+            return ""
 
     def get_focusable_widgets(self):
         widgets = []
@@ -487,6 +576,8 @@ class AddEntryWidget(QWidget):
             widgets.extend(self.field_inputs['nested_form'].get_focusable_widgets())
         if hasattr(self, 'comment_input'):
             widgets.append(self.comment_input)
+        if hasattr(self, 'clear_button'):
+            widgets.append(self.clear_button)
         if hasattr(self, 'add_button'):
             widgets.append(self.add_button)
         return widgets
@@ -537,6 +628,9 @@ class AddEntryWidget(QWidget):
         
         if hasattr(self, 'comment_input') and self.comment_input.isVisible():
             focusable_widgets.append(self.comment_input)
+        
+        if hasattr(self, 'clear_button') and self.clear_button.isVisible():
+            focusable_widgets.append(self.clear_button)
             
         if hasattr(self, 'add_button') and self.add_button.isVisible():
             focusable_widgets.append(self.add_button)

@@ -143,17 +143,80 @@ class EntryWidget(QFrame):
 
     def edit_entry(self):
         self.label_text.setVisible(False)
+        
+        # Improve the edit line for better editing experience
+        self.edit_line.setStyleSheet("""
+            QLineEdit {
+                font-family: 'Consolas', 'Courier New', monospace;
+                font-size: 12px;
+                padding: 4px;
+                border: 2px solid #0078d4;
+                border-radius: 4px;
+                background-color: white;
+                min-height: 22px;
+            }
+        """)
+        
         self.edit_line.setVisible(True)
         self.edit_line.setText(self.entry)
         self.edit_line.setFocus()
         self.edit_line.selectAll()
 
     def save_entry(self):
-        self.entry = self.edit_line.text()
-        self.label_text.setText(self.entry)
+        new_entry_text = self.edit_line.text().strip()
+        if not new_entry_text:
+            # Don't save empty entries
+            self.edit_line.setVisible(False)
+            self.label_text.setVisible(True)
+            return
+            
+        self.entry = new_entry_text
+        
+        # Update the display text with proper formatting
+        display_text = new_entry_text
+        parts = new_entry_text.split()
+        if len(parts) >= 2:  
+            opcode = parts[0]
+            unicode_part = parts[1]
+            
+            if unicode_part.startswith('\\x'):
+                unicode_chars = self.convert_unicode(unicode_part)
+                if unicode_chars:
+                    remaining_parts = parts[2:] if len(parts) > 2 else []
+                    
+                    dots_part = []
+                    comment_part = []
+                    
+                    for i, part in enumerate(remaining_parts):
+                        if part.startswith('#'):
+                            comment_part = remaining_parts[i:]
+                            dots_part = remaining_parts[:i]
+                            break
+                        else:
+                            dots_part = remaining_parts
+                    
+                    display_text = f"{opcode}  {unicode_chars}  {unicode_part}"
+                    
+                    if dots_part:
+                        display_text += f"  {' '.join(dots_part)}"
+                    
+                    if comment_part:
+                        display_text += f"  {' '.join(comment_part)}"
+        
+        self.label_text.setText(display_text)
         self.edit_line.setVisible(False)
         self.label_text.setVisible(True)
-        self.load_into_editor()
+        
+        # Update the entry in the table preview without loading into editor
+        parent_preview = self.table_editor.table_preview
+        if hasattr(parent_preview, 'current_index') and 0 <= parent_preview.current_index < len(parent_preview.entries):
+            parent_preview.entries[parent_preview.current_index] = new_entry_text
+            if hasattr(parent_preview.table_editor, 'mark_as_unsaved'):
+                parent_preview.table_editor.mark_as_unsaved()
+                
+            # Also update the currently loaded entry in the editor if it's the same one
+            if hasattr(parent_preview, 'is_editing_mode') and parent_preview.is_editing_mode:
+                parent_preview.table_editor.load_entry_into_editor(new_entry_text)
 
     def delete_entry(self):
         self.setParent(None)
