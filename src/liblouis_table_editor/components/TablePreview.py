@@ -32,7 +32,7 @@ class TablePreview(QWidget):
         self.scroll_area.setAccessibleName("Table Preview Scroll Area")
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.scroll_area.setFocusPolicy(Qt.NoFocus)
         self.scroll_area.mousePressEvent = self.scroll_area_click  
         
