@@ -42,7 +42,7 @@ class TestCaseWidget(QWidget):
         output_group = QVBoxLayout()
         self.expected_output = QTextEdit()
         self.expected_output.setAccessibleName("Expected Braille Text Area")
-        self.expected_output.setPlaceholderText("Enter expected Braille output using F, D, S, J, K, L keys for dots 1-6, space for next cell, double space for word space")
+        self.expected_output.setPlaceholderText("Enter expected Braille output using F, D, S, J, K, L keys for dots 1-6")
         self.expected_output.setMaximumHeight(100)
         self.expected_output.keyPressEvent = self.handle_expected_braille_input
         self.current_expected_braille_cell = [False] * 6  
@@ -173,7 +173,21 @@ class TestCaseWidget(QWidget):
             dot_pos = key_to_dot[event.key()]
             self.current_expected_braille_cell[dot_pos] = True
             self.update_expected_braille_cell()
+            
+            if not hasattr(self, '_auto_advance_timer'):
+                from PyQt5.QtCore import QTimer
+                self._auto_advance_timer = QTimer()
+                self._auto_advance_timer.setSingleShot(True)
+                self._auto_advance_timer.timeout.connect(self._auto_advance_to_next_expected_cell)
+            
+            self._auto_advance_timer.stop()
+            self._auto_advance_timer.start(300)  
+            
         elif event.key() == Qt.Key_Space:
+
+            if hasattr(self, '_auto_advance_timer'):
+                self._auto_advance_timer.stop()
+                
             current_time = int(time.time() * 1000)
             if current_time - self.last_expected_space_time < 300:
                 self.add_expected_word_space()
@@ -182,10 +196,18 @@ class TestCaseWidget(QWidget):
                 self.add_expected_braille_cell()
                 self.last_expected_space_time = current_time
         elif event.key() == Qt.Key_Backspace:
+
+            if hasattr(self, '_auto_advance_timer'):
+                self._auto_advance_timer.stop()
             self.handle_expected_backspace()
             event.accept()
         else:
             QTextEdit.keyPressEvent(self.expected_output, event)
+    
+    def _auto_advance_to_next_expected_cell(self):
+
+        if any(self.current_expected_braille_cell):  
+            self.add_expected_braille_cell()
 
     def update_expected_braille_cell(self):
         dots = self.current_expected_braille_cell

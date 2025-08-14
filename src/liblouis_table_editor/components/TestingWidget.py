@@ -163,7 +163,7 @@ class TestingWidget(QWidget):
         backward_input_label.setAccessibleName("Backward Input Label")
         self.backward_input = QTextEdit(self)
         self.backward_input.setAccessibleName("Backward Input Text Area")
-        self.backward_input.setPlaceholderText("Enter Braille using F, D, S, J, K, L keys for dots 1-6, space for next cell, double space for word space")
+        self.backward_input.setPlaceholderText("Enter Braille using F, D, S, J, K, L keys for dots 1-6")
         self.backward_input.setMaximumHeight(100)
         self.backward_input.keyPressEvent = self.handle_braille_input
         self.current_braille_cell = [False] * 6 
@@ -335,7 +335,21 @@ class TestingWidget(QWidget):
             dot_pos = key_to_dot[event.key()]
             self.current_braille_cell[dot_pos] = True
             self.update_braille_cell()
+            
+            if not hasattr(self, '_auto_advance_timer'):
+                from PyQt5.QtCore import QTimer
+                self._auto_advance_timer = QTimer()
+                self._auto_advance_timer.setSingleShot(True)
+                self._auto_advance_timer.timeout.connect(self._auto_advance_to_next_cell)
+            
+            self._auto_advance_timer.stop()
+            self._auto_advance_timer.start(300)  
+            
         elif event.key() == Qt.Key_Space:
+
+            if hasattr(self, '_auto_advance_timer'):
+                self._auto_advance_timer.stop()
+                
             current_time = event.timestamp()
             if current_time - self.last_space_time < 300:  
                 self.add_word_space()
@@ -344,10 +358,18 @@ class TestingWidget(QWidget):
                 self.add_braille_cell()
                 self.last_space_time = current_time
         elif event.key() == Qt.Key_Backspace:
+
+            if hasattr(self, '_auto_advance_timer'):
+                self._auto_advance_timer.stop()
             self.handle_backspace()
             event.accept()  
         else:
             QTextEdit.keyPressEvent(self.backward_input, event)
+    
+    def _auto_advance_to_next_cell(self):
+
+        if any(self.current_braille_cell):  
+            self.add_braille_cell()
     
     def update_braille_cell(self):
         dots = self.current_braille_cell
