@@ -23,6 +23,20 @@ data = json.load(open(resource_path('opcodes.json'), 'r'), object_pairs_hook=Ord
 opcodes = data["codes"]
 
 class OpcodeForm(QWidget):
+    def _safe_show_unicode_popup(self, parent, unicode_display, unicode_input):
+
+        main_widget = self.get_main_widget(self)
+        if main_widget and hasattr(main_widget, "showUnicodePopup"):
+            main_widget.showUnicodePopup(unicode_display, unicode_input)
+        else:
+            print("Error: main_widget is not an AddEntryWidget or does not have showUnicodePopup.")
+    
+    def get_main_widget(self, widget):
+
+        current = widget
+        while current and not (hasattr(current, 'showUnicodePopup') and current.__class__.__name__ == 'AddEntryWidget'):
+            current = current.parent()
+        return current
     def __init__(self, fields, parent=None):
         super().__init__(parent)
         self.field_inputs = {}
@@ -78,7 +92,9 @@ class OpcodeForm(QWidget):
                 select_button.setAccessibleName("Select Unicode Button")
                 select_button.setFocusPolicy(Qt.StrongFocus)  
                 select_button.installEventFilter(self)
-                select_button.clicked.connect(lambda _, u_display=unicode_display, u_input=unicode_input, parent=self: self.get_main_widget(parent).showUnicodePopup(u_display, u_input))
+                select_button.clicked.connect(
+                    lambda _, u_display=unicode_display, u_input=unicode_input, parent=self: self._safe_show_unicode_popup(parent, u_display, u_input)
+                )
 
                 unicode_container.addWidget(unicode_display)
                 unicode_container.addWidget(unicode_input)
@@ -281,6 +297,12 @@ class OpcodeForm(QWidget):
         return super().eventFilter(obj, event)
 
 class AddEntryWidget(QWidget):
+    def _safe_show_unicode_popup(self, parent, unicode_display, unicode_input):
+        main_widget = self.get_main_widget(parent)
+        if isinstance(main_widget, AddEntryWidget) and hasattr(main_widget, "showUnicodePopup"):
+            main_widget.showUnicodePopup(unicode_display, unicode_input)
+        else:
+            print("Error: main_widget is not an AddEntryWidget or does not have showUnicodePopup.")
     def __init__(self, parent=None):
         super().__init__(parent)
         self.field_inputs = {}
@@ -636,3 +658,30 @@ class AddEntryWidget(QWidget):
         
         for i in range(len(focusable_widgets) - 1):
             self.setTabOrder(focusable_widgets[i], focusable_widgets[i + 1])
+
+    def showUnicodePopup(self, unicode_display, unicode_input):
+        # Only show popup if user explicitly clicks the select button
+        # Don't auto-show popups during form population or updates
+        if hasattr(self, '_programmatic_update') and self._programmatic_update:
+            return
+            
+        # Import here to avoid circular imports
+        from liblouis_table_editor.components.AddEntry.UnicodeSelector import UnicodeSelector
+        
+        if not hasattr(self, 'unicode_popup') or self.unicode_popup is None:
+            self.unicode_popup = UnicodeSelector()
+            self.unicode_popup.on_select(lambda char, code: self.setUnicode(unicode_display, unicode_input, char, code))
+            # Set parent to keep it associated with the main window
+            if self.parent():
+                main_window = self.parent()
+                while main_window.parent():
+                    main_window = main_window.parent()
+                self.unicode_popup.setParent(main_window, Qt.Dialog)
+            
+        if not self.unicode_popup.isVisible():
+            self.unicode_popup.show()
+            self.unicode_popup.raise_()
+
+    def setUnicode(self, unicode_display, unicode_input, char, code):
+        unicode_display.setText(char)
+        unicode_input.setText(code)
