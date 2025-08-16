@@ -4,9 +4,9 @@ Priority: optional
 Maintainer: sahilrakhaiya05 <sahilrakhaiya05@users.noreply.launchpad.net>
 Build-Depends: debhelper-compat (= 13), dh-python, python3-setuptools, python3-all, desktop-file-utils
 Standards-Version: 4.6.0
-Homepage: https://github.com/SahilRakhaiya05/Liblouis-Table-Editor
-Vcs-Browser: https://github.com/SahilRakhaiya05/Liblouis-Table-Editor
-Vcs-Git: https://github.com/SahilRakhaiya05/Liblouis-Table-Editor.git
+Homepage: https://github.com/zendalona/liblouis-table-editor
+Vcs-Browser: https://github.com/zendalona/liblouis-table-editor
+Vcs-Git: https://github.com/zendalona/liblouis-table-editor.git
 Rules-Requires-Root: no
 
 Package: liblouis-table-editor

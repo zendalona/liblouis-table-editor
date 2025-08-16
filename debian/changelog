@@ -1,10 +1,4 @@
-liblouis-table-editor (1.0-2) jammy; urgency=medium
-
-  * Added screen reader compatibility and improved keyboard navigation with jammy build
-
- -- Sahil Rakhaiya <sahilrakhaiya05@gmail.com>  Wed, 02 Jul 2025 19:41:23 +0530
-
-liblouis-table-editor (1.0-0) noble; urgency=medium
+liblouis-table-editor (1.0-0) jammy; urgency=medium
 
   * Initial release to Launchpad PPA (liblouis-table-editor)
 
