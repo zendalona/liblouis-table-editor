@@ -77,12 +77,34 @@ class TableManager(QWidget):
 
         self.menubar = create_menubar(self)
         layout.setMenuBar(self.menubar)
+        
+        # Set focus policy and accessibility for the main window
+        self.setFocusPolicy(Qt.StrongFocus)
+        try:
+            if hasattr(self, 'setAccessibleName'):
+                self.setAccessibleName("Liblouis Table Editor")
+            if hasattr(self, 'setAccessibleDescription'):
+                self.setAccessibleDescription("Main application window for editing Liblouis braille translation tables")
+        except (AttributeError, TypeError):
+            # Ignore if these methods don't exist in older PyQt5 versions
+            pass
 
         self.stacked_layout = QStackedLayout()
         
         self.tab_widget = QTabWidget()
         self.tab_widget.setTabsClosable(True)
         self.tab_widget.tabCloseRequested.connect(self.close_tab)
+        
+        # Set accessibility properties for the tab widget
+        try:
+            if hasattr(self.tab_widget, 'setAccessibleName'):
+                self.tab_widget.setAccessibleName("File Tabs")
+            if hasattr(self.tab_widget, 'setAccessibleDescription'):
+                self.tab_widget.setAccessibleDescription("Tab widget containing open table files")
+        except (AttributeError, TypeError):
+            # Ignore if these methods don't exist in older PyQt5 versions
+            pass
+        self.tab_widget.setFocusPolicy(Qt.StrongFocus)
 
         self.home_screen = HomeScreen(self)
         self.home_screen.file_opened.connect(self.handle_file_opened)
@@ -103,8 +125,22 @@ class TableManager(QWidget):
 
         self.showMaximized()
 
+        # Set up keyboard shortcuts for menu navigation
         self.focus_menu_shortcut = QShortcut(QKeySequence("Alt+F"), self)
         self.focus_menu_shortcut.activated.connect(self.focus_file_menu)
+        
+        self.focus_edit_menu_shortcut = QShortcut(QKeySequence("Alt+E"), self)
+        self.focus_edit_menu_shortcut.activated.connect(self.focus_edit_menu)
+        
+        self.focus_tools_menu_shortcut = QShortcut(QKeySequence("Alt+T"), self)
+        self.focus_tools_menu_shortcut.activated.connect(self.focus_tools_menu)
+        
+        self.focus_help_menu_shortcut = QShortcut(QKeySequence("Alt+H"), self)
+        self.focus_help_menu_shortcut.activated.connect(self.focus_help_menu)
+        
+        # General menu bar focus shortcut
+        self.focus_menubar_shortcut = QShortcut(QKeySequence("F10"), self)
+        self.focus_menubar_shortcut.activated.connect(self.focus_menubar)
 
     def handle_file_opened(self, file_name, file_content, file_path):
         self.add_tab(file_name, file_content, file_path)
@@ -264,13 +300,44 @@ class TableManager(QWidget):
         event.accept()
 
     def focus_file_menu(self):
-
         if self.menubar:
             file_menu = self.menubar.actions()[0].menu()
             if file_menu:
                 self.menubar.setActiveAction(self.menubar.actions()[0])
                 file_menu.popup(self.menubar.mapToGlobal(self.menubar.actionGeometry(self.menubar.actions()[0]).bottomLeft()))
                 self.menubar.setFocus()
+
+    def focus_edit_menu(self):
+        if self.menubar and len(self.menubar.actions()) > 1:
+            edit_menu = self.menubar.actions()[1].menu()
+            if edit_menu:
+                self.menubar.setActiveAction(self.menubar.actions()[1])
+                edit_menu.popup(self.menubar.mapToGlobal(self.menubar.actionGeometry(self.menubar.actions()[1]).bottomLeft()))
+                self.menubar.setFocus()
+
+    def focus_tools_menu(self):
+        if self.menubar and len(self.menubar.actions()) > 2:
+            tools_menu = self.menubar.actions()[2].menu()
+            if tools_menu:
+                self.menubar.setActiveAction(self.menubar.actions()[2])
+                tools_menu.popup(self.menubar.mapToGlobal(self.menubar.actionGeometry(self.menubar.actions()[2]).bottomLeft()))
+                self.menubar.setFocus()
+
+    def focus_help_menu(self):
+        if self.menubar and len(self.menubar.actions()) > 3:
+            help_menu = self.menubar.actions()[3].menu()
+            if help_menu:
+                self.menubar.setActiveAction(self.menubar.actions()[3])
+                help_menu.popup(self.menubar.mapToGlobal(self.menubar.actionGeometry(self.menubar.actions()[3]).bottomLeft()))
+                self.menubar.setFocus()
+
+    def focus_menubar(self):
+        """Focus the menu bar directly, allowing navigation with arrow keys"""
+        if self.menubar:
+            self.menubar.setFocus()
+            # Set the first menu item as active so users can navigate with arrow keys
+            if self.menubar.actions():
+                self.menubar.setActiveAction(self.menubar.actions()[0])
 
     def open_file_from_path(self, file_path):
         """Open a file from the given file path (used for command line arguments)"""
